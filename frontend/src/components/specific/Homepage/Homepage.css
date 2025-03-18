@@ -5,9 +5,15 @@
 
 .homepage-header {
   position: relative;
-  height: 70vh;
+  height: 85vh;
   overflow: hidden;
 }
+
+.header-content {
+  width: 90%;
+  max-width: 1200px;
+}
+
 
 .airplane-image {
   width: 100%;
@@ -149,7 +155,9 @@
   padding: 0 1.5em 2em;
   line-height: 1.6;
   flex-grow: 1;
-  margin: 0;
+  margin-top: 15px;
+  font-weight: 500;
+
 }
 
 /* Responsive Design */
@@ -284,5 +292,182 @@
 
   .next-trip h3 {
     font-size: 1.1em;
+  }
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-content h1,
+.header-content p {
+  animation: fadeInUp 1s ease-out;
+}
+
+.homepage-map{
+  border: none;
+  border-radius: 30px;
+}
+
+
+/* Offer */
+.offer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 4rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 1400px;
+  gap: 3rem;
+}
+
+.offer-content {
+  flex: 1 1 400px;
+  max-width: 600px;
+}
+
+.offer-image-section {
+  flex: 1 1 400px;
+  position: relative;
+}
+
+.offer-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.offer-image:hover {
+  transform: scale(1.02);
+}
+
+.offer-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #8B0000;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.offer-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.offer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.offer-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.offer-input:focus {
+  border-color: #8B0000;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+}
+
+.offer-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+.offer-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: #8B0000;
+}
+
+.offer-checkbox label {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.offer-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.offer-button:hover {
+  background-color: #a40000;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
+}
+
+.offer-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .offer-container {
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .offer-title {
+    font-size: 2rem;
+  }
+
+  .offer-content {
+    flex: 1 1 100%;
+  }
+
+  .offer-image-section {
+    flex: 1 1 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .offer-input {
+    width: 100%;
   }
 }
