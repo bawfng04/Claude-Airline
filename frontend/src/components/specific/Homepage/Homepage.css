@@ -1,6 +1,18 @@
+
+@keyframes slideIn {
+  0% {
+    transform: translate(-60%, -50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+
 .homepage {
   font-family: "Segoe UI", Arial, sans-serif;
-  color: var(--dark-color);
 }
 
 .homepage-header {
@@ -12,20 +24,26 @@
 .header-content {
   width: 90%;
   max-width: 1200px;
+  transition: all 0.5s ease;
 }
-
 
 .airplane-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: brightness(0.7);
-  transition: transform 20s ease;
+  transition: transform 0.5s ease;
 }
 
 .homepage:hover .airplane-image {
   transform: scale(1.1);
+  cursor: pointer;
 }
+
+.homepage:hover .header-content{
+  animation: slideIn 0.8s ease forwards;
+}
+
 
 .header-content {
   position: absolute;
@@ -358,7 +376,7 @@
 .offer-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #8B0000;
+  color: var(--primary-color);
   font-weight: 700;
   letter-spacing: -0.5px;
 }
@@ -411,7 +429,7 @@
   height: 20px;
   margin-top: 3px;
   cursor: pointer;
-  accent-color: #8B0000;
+  accent-color: var(--primary-color);
 }
 
 .offer-checkbox label {
@@ -424,7 +442,7 @@
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  background-color: #8B0000;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;

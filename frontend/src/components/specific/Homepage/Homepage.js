@@ -93,6 +93,7 @@ const Homepage = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="homepage-map"
+            title="map"
           ></iframe>
         </div>
       </section>
