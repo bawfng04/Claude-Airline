@@ -1,4 +1,3 @@
-
 @keyframes slideIn {
   0% {
     transform: translate(-60%, -50%);
@@ -89,6 +88,13 @@
   background: var(--light-color);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.booking-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .booking-form input {
@@ -142,11 +148,48 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  animation: fadeInUp 0.8s ease-out forwards;
+  transform-style: preserve-3d;
 }
 
 .service:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) rotateY(5deg);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(139, 0, 0, 0) 0%, rgba(139, 0, 0, 0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 15px;
+}
+
+.service:hover::before {
+  opacity: 1;
+}
+
+.service::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+  border-radius: 15px;
+}
+
+.service:hover::after {
+  left: 100%;
 }
 
 .service-image {
@@ -264,10 +307,49 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   cursor: pointer;
+  animation: fadeInUp 0.8s ease-out forwards;
+  transform-style: preserve-3d;
+  position: relative;
 }
 
 .city-unit:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) rotateY(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.city-unit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(139, 0, 0, 0) 0%, rgba(139, 0, 0, 0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 15px;
+}
+
+.city-unit:hover::before {
+  opacity: 1;
+}
+
+.city-unit::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+  border-radius: 15px;
+}
+
+.city-unit:hover::after {
+  left: 100%;
 }
 
 .city-unit-image {
@@ -349,6 +431,14 @@
   margin: 2rem auto;
   max-width: 1400px;
   gap: 3rem;
+  animation: fadeInUp 0.8s ease-out forwards;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.offer-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .offer-content {
@@ -359,6 +449,25 @@
 .offer-image-section {
   flex: 1 1 400px;
   position: relative;
+}
+
+.offer-image-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(139, 0, 0, 0) 0%, rgba(139, 0, 0, 0.2) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 15px;
+}
+
+.offer-container:hover .offer-image-section::before {
+  opacity: 1;
 }
 
 .offer-image {
@@ -488,4 +597,249 @@
   .offer-input {
     width: 100%;
   }
+}
+
+
+/* Travel Package Styles */
+.travel-package-section {
+  background-color: #f8f9fa;
+  padding: 5rem 2rem;
+  overflow: hidden;
+}
+
+.travel-package-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.travel-package-title {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.travel-package-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.travel-package-container:hover .travel-package-title::after {
+  width: 220px;
+}
+
+.travel-package-subtitle {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  font-weight: normal;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.travel-packages {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  perspective: 1000px;
+}
+
+.travel-package-unit {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.travel-package-unit:hover {
+  transform: translateY(-10px) rotateY(5deg);
+  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.travel-package-unit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(139, 0, 0, 0) 0%, rgba(139, 0, 0, 0.5) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.travel-package-unit:hover::before {
+  opacity: 1;
+}
+
+.travel-package-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  display: block;
+}
+
+.travel-package-unit:hover .travel-package-image {
+  transform: scale(1.05);
+}
+
+.travel-package-name {
+  position: absolute;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  color: white;
+  font-size: 1.8rem;
+  padding: 0 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.travel-package-unit:hover .travel-package-name {
+  transform: translateY(-10px);
+}
+
+.travel-package-description {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  color: white;
+  padding: 0 2rem;
+  line-height: 1.6;
+  font-size: 1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  opacity: 0.9;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.travel-package-unit:hover .travel-package-description {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+.travel-package-unit::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.travel-package-unit:hover::after {
+  left: 100%;
+}
+
+.travel-packages:nth-child(2) .travel-package-unit {
+  animation-delay: 0.2s;
+}
+
+.travel-packages:nth-child(3) .travel-package-unit {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.travel-package-unit {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .travel-package-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .travel-package-title {
+    font-size: 2rem;
+  }
+
+  .travel-package-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .travel-package-image {
+    height: 220px;
+  }
+
+  .travel-package-name {
+    font-size: 1.5rem;
+    bottom: 60px;
+  }
+
+  .travel-package-description {
+    font-size: 0.9rem;
+  }
+}
+
+.map-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  animation: fadeInUp 0.8s ease-out forwards;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.map-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation Delay for Staggered Effects */
+.city-unit:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.city-unit:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.city-unit:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.service:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.service:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.service:nth-child(3) {
+  animation-delay: 0.5s;
 }

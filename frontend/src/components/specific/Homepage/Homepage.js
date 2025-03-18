@@ -10,6 +10,7 @@ import meal from "../../../assets/meal.webp";
 import CityUnit from "./CityUnit";
 import ServiceUnit from "./ServiceUnit";
 import Offer from "./Offer";
+import TravelPackage from "./TravelPackage";
 
 const Homepage = () => {
   return (
@@ -58,6 +59,9 @@ const Homepage = () => {
             description="Experience the British culture and history."
           />
         </div>
+      </section>
+      <section className="travel-package-section">
+        <TravelPackage />
       </section>
       <section className="homepage-section">
         <h2>Our Services</h2>
