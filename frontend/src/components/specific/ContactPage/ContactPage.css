@@ -1,0 +1,219 @@
+.contact-us-container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 2rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.contact-us-title {
+  font-size: 2.8rem;
+  color: var(--primary-color, #8b0000);
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.contact-us-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color, #8b0000);
+  transition: width 0.3s ease;
+}
+
+.contact-us-container:hover .contact-us-title::after {
+  width: 180px;
+}
+
+.contact-us-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.contact-us-unit:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.contact-us-unit:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.contact-us-unit:hover {
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contact-us-unit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(139, 0, 0, 0) 0%,
+    rgba(139, 0, 0, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.contact-us-unit:hover::before {
+  opacity: 1;
+}
+
+.contact-us-unit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.contact-us-unit:hover::after {
+  left: 100%;
+}
+
+.contact-us-unit-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.contact-us-unit:hover .contact-us-unit-img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.contact-us-unit-title {
+  font-size: 1.8rem;
+  color: var(--primary-color, #8b0000);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.contact-us-unit-description {
+  text-align: center;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.contact-us-unit-btn {
+  padding: 0.8rem 2rem;
+  background-color: var(--primary-color, #8b0000);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-us-unit-btn:hover {
+  background-color: #a40000;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
+}
+
+.contact-us-unit-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .contact-us-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 2rem;
+  }
+
+  .contact-us-title {
+    grid-column: 1 / -1;
+  }
+
+  /* Convert to flex layout with multiple contact units side by side */
+  .contact-us-container {
+    display: block;
+  }
+
+  .contact-units-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .contact-us-unit {
+    flex: 1;
+    max-width: calc(50% - 1rem);
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-us-container {
+    padding: 1.5rem;
+    margin: 2rem auto;
+  }
+
+  .contact-us-title {
+    font-size: 2.2rem;
+  }
+
+  .contact-us-unit {
+    padding: 1.8rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
