@@ -1,5 +1,4 @@
 import React from "react";
-import chom from "../../../assets/chom.png";
 
 const Chom = () => {
   return (
