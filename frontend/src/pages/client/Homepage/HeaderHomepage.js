@@ -8,6 +8,12 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import HomepageAirplaneImage from "../../../assets/homepage-airplane-image.png";
+import HomepageAirplaneImage2 from "../../../assets/homepage-airplane-image2.png";
+import HomepageAirplaneImage3 from "../../../assets/homepage-airplane-image3.png";
+
+const handleLearnMore = () => {
+  window.location.href = "/about";
+};
 
 const HeaderHomepage = () => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -22,15 +28,13 @@ const HeaderHomepage = () => {
       cta: "Book Your Journey",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+      image: HomepageAirplaneImage2,
       title: "Discover New Horizons",
       subtitle: "Over 200 destinations worldwide waiting for you",
       cta: "Explore Destinations",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+      image: HomepageAirplaneImage3,
       title: "Premium Travel Experience",
       subtitle: "First-class amenities for all our passengers",
       cta: "View Amenities",
@@ -86,7 +90,12 @@ const HeaderHomepage = () => {
                   <button className="primary-cta" onClick={scrollToBooking}>
                     {slide.cta} <FaArrowRight className="cta-icon" />
                   </button>
-                  <button className="secondary-cta">Learn More</button>
+                  <button
+                    className="secondary-cta"
+                    onClick={() => handleLearnMore()}
+                  >
+                    Learn More
+                  </button>
                 </div>
               </div>
             </div>
