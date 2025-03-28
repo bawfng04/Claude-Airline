@@ -21,7 +21,7 @@ const Footer = () => {
         <div className="footer-section footer-about">
           <div className="footer-logo-container">
             <img src={airplaneLogo} alt="Logo" className="footer-logo" />
-            <h3 className="footer-title">FSTemplate</h3>
+            <h3 className="footer-title">Claude Airplanes</h3>
           </div>
           <p className="footer-description">
             Your premium airline service providing comfortable and safe travel
@@ -134,7 +134,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <div className="footer-copyright">
-          &copy; {year} FSTemplate Airline. All rights reserved.
+          &copy; {year} Claude Airlines. All rights reserved.
         </div>
         <div className="footer-legal">
           <a href="#">Privacy Policy</a>

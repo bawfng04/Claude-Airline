@@ -128,7 +128,7 @@ const Header = () => {
                 FAQ
               </a>
             </li>
-            <li className="header-nav-item">
+            {/* <li className="header-nav-item">
               <a
                 href="/example"
                 className={`header-nav-link ${
@@ -138,7 +138,7 @@ const Header = () => {
               >
                 Example
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
 

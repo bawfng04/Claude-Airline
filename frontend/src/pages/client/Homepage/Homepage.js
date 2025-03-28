@@ -11,6 +11,7 @@ import ServiceUnit from "./ServiceUnit";
 import Offer from "./Offer";
 import TravelPackage from "./TravelPackage";
 import HeaderHomepage from "./HeaderHomepage";
+import Chom from "./Chom";
 
 const Homepage = () => {
   return (
@@ -73,6 +74,12 @@ const Homepage = () => {
           />
         </div>
       </section>
+
+      <section className="chom-section">
+        <h2>Save more with us</h2>
+        <Chom />
+      </section>
+
       <section className="offer-section">
         <Offer />
       </section>

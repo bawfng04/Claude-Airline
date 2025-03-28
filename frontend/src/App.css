@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.bold{
+  font-weight: bold;
+}
+
 :root {
   --primary-color: #8B0000;
   --primary-light: #a40000;

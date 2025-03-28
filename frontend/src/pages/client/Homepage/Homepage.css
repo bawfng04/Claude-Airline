@@ -1248,3 +1248,60 @@
     font-size: 1.2rem;
   }
 }
+
+.chom-container{
+  margin: 1rem 10rem;
+  background: url("../../../assets/chom.png") no-repeat center center;
+  background-size: cover;
+  height: auto;
+  padding: 3rem;
+  color: white;
+  font-size: 1.5rem;
+  min-height: 500px;
+  border-radius: 30px;
+}
+
+.chom-container p, .chom-container h3{
+  max-width: 30%;
+}
+
+.chom-section h2{
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.chom-button{
+  background-color: var(--primary-color);
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.chom-button:hover{
+  background-color: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+  .chom-container {
+    margin: 0.5rem 1rem;
+    padding: 2rem;
+    font-size: 1.2rem;
+  }
+
+.chom-container p, .chom-container h3{
+  max-width: 80%;
+}
+
+  .chom-section h2 {
+    font-size: 1.5rem;
+  }
+}
+
