@@ -10,11 +10,14 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-section">
           <h3>About Us</h3>
-          <p>
-            A Fullstack template for building web applications with React and
-            Node.js
-          </p>
-          <p className="copyright">© {year} bawfng04. All rights reserved.</p>
+          <ul>
+            <li>
+              <a href="#">Giới thiệu công ty</a>
+            </li>
+            <li>
+              <a href="#">Đội bay</a>
+            </li>
+          </ul>
         </div>
 
         <div className="footer-section">
@@ -36,11 +39,15 @@ const Footer = () => {
         </div>
 
         <div className="footer-section">
-          <h3>Contact Info</h3>
-          <p>bawfng04</p>
-          <p>Ho Chi Minh city - Vietnam</p>
-          <p>Phone: (+84) 90 123 6608</p>
-          <p>Email: nguyendinhbang53az@gmail.com</p>
+          <h3>Hộ trỡ</h3>
+          <ul>
+            <li>
+              <a href="/help">Trung tâm trợ giúp</a>
+            </li>
+            <li>
+              <a href="/Register">Liên hệ với chúng tôi</a>
+            </li>
+          </ul>
         </div>
 
         <div className="footer-section">
