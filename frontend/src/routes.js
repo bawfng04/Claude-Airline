@@ -8,7 +8,9 @@ import Homepage from "./pages/client/Homepage/Homepage";
 import ContactPage from "./pages/client/ContactPage/ContactPage";
 import Login from "./pages/client/authentication/Login/Login";
 import Register from "./pages/client/authentication/Register/Register";
-import Help from './pages/client/help/help'; 
+import FAQPage from "./pages/client/FAQ/FAQPage";
+import AboutUs from "./pages/client/AboutUs/AboutUs"; // Import the AboutUs page
+
 const routes = (
   <>
     <Route path="/" element={<Homepage />} />
@@ -18,7 +20,8 @@ const routes = (
     <Route path="/register" element={<Register />} />
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/unauthorized" element={<Unauthorized />} />
-    <Route path="/help" element={<Help />} />
+    <Route path="/faq" element={<FAQPage />} />
+    <Route path="/about" element={<AboutUs />} /> {/* Add the About Us route */}
     <Route path="*" element={<NotFound />} />
   </>
 );

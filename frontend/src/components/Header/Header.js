@@ -27,8 +27,14 @@ const Header = () => {
         <a href="/home" className="header-link">
           Home
         </a>
+        <a href="/about" className="header-link">
+          About
+        </a>
         <a href="/contact" className="header-link">
           Contact
+        </a>
+        <a href="/faq" className="header-link">
+          FAQ
         </a>
         <a href="/example" className="header-link">
           Example

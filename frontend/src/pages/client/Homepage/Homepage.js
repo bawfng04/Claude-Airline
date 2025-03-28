@@ -90,7 +90,7 @@ const Homepage = () => {
         <h2>Our Location</h2>
         <div className="map-container">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.6091242787!2d107.57311654129782!3d-6.903273917028756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1633023222539!5m2!1sen!2sid"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.0983843711947!2d106.80489276947515!3d10.880121246545917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d8a5568c997f%3A0xdeac05f17a166e0c!2sHo%20Chi%20Minh%20city%20University%20of%20Technology!5e0!3m2!1sen!2s!4v1743141496906!5m2!1sen!2s"
             width="100%"
             height="450"
             allowFullScreen=""

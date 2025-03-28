@@ -70,10 +70,10 @@ const Login = () => {
           </div>
           <h1 className="login-title">Login Successful!</h1>
           <p className="login-subtitle">
-            You've successfully logged in. Redirecting you to your dashboard...
+            You've successfully logged in. Redirecting you to your home...
           </p>
-          <a href="/dashboard" className="login-button">
-            Go to Dashboard
+          <a href="/home" className="login-button">
+            Go to Home
           </a>
         </div>
       </div>
