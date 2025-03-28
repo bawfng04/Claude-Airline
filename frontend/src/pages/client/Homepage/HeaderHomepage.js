@@ -10,6 +10,7 @@ import {
 import HomepageAirplaneImage from "../../../assets/homepage-airplane-image.png";
 import HomepageAirplaneImage2 from "../../../assets/homepage-airplane-image2.png";
 import HomepageAirplaneImage3 from "../../../assets/homepage-airplane-image3.png";
+import HomepageAirplaneImage4 from "../../../assets/homepage-airplane-image4.png";
 
 const handleLearnMore = () => {
   window.location.href = "/about";
@@ -21,6 +22,12 @@ const HeaderHomepage = () => {
 
   // Slide data - you can add more slides with different images/content
   const slides = [
+    {
+      image: HomepageAirplaneImage4,
+      title: "Welcome to Claude Airplanes",
+      subtitle: "Your journey starts here",
+      cta: "Book Now",
+    },
     {
       image: HomepageAirplaneImage,
       title: "Fly With Confidence",
@@ -45,7 +52,7 @@ const HeaderHomepage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 2500);
     return () => clearInterval(interval);
   }, [slides.length]);
 
