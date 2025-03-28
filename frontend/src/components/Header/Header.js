@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import airplaneLogo from "../../assets/airplaneLogo.jpg";
 import Settings from "../../assets/Settings.png";
-import { FaUser, FaSearch, FaPlane, FaBars, FaTimes } from "react-icons/fa";
+import { FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);

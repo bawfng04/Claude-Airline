@@ -1,6 +1,5 @@
 import React from "react";
 import "./Homepage.css";
-import HomepageAirplaneImage from "../../../assets/homepage-airplane-image.png";
 import hanoi from "../../../assets/hanoi.jpg";
 import paris from "../../../assets/paris.jpg";
 import london from "../../../assets/london.jpeg";
@@ -11,21 +10,12 @@ import CityUnit from "./CityUnit";
 import ServiceUnit from "./ServiceUnit";
 import Offer from "./Offer";
 import TravelPackage from "./TravelPackage";
+import HeaderHomepage from "./HeaderHomepage";
 
 const Homepage = () => {
   return (
     <div className="homepage">
-      <header className="homepage-header">
-        <img
-          src={HomepageAirplaneImage}
-          alt="AirplaneImage"
-          className="airplane-image"
-        />
-        <div className="header-content">
-          <h1>Welcome to Our Airline</h1>
-          <p>Experience the best in class service and comfort.</p>
-        </div>
-      </header>
+      <HeaderHomepage />
       <section className="homepage-section">
         <h2>Book Your Flight</h2>
         <form className="booking-form">
