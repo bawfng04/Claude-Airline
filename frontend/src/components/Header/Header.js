@@ -1,8 +1,8 @@
 import React from "react";
 import "./Header.css";
-import Logo from "../../../assets/Logo.png";
-import Settings from "../../../assets/Settings.png";
-import airplaneLogo from "../../../assets/airplaneLogo.jpg";
+import Logo from "../../assets/Logo.png";
+import Settings from "../../assets/Settings.png";
+import airplaneLogo from "../../assets/airplaneLogo.jpg";
 
 const Header = () => {
   const handleLogoClick = () => {

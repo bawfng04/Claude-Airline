@@ -2,8 +2,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, useLocation } from "react-router-dom";
 import routes from "./routes";
-import Header from "./components/common/Header/Header";
-import Footer from "./components/common/Footer/Footer";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 function AppContent() {
   const location = useLocation();
@@ -11,9 +11,9 @@ function AppContent() {
   const hideHeaderFooter = ["/login", "/register"].includes(location.pathname);
 
   return (
-    <div className="App">
+    <div className="min-h-screen flex flex-col">
       {!hideHeaderFooter && <Header />}
-      <div className="app-content">
+      <div className="flex-[1]">
         <Routes>{routes}</Routes>
       </div>
       {!hideHeaderFooter && <Footer />}

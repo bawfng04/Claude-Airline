@@ -1,13 +1,13 @@
 import { Route } from "react-router-dom";
 
 //components
-import ExampleComponent from "./components/specific/ExampleComponent/ExampleComponent";
-import NotFound from "./components/specific/NotFound/NotFound";
-import Unauthorized from "./components/specific/Unauthorized/Unauthorized";
-import Homepage from "./components/specific/Homepage/Homepage";
-import ContactPage from "./components/specific/ContactPage/ContactPage";
-import Login from "./components/specific/authentication/Login/Login";
-import Register from "./components/specific/authentication/Register/Register";
+import ExampleComponent from "./pages/client/ExampleComponent/ExampleComponent";
+import NotFound from "./pages/client/NotFound/NotFound";
+import Unauthorized from "./pages/client/Unauthorized/Unauthorized";
+import Homepage from "./pages/client/Homepage/Homepage";
+import ContactPage from "./pages/client/ContactPage/ContactPage";
+import Login from "./pages/client/authentication/Login/Login";
+import Register from "./pages/client/authentication/Register/Register";
 
 const routes = (
   <>

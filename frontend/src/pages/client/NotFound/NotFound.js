@@ -1,7 +1,7 @@
 import React from "react";
 import "./NotFound.css";
-import BackToHomepageButton from "../../common/BackToHomeButton/BackToHomeButton";
-import LoggoutButton from "../../common/LogoutButton/LoggoutButton";
+import BackToHomepageButton from "../../../components/BackToHomeButton/BackToHomeButton";
+import LoggoutButton from "../../../components/LogoutButton/LoggoutButton";
 
 const NotFound = () => {
   return (

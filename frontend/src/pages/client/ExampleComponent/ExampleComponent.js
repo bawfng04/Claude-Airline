@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { exampleAPI } from "../../../apis";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import Notification from "../../common/Notification/Notification";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import Notification from "../../../components/Notification/Notification";
 
 const ExampleComponent = () => {
   const [data, setData] = useState([]);

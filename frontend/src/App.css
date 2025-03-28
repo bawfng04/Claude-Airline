@@ -1,4 +1,8 @@
 /* remove default padding */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary-color: #8B0000;
   --primary-color-dark: #014da4;
@@ -17,12 +21,3 @@
   padding: 0;
 }
 
-.App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.app-content {
-  flex: 1;
-}

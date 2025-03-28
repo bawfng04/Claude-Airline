@@ -1,7 +1,7 @@
 import React from "react";
 import "./Unauthorized.css";
-import BackToHomeButton from "../../common/BackToHomeButton/BackToHomeButton";
-import LoggoutButton from "../../common/LogoutButton/LoggoutButton";
+import BackToHomeButton from "../../../components/BackToHomeButton/BackToHomeButton";
+import LoggoutButton from "../../../components/LogoutButton/LoggoutButton";
 
 const Unauthorized = () => {
   return (
