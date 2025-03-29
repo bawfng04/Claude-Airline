@@ -18,14 +18,14 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
+        {/* About Section */}
         <div className="footer-section footer-about">
           <div className="footer-logo-container">
             <img src={airplaneLogo} alt="Logo" className="footer-logo" />
-            <h3 className="footer-title">Claude Airplanes</h3>
+            <h3 className="footer-title">Claude Airlines</h3>
           </div>
           <p className="footer-description">
-            Your premium airline service providing comfortable and safe travel
-            experiences worldwide. Fly with us and discover the world in style.
+            Claude Airlines is dedicated to providing world-class air travel experiences with modern aircraft, exceptional service, and a commitment to safety and sustainability.
           </p>
           <div className="footer-social">
             <a
@@ -59,6 +59,7 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Quick Links Section */}
         <div className="footer-section footer-links">
           <h4 className="footer-heading">Quick Links</h4>
           <ul className="footer-list">
@@ -69,31 +70,35 @@ const Footer = () => {
               <a href="/about">About Us</a>
             </li>
             <li>
+              <a href="/planes">Our Fleet</a>
+            </li>
+            <li>
+              <a href="/services">Services</a>
+            </li>
+            <li>
               <a href="/faq">FAQ</a>
             </li>
             <li>
-              <a href="/contact">Contact</a>
-            </li>
-            <li>
-              <a href="/example">Examples</a>
+              <a href="/contact">Contact Us</a>
             </li>
           </ul>
         </div>
 
+        {/* Services Section */}
         <div className="footer-section footer-links">
-          <h4 className="footer-heading">Services</h4>
+          <h4 className="footer-heading">Our Services</h4>
           <ul className="footer-list">
             <li>
               <a href="#">Flight Booking</a>
             </li>
             <li>
-              <a href="#">Vacation Packages</a>
+              <a href="#">Cargo Services</a>
             </li>
             <li>
-              <a href="#">Business Travel</a>
+              <a href="#">Charter Flights</a>
             </li>
             <li>
-              <a href="#">Special Offers</a>
+              <a href="#">In-flight Entertainment</a>
             </li>
             <li>
               <a href="#">Loyalty Program</a>
@@ -101,6 +106,7 @@ const Footer = () => {
           </ul>
         </div>
 
+        {/* Contact Section */}
         <div className="footer-section footer-contact">
           <h4 className="footer-heading">Contact Us</h4>
           <div className="contact-item">
@@ -113,11 +119,11 @@ const Footer = () => {
           </div>
           <div className="contact-item">
             <FaEnvelope className="contact-icon" />
-            <span>support@airline.com</span>
+            <span>support@skylineairlines.com</span>
           </div>
 
           <div className="newsletter">
-            <h4 className="footer-heading">Subscribe to Newsletter</h4>
+            <h4 className="footer-heading">Subscribe to Our Newsletter</h4>
             <form className="newsletter-form">
               <input
                 type="email"
@@ -132,6 +138,7 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Footer Bottom */}
       <div className="footer-bottom">
         <div className="footer-copyright">
           &copy; {year} Claude Airlines. All rights reserved.
