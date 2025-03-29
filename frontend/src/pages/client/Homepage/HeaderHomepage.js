@@ -12,14 +12,10 @@ import HomepageAirplaneImage2 from "../../../assets/homepage-airplane-image2.png
 import HomepageAirplaneImage3 from "../../../assets/homepage-airplane-image3.png";
 import HomepageAirplaneImage4 from "../../../assets/homepage-airplane-image4.png";
 
-const handleLearnMore = () => {
-  window.location.href = "/about";
-};
-
 const HeaderHomepage = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-
+  const [hidden, setHidden] = useState(false);
   // Slide data - you can add more slides with different images/content
   const slides = [
     {
@@ -58,12 +54,17 @@ const HeaderHomepage = () => {
 
   // Effect for scroll detection
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setHidden(true);
       } else {
-        setScrolled(false);
+        setHidden(false);
       }
+      setScrolled(currentScrollY > 50);
+      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -99,9 +100,8 @@ const HeaderHomepage = () => {
                   </button>
                   <button
                     className="secondary-cta"
-                    onClick={() => handleLearnMore()}
                   >
-                    Learn More
+                    <a href="/about">Learn More</a>
                   </button>
                 </div>
               </div>

@@ -9,7 +9,8 @@ import ContactPage from "./pages/client/ContactPage/ContactPage";
 import Login from "./pages/client/authentication/Login/Login";
 import Register from "./pages/client/authentication/Register/Register";
 import FAQPage from "./pages/client/FAQ/FAQPage";
-import AboutUs from "./pages/client/AboutUs/AboutUs"; // Import the AboutUs page
+import AboutUs from "./pages/client/AboutUs/AboutUs";
+import Planes from "./pages/client/allPlanes/planes";
 
 const routes = (
   <>
@@ -21,7 +22,8 @@ const routes = (
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/unauthorized" element={<Unauthorized />} />
     <Route path="/faq" element={<FAQPage />} />
-    <Route path="/about" element={<AboutUs />} /> {/* Add the About Us route */}
+    <Route path="/about" element={<AboutUs />} /> 
+    <Route path="/planes" element={<Planes />} /> 
     <Route path="*" element={<NotFound />} />
   </>
 );
