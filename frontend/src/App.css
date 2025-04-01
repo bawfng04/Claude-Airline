@@ -1,7 +1,13 @@
 /* remove default padding */
-@tailwind base;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 .bold{
   font-weight: bold;
@@ -28,8 +34,5 @@
   --success-color: #27ae60;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
+
 
