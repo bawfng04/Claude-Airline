@@ -1,17 +1,14 @@
 import React from "react";
 import "./Homepage.css";
-import hanoi from "../../../assets/hanoi.jpg";
-import paris from "../../../assets/paris.jpg";
-import london from "../../../assets/london.jpeg";
-import inflight from "../../../assets/inflight-entertaining.jpg";
-import comfortable from "../../../assets/comfortable-sitting.jpg";
-import meal from "../../../assets/meal.webp";
-import CityUnit from "./CityUnit";
-import ServiceUnit from "./ServiceUnit";
 import Offer from "./Offer";
 import TravelPackage from "./TravelPackage";
 import HeaderHomepage from "./HeaderHomepage";
 import Chom from "./Chom";
+import Testimonials from "./Testimonials";
+import FeaturedDestinations from "./FeaturedDestinations";
+import PromotionCountdown from "./PromotionCountdown";
+import NextTrip from "./NextTrip";
+import ServersSection from "./ServicesSection";
 
 const Homepage = () => {
   return (
@@ -27,54 +24,18 @@ const Homepage = () => {
           <button type="submit">Search Flights</button>
         </form>
       </section>
-      <section className="next-trip">
-        <h2>Start planning your next trip</h2>
-        <h3>
-          Thinking of travelling somewhere soon? Here are some options to help
-          you get started.
-        </h3>
-        <div className="cities">
-          <CityUnit
-            img={hanoi}
-            title="Hanoi"
-            description="Explore the rich culture and history of Vietnam."
-          />
-          <CityUnit
-            img={paris}
-            title="Paris"
-            description="Visit the Eiffel Tower and enjoy the delicious pastries."
-          />
-          <CityUnit
-            img={london}
-            title="London"
-            description="Experience the British culture and history."
-          />
-        </div>
+      <section className="featured-destinations-section">
+        <FeaturedDestinations />
       </section>
+
+      <PromotionCountdown />
+      <NextTrip />
+
       <section className="travel-package-section">
         <TravelPackage />
       </section>
-      <section className="homepage-section">
-        <h2>Our Services</h2>
-        <div className="services">
-          <ServiceUnit
-            img={inflight}
-            title="Inflight Entertainment"
-            description="Enjoy the latest movies, TV shows, and music."
-          />
-          <ServiceUnit
-            img={comfortable}
-            title="Comfortable Seating"
-            description="Relax in our comfortable seats with extra legroom."
-          />
-          <ServiceUnit
-            img={meal}
-            title="Delicious Meals"
-            description="Enjoy our delicious meals prepared by top chefs."
-          />
-        </div>
-      </section>
-
+      <Testimonials />
+      <ServersSection />
       <section className="chom-section">
         <h2>Save more with us</h2>
         <Chom />
