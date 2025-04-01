@@ -1,0 +1,15 @@
+# htaccess dùng để biến URL kiểu http://localhost/my_php_mvc/public/home/index
+# thành URL ảo mà index.php xử lý được.
+
+Options -MultiViews
+
+# Bật module rewrite URL
+RewriteEngine On
+
+# Kiểm tra xem request có phải là file hay thư mục thật không. Nếu không phải -> đi tiếp.
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Lấy tất cả những gì sau public/ (ví dụ home/index) và chuyển thành tham số url cho index.php.
+# [QSA] giữ lại các query string khác (nếu có), [L] là dừng xử lý rule tại đ
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

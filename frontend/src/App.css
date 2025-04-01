@@ -1,4 +1,10 @@
 /* remove default padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -28,8 +34,5 @@
   --success-color: #27ae60;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
+
 
