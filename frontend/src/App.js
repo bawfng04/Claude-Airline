@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, useLocation } from "react-router-dom";
 import routes from "./routes";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+import ScrollToTop from "./components/Scroll/scroll";
 
 function AppContent() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AppContent />
     </BrowserRouter>
   );
