@@ -14,7 +14,7 @@ import HomepageAirplaneImage4 from "../../../assets/homepage-airplane-image4.png
 
 const HeaderHomepage = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false); // eslint-disable-next-line
   const [hidden, setHidden] = useState(false);
   // Slide data - you can add more slides with different images/content
   const slides = [
@@ -98,9 +98,7 @@ const HeaderHomepage = () => {
                   <button className="primary-cta" onClick={scrollToBooking}>
                     {slide.cta} <FaArrowRight className="cta-icon" />
                   </button>
-                  <button
-                    className="secondary-cta"
-                  >
+                  <button className="secondary-cta">
                     <a href="/about">Learn More</a>
                   </button>
                 </div>
