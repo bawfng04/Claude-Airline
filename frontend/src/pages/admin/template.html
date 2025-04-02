@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thông tin</title>
+    <link rel="stylesheet" href="assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <link rel="shortcut icon" href="./assets/compiled/svg/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjMzIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMzQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIzMyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMzQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249Ijk2LjAiCiAgIHRpZmY6WVJlc29sdXRpb249Ijk2LjAiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC4xIgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTAzLTMxVDEwOjUwOjIzKzAyOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz5V57uAAAABgmlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz9maORHo1hYKC9hISNGTWwsRn4VFmOUX5uZZ36oeTOv954kW2WrKLHxa8FfwFZZK0WkZClrYoOe87ypmWTO7dzzud97z+nec8ETzaiaWd4NWtYyIiNhZWZ2TvE946WZSjqoj6mmPjE1HKWkfdxR5sSbgFOr9Ll/rXoxYapQVik8oOqGJTwqPL5i6Q5vCzeo6dii8KlwpyEXFL519LjLLw6nXP5y2IhGBsFTJ6ykijhexGra0ITl5bRqmWU1fx/nJTWJ7PSUxBbxJkwijBBGYYwhBgnRQ7/MIQIE6ZIVJfK7f/MnyUmuKrPOKgZLpEhj0SnqslRPSEyKnpCRYdXp/9++msneoFu9JgwVT7b91ga+LfjetO3PQ9v+PgLvI1xkC/m5A+h7F32zoLXug38dzi4LWnwHzjeg8UGPGbFfySvuSSbh9QRqZ6H+Gqrm3Z7l9zm+h+iafNUV7O5Bu5z3L/wAdthn7QIme0YAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJTSURBVFiF7Zi9axRBGIefEw2IdxFBRQsLWUTBaywSK4ubdSGVIY1Y6HZql8ZKCGIqwX/AYLmCgVQKfiDn7jZeEQMWfsSAHAiKqPiB5mIgELWYOW5vzc3O7niHhT/YZvY37/swM/vOzJbIqVq9uQ04CYwCI8AhYAlYAB4Dc7HnrOSJWcoJcBS4ARzQ2F4BZ2LPmTeNuykHwEWgkQGAet9QfiMZjUSt3hwD7psGTWgs9pwH1hC1enMYeA7sKwDxBqjGnvNdZzKZjqmCAKh+U1kmEwi3IEBbIsugnY5avTkEtIAtFhBrQCX2nLVehqyRqFoCAAwBh3WGLAhbgCRIYYinwLolwLqKUwwi9pxV4KUlxKKKUwxC6ZElRCPLYAJxGfhSEOCz6m8HEXvOB2CyIMSk6m8HoXQTmMkJcA2YNTHm3congOvATo3tE3A29pxbpnFzQSiQPcB55IFmFNgFfEQeahaAGZMpsIJIAZWAHcDX2HN+2cT6r39GxmvC9aPNwH5gO1BOPFuBVWAZue0vA9+A12EgjPadnhCuH1WAE8ivYAQ4ohKaagV4gvxi5oG7YSA2vApsCOH60WngKrA3R9IsvQUuhIGY00K4flQG7gHH/mLytB4C42EgfrQb0mV7us8AAMeBS8mGNMR4nwHamtBB7B4QRNdaS0M8GxDEog7iyoAguvJ0QYSBuAOcAt71Kfl7wA8DcTvZ2KtOlJEr+ByyQtqqhTyHTIeB+ONeqi3brh+VgIN0fohUgWGggizZFTplu12yW8iy/YLOGWMpDMTPXnl+Az9vj2HERYqPAAAAAElFTkSuQmCC" type="image/png">
+    
+    
+    <link rel="stylesheet" href="./assets/compiled/css/app.css">
+    <link rel="stylesheet" href="./assets/compiled/css/iconly.css">
+    <link rel="stylesheet" href="./assets/compiled/css/app-dark.css">
+    <script script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div id="main" class="layout-horizontal">
+            <header class="mb-5">
+                <div class="header-top">
+                    <div class="container">
+                        <div class="logo">
+                            <img src="./assets/compiled/svg/logo.svg" alt="Logo">
+                        </div>
+                        <div class="header-top-right">
+    
+                            <div class="dropdown">
+                                <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center dropend dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="avatar avatar-md2">
+                                        <img src="./assets/compiled/jpg/1.jpg" alt="Avatar">
+                                    </div>
+                                    <div class="text">
+                                        <h6 class="user-dropdown-name">John Ducky</h6>
+                                        <p class="user-dropdown-status text-sm text-muted">Member</p>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
+                                    <li><a class="dropdown-item" href="#">My Account</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="auth-login.html">Logout</a></li>
+                                </ul>
+                            </div>
+    
+                            <!-- Burger button responsive -->
+                            <a href="#" class="burger-btn d-block d-xl-none">
+                                <i class="bi bi-justify fs-3"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <nav class="main-navbar">
+                    <div class="container">
+                        <ul>
+                            <li class="menu-item">
+                                <a href="http://127.0.0.1:5500/dist/index.html" class='menu-link'>
+                                    <span><i class="bi bi-grid-fill"></i> Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="manage.html" class="menu-link">
+                                    <span><i class="bi bi-table"></i> Quản lý thông tin</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+    
+            </header>
+    
+            <div class="container">
+                <h3 class="mb-4">Quản lý thông tin</h3>
+                <button class="btn btn-primary mb-3" style="width: fit-content;" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
+                <div class="table-responsive">
+                    <table class="table" id="manageTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Thành phố</th>
+                                <th>Mô tả</th>
+                                <th>Hình ảnh</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu sẽ được thêm động -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Thêm/Sửa -->
+    <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEditModalLabel">Thêm/Sửa thông tin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addEditForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="recordId">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Thành phố</label>
+                            <input type="text" class="form-control" id="city" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="image" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xóa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Xóa thông tin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa thông tin này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal hiển thị hình ảnh -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Xem hình ảnh</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Hình ảnh" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/extensions/jquery/jquery.min.js"></script>
+    <script src="assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="assets/extensions/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/static/js/pages/horizontal-layout.js"></script>
+    <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/static/js/pages/dashboard.js"></script>
+    <script src="assets/static/js/components/dark.js"></script>
+    <script src="assets/static/js/pages/horizontal-layout.js"></script>
+    <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/compiled/js/app.js"></script>    
+    <script src="assets/compiled/js/app.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let table = $('#manageTable').DataTable({
+                data: [
+                    [
+                        1,
+                        "Nguyễn Văn A",
+                        "nguyenvana@gmail.com",
+                        "0123456789",
+                        "Hà Nội",
+                        "Mô tả A",
+                        `<img src="https://c7.alamy.com/comp/R26AMG/lorem-ipsum-sample-text-lettering-comic-design-for-t-shirt-or-poster-R26AMG.jpg" alt="Hình ảnh A" class="img-thumbnail view-image" style="width: 50px; height: 50px;">`,
+                        getActionButtons(1),
+                    ],
+                    [
+                        2,
+                        "Trần Thị B",
+                        "tranthib@gmail.com",
+                        "0987654321",
+                        "Hồ Chí Minh",
+                        "Mô tả B",
+                        `<img src="https://c7.alamy.com/comp/R26AMG/lorem-ipsum-sample-text-lettering-comic-design-for-t-shirt-or-poster-R26AMG.jpg" alt="Hình ảnh B" class="img-thumbnail view-image" style="width: 50px; height: 50px;">`,
+                        getActionButtons(2),
+                    ],
+                    [
+                        3,
+                        "Lê Văn C",
+                        "levanc@gmail.com",
+                        "0912345678",
+                        "Đà Nẵng",
+                        "Mô tả C",
+                        `<img src="https://c7.alamy.com/comp/R26AMG/lorem-ipsum-sample-text-lettering-comic-design-for-t-shirt-or-poster-R26AMG.jpg" alt="Hình ảnh C" class="img-thumbnail view-image" style="width: 50px; height: 50px;">`,
+                        getActionButtons(3),
+                    ],
+                ],
+                columns: [
+                    { title: "ID" },
+                    { title: "Tên" },
+                    { title: "Email" },
+                    { title: "Số điện thoại" },
+                    { title: "Thành phố" },
+                    { title: "Mô tả" },
+                    { title: "Hình ảnh" },
+                    { title: "Hành động" },
+                ],
+            });
+
+            $('#addEditForm').on('submit', function (e) {
+                e.preventDefault();
+                const id = $('#recordId').val();
+                const name = $('#name').val();
+                const email = $('#email').val();
+                const phone = $('#phone').val();
+                const city = $('#city').val();
+                const description = $('#description').val();
+                const imageFile = $('#image')[0].files[0];
+                let image;
+
+                if (imageFile) {
+                    // Nếu người dùng tải lên tệp hình ảnh
+                    image = `<img src="${URL.createObjectURL(imageFile)}" alt="Hình ảnh" class="img-thumbnail" style="width: 50px; height: 50px;">`;
+                } else {
+                    // Nếu không có tệp tải lên, sử dụng URL mặc định
+                    image = `<img src="https://c7.alamy.com/comp/R26AMG/lorem-ipsum-sample-text-lettering-comic-design-for-t-shirt-or-poster-R26AMG.jpg" alt="Hình ảnh mặc định" class="img-thumbnail" style="width: 50px; height: 50px;">`;
+                }
+
+                if (id) {
+                    // Cập nhật thông tin
+                    table.row(`#row-${id}`).data([id, name, email, phone, city, description, image, getActionButtons(id)]).draw();
+                } else {
+                    // Thêm mới thông tin
+                    const newId = Date.now(); // Tạo ID tạm thời
+                    table.row.add([
+                        newId,
+                        name,
+                        email,
+                        phone,
+                        city,
+                        description,
+                        image,
+                        getActionButtons(newId),
+                    ]).node().id = `row-${newId}`; // Gán id cho hàng mới
+                    table.draw();
+                }
+
+                $('#addEditModal').modal('hide');
+                $('#addEditForm')[0].reset();
+            });
+
+            // Đặt lại modal khi nhấn nút "Thêm mới"
+            $('#addEditModal').on('show.bs.modal', function (e) {
+                const button = $(e.relatedTarget); // Lấy nút được nhấn
+                if (button.hasClass('btn-primary')) { // Nếu là nút "Thêm mới"
+                    $('#recordId').val(''); // Xóa ID
+                    $('#name').val('');
+                    $('#email').val('');
+                    $('#phone').val('');
+                    $('#city').val('');
+                    $('#description').val('');
+                    $('#image').val(null);
+                }
+            });
+
+            // Sự kiện click vào hình ảnh để phóng to
+            $('#manageTable').on('click', '.view-image', function () {
+                const imageUrl = $(this).attr('src'); // Lấy URL của hình ảnh
+                $('#modalImage').attr('src', imageUrl); // Gán URL vào modal
+                $('#imageModal').modal('show'); // Hiển thị modal
+            });
+
+            // Mở modal chỉnh sửa
+            $('#manageTable').on('click', '.edit-btn', function () {
+                const row = table.row($(this).closest('tr'));
+                const data = row.data();
+                currentEditId = data[0];
+
+                $('#recordId').val(data[0]);
+                $('#name').val(data[1]);
+                $('#email').val(data[2]);
+                $('#phone').val(data[3]);
+                $('#city').val(data[4]);
+                $('#description').val(data[5]);
+                $('#image').val(null); // Không thể hiển thị lại hình ảnh đã tải lên
+
+                $('#addEditModal').modal('show');
+            });
+
+            // Mở modal xóa
+            $('#manageTable').on('click', '.delete-btn', function () {
+                const row = table.row($(this).closest('tr'));
+                currentEditId = row.data()[0];
+                $('#deleteModal').modal('show');
+            });
+
+            // Xác nhận xóa
+            $('#confirmDelete').on('click', function () {
+                table.row(`#row-${currentEditId}`).remove().draw();
+                $('#deleteModal').modal('hide');
+            });
+
+            // Hàm tạo nút hành động
+            function getActionButtons(id) {
+                return `
+                    <button class="btn btn-sm btn-warning edit-btn">Sửa</button>
+                    <button class="btn btn-sm btn-danger delete-btn">Xóa</button>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
