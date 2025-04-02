@@ -9,6 +9,7 @@ import FeaturedDestinations from "./FeaturedDestinations";
 import PromotionCountdown from "./PromotionCountdown";
 import NextTrip from "./NextTrip";
 import ServersSection from "./ServicesSection";
+import ImageCarousel from "./ImageCarousel";
 
 const Homepage = () => {
   return (
@@ -34,6 +35,7 @@ const Homepage = () => {
       <section className="travel-package-section">
         <TravelPackage />
       </section>
+      <ImageCarousel />
       <Testimonials />
       <ServersSection />
       <section className="chom-section">
