@@ -98,7 +98,7 @@ const ImageCarousel = () => {
   return (
     <div className="image-carousel-section">
       <div className="image-casousel-title-container">
-        <h2 className="image-casousel-title">Some picture about us</h2>
+        <h2 className="image-casousel-title">Some pictures about us</h2>
       </div>
       <div className="image-carousel-container slick-initialized">
         {" "}
