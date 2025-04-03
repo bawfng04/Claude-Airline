@@ -22,6 +22,22 @@ const Login = () => {
     window.location.href = "/";
   };
 
+  const handleLogin = () => {
+    const p = localStorage.getItem(email);
+    if (!p) {
+      setSubmitSuccess(false);
+      alert("Username not found");
+      return;
+    }
+    if (p !== password) {
+      setSubmitSuccess(false);
+      alert("Password incorrect");
+      return;
+    }
+    setSubmitSuccess(true);
+    localStorage.setItem("isLoggedIn", "true");
+  };
+
   const validateForm = () => {
     const errors = {};
     if (!email) errors.email = "Email is required";
@@ -48,7 +64,7 @@ const Login = () => {
           rememberMe,
         });
 
-        setSubmitSuccess(true);
+        // setSubmitSuccess(true);
         setTimeout(() => {
           // Redirect to dashboard after success
           // window.location.href = "/dashboard";
@@ -176,6 +192,7 @@ const Login = () => {
             type="submit"
             className="login-button"
             disabled={isSubmitting}
+            onClick={handleLogin}
           >
             {isSubmitting ? (
               <>

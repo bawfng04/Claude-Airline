@@ -32,6 +32,30 @@ const Register = () => {
     window.location.href = "/";
   };
 
+  const handleRegister = () => {
+    if (
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !familyName ||
+      !givenName ||
+      !phoneNumber ||
+      !dateOfBirth ||
+      !nationality
+    ) {
+      setSubmitSuccess(false);
+      return;
+    }
+    if (localStorage.getItem(email) !== null) {
+      alert("Username is already exists!");
+      setSubmitSuccess(false);
+      return;
+    } else {
+      setSubmitSuccess(true);
+      localStorage.setItem(email, password);
+    }
+  };
+
   const validateForm = () => {
     const errors = {};
     if (!email) errors.email = "Email is required";
@@ -87,7 +111,7 @@ const Register = () => {
           nationality,
         });
 
-        setSubmitSuccess(true);
+        // setSubmitSuccess(true);
         setTimeout(() => {
           // Redirect or reset form after success
           // window.location.href = "/login";
@@ -394,6 +418,7 @@ const Register = () => {
             type="submit"
             className="register-button"
             disabled={isSubmitting}
+            onClick={handleRegister}
           >
             {isSubmitting ? (
               <>
