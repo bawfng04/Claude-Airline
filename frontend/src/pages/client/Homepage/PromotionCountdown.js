@@ -38,7 +38,7 @@ const PromotionCountdown = () => {
 
     // Clear interval on unmount
     return () => clearInterval(timer);
-  }, [endDate]);
+  }, []);
 
   return (
     <div className="promotion-countdown-container">
