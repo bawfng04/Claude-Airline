@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import airplaneLogo from "../../assets/airplaneLogo.jpg";
-import Settings from "../../assets/Settings.png";
+// import Settings from "../../assets/Settings.png";
 import { FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import userDefaultAvatar from "../../assets/userDefaultIcon.svg";
 
@@ -22,6 +22,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
+    window.location.reload();
   };
 
   // Detect current page for active link styling
