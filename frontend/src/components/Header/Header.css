@@ -153,16 +153,6 @@
   transform: translateY(-2px);
 }
 
-.settings-icon {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s ease;
-}
-
-.settings-btn:hover .settings-icon {
-  transform: rotate(90deg);
-}
-
 .header-auth-buttons {
   display: flex;
   gap: 0.75rem;
@@ -471,9 +461,101 @@
     padding: 0.7rem 1rem;
     font-size: 0.8rem;
   }
+}
 
-  .settings-icon {
-    width: 20px;
-    height: 20px;
+/* user avatar */
+/* User avatar and dropdown menu */
+.header-user-icon {
+  position: relative;
+  z-index: 100;
+}
+
+.user-avatar {
+  height: 45px;
+  width: 45px;
+  border-radius: 100%;
+  padding: 5px;
+  border: 2px solid var(--primary-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  object-fit: cover;
+}
+
+.user-avatar:hover {
+  cursor: pointer;
+  background-color: rgba(139, 0, 0, 0.1);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.settings {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  padding: 0.8rem;
+  min-width: 150px;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeIn 0.3s ease forwards;
+  border: 1px solid var(--border-color);
+}
+
+.settings::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  transform: rotate(45deg);
+  border-left: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.settings-buttons {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--dark-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-buttons:last-child {
+  margin-bottom: 0;
+  color: var(--danger-color);
+}
+
+.settings-buttons:hover {
+  background-color: rgba(139, 0, 0, 0.1);
+  color: var(--primary-color);
+}
+
+.settings-buttons:last-child:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+

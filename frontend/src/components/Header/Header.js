@@ -3,12 +3,26 @@ import "./Header.css";
 import airplaneLogo from "../../assets/airplaneLogo.jpg";
 import Settings from "../../assets/Settings.png";
 import { FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import userDefaultAvatar from "../../assets/userDefaultIcon.svg";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
+  const [settingsPopup, setSettingsPopup] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") || "false"
+  );
+
+  const handleAvatarClick = () => {
+    setSettingsPopup(!settingsPopup);
+  };
+
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    setIsLoggedIn(false);
+  };
 
   // Detect current page for active link styling
   useEffect(() => {
@@ -152,32 +166,44 @@ const Header = () => {
             <FaSearch />
           </button>
 
-          <div className="header-auth-buttons">
-            <a
-              href="/login"
-              className={`header-auth-btn login ${
-                activeLink === "login" ? "active" : ""
-              }`}
-            >
-              <FaUser className="auth-icon" />
-              <span>Login</span>
-            </a>
-            <a
-              href="/register"
-              className={`header-auth-btn register ${
-                activeLink === "register" ? "active" : ""
-              }`}
-            >
-              <span>Register</span>
-            </a>
-          </div>
-
-          <button
-            className="header-action-btn settings-btn"
-            aria-label="Settings"
-          >
-            <img src={Settings} alt="Settings" className="settings-icon" />
-          </button>
+          {isLoggedIn === "false" ? (
+            <div className="header-auth-buttons">
+              <a
+                href="/login"
+                className={`header-auth-btn login ${
+                  activeLink === "login" ? "active" : ""
+                }`}
+              >
+                <FaUser className="auth-icon" />
+                <span>Login</span>
+              </a>
+              <a
+                href="/register"
+                className={`header-auth-btn register ${
+                  activeLink === "register" ? "active" : ""
+                }`}
+              >
+                <span>Register</span>
+              </a>
+            </div>
+          ) : (
+            <div className="header-user-icon">
+              <img
+                className="user-avatar"
+                src={userDefaultAvatar}
+                alt="user-avatar"
+                onClick={handleAvatarClick}
+              ></img>
+              {settingsPopup && (
+                <div className="settings">
+                  <button className="settings-buttons">Detail</button>
+                  <button className="settings-buttons" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           <button
             className="header-mobile-toggle"
