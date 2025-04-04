@@ -50,7 +50,7 @@ const FAQPage = () => {
           <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
           <span className="cursor-pointer hover:underline hover:text-primary-light"><a href="\home">Home</a></span>
           <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
-          <span className="text-primary-light font-semibold hover:underline">Contact Us</span>
+          <span className="text-primary-light font-semibold hover:underline">FAQ</span>
         </div>
         <h1 className="text-[2.8rem] mb-4 relative inline-block text-primary-color after:content-[''] after:absolute after:-bottom-[10px] after:left-2/4 after:-translate-x-1/2 after:w-[100px] after:h-[3px] after:[transition:width_0.3s_ease] after:bg-primary-color hover:after:w-[180px] md:text-[2.2rem]"> 
           Frequently Asked Questions

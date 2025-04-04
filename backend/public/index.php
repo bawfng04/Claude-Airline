@@ -13,7 +13,7 @@ spl_autoload_register(function ($className) {
 });
 
 // --- Routing ---
-define('DEFAULT_CONTROLLER', 'faq'); // Controller mặc định
+define('DEFAULT_CONTROLLER', 'home'); // Controller mặc định
 define('DEFAULT_METHOD', 'index');   // Method mặc định
 
 $controllerName = DEFAULT_CONTROLLER; // Controller mặc định
