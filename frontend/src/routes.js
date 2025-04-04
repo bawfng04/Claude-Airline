@@ -12,7 +12,6 @@ import FAQPage from "./pages/client/FAQ/FAQPage";
 import AboutUs from "./pages/client/AboutUs/AboutUs";
 import Planes from "./pages/client/allPlanes/planes";
 import UserDetail from "./pages/client/UserDetail/UserDetail";
-// import NotFound from "./components/NotFound/NotFound";
 
 const routes = (
   <>
