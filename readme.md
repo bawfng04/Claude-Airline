@@ -1,54 +1,125 @@
-​Màu đỏ đậm với mã hex #8B0000 là một tông màu mạnh mẽ và nổi bật. Để tạo sự hài hòa và cân bằng cho trang web của bạn, bạn có thể xem xét các màu phối hợp sau:​
-Free Aspose Apps
+# Flight Booking System
 
-Màu bổ sung (Complementary): Màu xanh lục nhạt hoặc xanh ngọc sẽ tạo sự tương phản mạnh mẽ với màu đỏ đậm, giúp làm nổi bật cả hai màu. Ví dụ:​
+A modern web application for flight booking and management built with React.js and PHP. This project provides a user-friendly interface for booking flights, managing user profiles, and handling flight-related operations.
 
-Xanh ngọc nhạt: #66CDAA​
-PALETTE.zone
+## Features
 
-Xanh lục nhạt: #90EE90​
-DesignerVN
+- **User Authentication**
+  - User registration and login
+  - Profile management
+  - Secure password handling
 
-Màu tương tự (Analogous): Kết hợp màu đỏ đậm với các tông màu gần kề như đỏ cam hoặc tím đỏ sẽ tạo cảm giác ấm áp và liên kết chặt chẽ. Ví dụ:​
+- **Flight Booking**
+  - Search and filter flights
+  - Booking management
+  - Seat selection
+  - Payment integration
 
-Đỏ cam: #FF4500​
+- **User Dashboard**
+  - View booking history
+  - Manage personal information
+  - Flight status tracking
+  - Membership card management
 
-Tím đỏ: #C71585​
+## Tech Stack
 
-Màu tam giác (Triadic): Sử dụng ba màu cách đều nhau trên bánh xe màu, như đỏ đậm, xanh dương và vàng, sẽ mang lại sự cân bằng và sống động. Ví dụ:​
-PALETTE.zone
-+1
-DesignerVN
-+1
+### Frontend
+- React.js
+- Tailwind CSS
+- Day.js
+- Firebase Hosting
 
-Xanh dương trung bình: #4682B4​
+### Backend
+- PHP
+- MySQL
+- MVC Architecture
+- RESTful API
 
-Vàng nhạt: #FFD700​
-DesignerVN
+## Project Structure
 
-Màu trung tính: Kết hợp màu đỏ đậm với các màu trung tính như xám, trắng hoặc đen sẽ tạo nên sự thanh lịch và chuyên nghiệp. Ví dụ:​
+```
+├── frontend/                # React.js frontend application
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/         # Page components
+│   │   ├── assets/        # Static assets
+│   │   └── ...
+│   └── public/            # Public assets
+│
+├── backend/               # PHP backend application
+│   ├── app/
+│   │   ├── controllers/  # MVC Controllers
+│   │   ├── models/       # Database models
+│   │   └── core/         # Core functionality
+│   ├── config/           # Configuration files
+│   └── public/           # Public entry point
+```
 
-Xám nhạt: #D3D3D3​
+## Getting Started
 
-Trắng: #FFFFFF​
+### Prerequisites
+- Node.js (v14 or higher)
+- PHP 7.4 or higher
+- MySQL
+- Composer
 
-Đen: #000000​
+### Frontend Setup
 
-Để trực quan hóa và thử nghiệm các kết hợp màu sắc này, bạn có thể sử dụng các công cụ trực tuyến như:
+```bash
+# Navigate to frontend directory
+cd frontend
 
-Màu Wheel Picker: Công cụ này cho phép bạn tạo và lưu bảng màu với mã màu HEX, giúp bạn tìm sự hài hòa màu sắc bằng cách sử dụng các quy tắc kết hợp màu sắc. ​
-Free Aspose Apps
-+1
-CapCut
-+1
+# Install dependencies
+npm install
 
-Coolors.co: Đây là một công cụ phổ biến cho phép bạn tạo, khám phá và lưu bảng màu một cách dễ dàng. ​
-CapCut
+# Start development server
+npm start
 
-Palette.zone: Công cụ này giúp bạn tạo bảng màu từ hình ảnh hoặc từ bánh xe màu sắc, hỗ trợ bạn trong việc chọn và sử dụng màu sắc một cách chính xác. ​
-Free Aspose Apps
-+2
-PALETTE.zone
-+2
-CapCut
-+2
+# Build for production
+npm run build
+```
+
+### Backend Setup
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+composer install
+
+# Configure environment variables
+cp .env.example .env
+```
+
+Configure your database credentials in the `.env` file.
+
+## Color Scheme
+
+The application uses a professional color palette:
+
+- Primary Color: `#8B0000` (Dark Red)
+- Secondary Colors:
+  - `#66CDAA` (Light Sea Green)
+  - `#4682B4` (Steel Blue)
+  - `#FFD700` (Gold)
+- Neutral Colors:
+  - `#D3D3D3` (Light Gray)
+  - `#FFFFFF` (White)
+  - `#000000` (Black)
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+
+## Acknowledgments
+
+- [Day.js](https://day.js.org/) for date handling
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Firebase](https://firebase.google.com/) for hosting
+
