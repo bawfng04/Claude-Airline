@@ -4,7 +4,7 @@
 class FaqModel extends Database {
     // Lấy tất cả câu hỏi
     public function getAllFaqs() {
-        $this->query("SELECT * FROM faq ORDER BY id DESC");
+        $this->query("SELECT * FROM faq ORDER BY id");
         return $this->resultSet();
     }
 

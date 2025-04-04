@@ -14,15 +14,6 @@ CREATE TABLE faq (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
 );
 
--- Chèn dữ liệu mẫu vào bảng faq
-INSERT INTO faq (question, answer, category)
-VALUES
-('Làm thế nào để đặt vé máy bay?', 'Bạn có thể đặt vé máy bay qua website hoặc ứng dụng di động của chúng tôi.', 'General'),
-('Tôi có thể hoàn vé không?', 'Có, bạn có thể hoàn vé theo chính sách hoàn vé của chúng tôi.', 'General'),
-('Làm thế nào để thay đổi thông tin hành khách?', 'Bạn có thể thay đổi thông tin hành khách qua mục Quản lý đặt chỗ trên website.', 'Technical'),
-('Phương thức thanh toán nào được hỗ trợ?', 'Chúng tôi hỗ trợ thanh toán qua thẻ tín dụng, thẻ ghi nợ và ví điện tử.', 'Billing'),
-('Tôi có thể mang bao nhiêu hành lý xách tay?', 'Bạn được phép mang 7kg hành lý xách tay miễn phí.', 'General');
-
 
 CREATE TABLE CLAUDE_AIRLINES (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
@@ -44,12 +35,6 @@ CREATE TABLE CONTACT_LOCATIONS (
     phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
 );
-
-INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
-VALUES
-('123 Aviation Blvd, Los Angeles, CA 90045', 'Main Office', '+84 90 123 6608', 'Mon-Fri 9am-5pm'),
-(' 456 Park Avenue, New York, NY 10022', 'Regional Office', '987-654-3210', 'Mon-Fri 10am-6pm'),
-('789 Michigan Ave, Chicago, IL 60611', 'Regional Office', '555-555-5555', 'Mon-Fri 8am-4pm');
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
 CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
@@ -90,4 +75,54 @@ CREATE TABLE HOMEPAGE_SERVICES (
     service_title VARCHAR(255) NOT NULL, -- Tên dịch vụ
     service_description TEXT NOT NULL, -- Mô tả dịch vụ
     service_image VARCHAR(255) NOT NULL, -- Hình ảnh dịch vụ
+);
+
+-- Table: about_us
+CREATE TABLE ABOUT_US (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: core_values
+CREATE TABLE CORE_VALUE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    icon VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: leadership_team
+CREATE TABLE LEADERSHIP_TEAM (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    position VARCHAR(255) NOT NULL,
+    bio TEXT NOT NULL,
+    image VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: achievements
+CREATE TABLE ACHIEVEMENTS (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    year YEAR NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: airline_experience
+CREATE TABLE AIRLINE_EXPERIENCE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    image VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

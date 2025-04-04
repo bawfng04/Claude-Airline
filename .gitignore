@@ -2,3 +2,5 @@
 firebase.json
 firebase-debug.log
 apphosting.yaml
+
+/backend/public/uploads/*
