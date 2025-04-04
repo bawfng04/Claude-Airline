@@ -56,21 +56,30 @@ const FleetPage = () => {
           <span className="text-primary-light font-semibold hover:underline">Our Fleet</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="space-y-12 bg-white rounded-[15px] shadow-lg p-6 h-min text-center hover:shadow-xl transition-shadow ">
           {fleet.map((plane, index) => (
             <div
               key={index}
-              className="bg-white rounded-[15px] shadow-lg p-6 h-min text-center hover:shadow-xl transition-shadow duration-300"
+              className={`flex items-center gap-8 even:flex-row-reverse duration-300 group`}
             >
-              <img
-                src={plane.image}
-                alt={plane.name}
-                className="w-full h-[70%] object-cover rounded-[10px] mb-4"
-              />
-              <h2 className="text-[1.5rem] text-primary-color mb-2">
-                {plane.name}
-              </h2>
-              <p className="text-[#6c757d]">{plane.description}</p>
+              {/* Image Section */}
+              <div className="flex-[70%] flex justify-center">
+                <img
+                  src={plane.image}
+                  alt={plane.name}
+                  className="w-full h-[80%] rounded-[20px] shadow-lg object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Text Section */}
+              <div className="flex-[30%] flex flex-col justify-center text-left transition-transform duration-300 group-hover:translate-x-2">
+                <h3 className="text-[1.9rem] text-primary-color mb-4 group-hover:text-primary-light transition-colors duration-300">
+                  {plane.name}
+                </h3>
+                <p className="text-[#6c757d] leading-[1.6] text-[1.1rem] group-hover:text-[#343a40] transition-colors duration-300">
+                  {plane.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>

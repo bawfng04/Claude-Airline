@@ -17,7 +17,6 @@
 /* About Section */
 .footer-section {
   flex: 1;
-  min-width: 250px;
 }
 
 .footer-about {
@@ -275,26 +274,20 @@
   animation-delay: 0.4s;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
+/* Medium Screens (Tablets) */
+@media (max-width: 992px) {
   .footer-container {
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.8rem;
-  }
-
-  .footer-section {
-    min-width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 
   .footer-about {
     text-align: center;
+    grid-column: span 3 / span 3;
+  }
+
+  .footer-links, .footer-contact {
+    grid-row-start: 2;
   }
 
   .footer-logo-container {
@@ -305,28 +298,77 @@
     justify-content: center;
   }
 
-  .footer-heading {
+  .footer-bottom {
+    flex-direction: column;
     text-align: center;
   }
+}
 
-  .footer-heading::after {
-    left: 50%;
-    transform: translateX(-50%);
+/* Small Screens (Mobile) */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 
-  .footer-list {
+  .footer-about {
     text-align: center;
+    grid-column: span 3 / span 3;
   }
 
-  .contact-item {
+  .footer-links, .footer-contact {
+    grid-row-start: 2;
+  }
+
+  .footer-logo-container {
     justify-content: center;
   }
 
-  .newsletter-form {
-    flex-direction: column;
+  .footer-social {
+    justify-content: center;
   }
 
-  .newsletter-button {
-    width: 100%;
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-legal {
+    justify-content: center;
+  }
+}
+@media (max-width: 480px) {
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .footer-heading:after {
+    display: none;
+  }
+
+  .footer-logo-container {
+    justify-content: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-legal {
+    justify-content: center;
   }
 }

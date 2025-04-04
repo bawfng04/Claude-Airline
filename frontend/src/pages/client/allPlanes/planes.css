@@ -1,0 +1,122 @@
+/* General Styles */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #343a40;
+  }
+  
+  /* Hero Section */
+  .fleet-hero {
+    position: relative;
+    height: 70vh;
+    background: url("../../") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .fleet-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .fleet-hero-content {
+    position: relative;
+    color: #fff;
+    z-index: 1;
+  }
+  
+  .fleet-hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+  }
+  
+  .fleet-hero-description {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Fleet Section */
+  .fleet-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .fleet-heading {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #343a40;
+  }
+  
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .fleet-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .fleet-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .fleet-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .fleet-card-content {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .fleet-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .fleet-card-description {
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.5;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .fleet-hero-title {
+      font-size: 2.5rem;
+    }
+  
+    .fleet-hero-description {
+      font-size: 1.2rem;
+    }
+  
+    .fleet-card-title {
+      font-size: 1.3rem;
+    }
+  
+    .fleet-card-description {
+      font-size: 0.9rem;
+    }
+  }

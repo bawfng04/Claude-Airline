@@ -58,7 +58,7 @@
                     <div class="container">
                         <ul>
                             <li class="menu-item">
-                                <a href="faq_manage.php" class="menu-link">
+                                <a href="faq" class="menu-link">
                                     <span><i class="bi bi-table"></i> Quản lý FAQ</span>
                                 </a>
                             </li>
@@ -174,8 +174,6 @@
     <script src="assets/extensions/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/static/js/pages/horizontal-layout.js"></script>
     <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="assets/static/js/pages/dashboard.js"></script>
-    <script src="assets/static/js/components/dark.js"></script>
     <script src="assets/static/js/pages/horizontal-layout.js"></script>
     <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/compiled/js/app.js"></script>    
