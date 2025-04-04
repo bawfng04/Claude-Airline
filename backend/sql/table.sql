@@ -33,8 +33,8 @@ CREATE TABLE CLAUDE_AIRLINES (
     facebook VARCHAR(255) NOT NULL, -- Facebook
     twitter VARCHAR(255) NOT NULL, -- Twitter
     instagram VARCHAR(255) NOT NULL, -- Instagram
-    linkedIn VARCHAR(255) NOT NULL, -- LinkedIn
-)
+    linkedIn VARCHAR(255) NOT NULL -- LinkedIn
+);
 
 -- CONTACT_LOCATIONS
 CREATE TABLE CONTACT_LOCATIONS (
@@ -43,7 +43,7 @@ CREATE TABLE CONTACT_LOCATIONS (
     address_string VARCHAR(255) NOT NULL, -- Địa chỉ
     phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
-)
+);
 
 INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
 VALUES
@@ -51,3 +51,43 @@ VALUES
 (' 456 Park Avenue, New York, NY 10022', 'Regional Office', '987-654-3210', 'Mon-Fri 10am-6pm'),
 ('789 Michigan Ave, Chicago, IL 60611', 'Regional Office', '555-555-5555', 'Mon-Fri 8am-4pm');
 
+-- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
+CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    destination_image VARCHAR(255) NOT NULL, -- Hình ảnh địa điểm
+    destination_name VARCHAR(255) NOT NULL, -- Tên địa điểm
+    destination_country VARCHAR(255) NOT NULL, -- Tên quốc gia
+    destination_price: DECIMAL(10, 2) NOT NULL, -- Giá vé
+    destination_description TEXT NOT NULL, -- Mô tả địa điểm
+    destination_begin: DATE NOT NULL, -- Ngày bắt đầu
+    destination_end: DATE NOT NULL, -- Ngày kết thúc
+    destination_offer: VARCHAR(255) NOT NULL, -- Ưu đãi địa điểm
+    destination_category: VARCHAR(255) NOT NULL, -- Danh mục địa điểm
+);
+
+
+-- HOMEPAGE_TRAVEL_PACKAGES
+CREATE TABLE HOMEPAGE_TRAVEL_PACKAGES (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    package_image VARCHAR(255) NOT NULL, -- Hình ảnh gói du lịch
+    package_name VARCHAR(255) NOT NULL, -- Tên gói du lịch
+    package_description TEXT NOT NULL, -- Mô tả gói du lịch
+);
+
+-- HOMEPAGE_USER_TESTIMONIALS
+CREATE TABLE HOMEPAGE_USER_TESTIMONIALS (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    user_name VARCHAR(255) NOT NULL, -- Tên người dùng
+    user_testimonial TEXT NOT NULL, -- Đánh giá của người dùng
+    user_image VARCHAR(255) NOT NULL, -- Hình ảnh người dùng
+    user_stars INT NOT NULL, -- Số sao đánh giá
+    user_location VARCHAR(255) NOT NULL, -- Địa điểm của người dùng
+);
+
+-- HOMEPAGE_SERVICES
+CREATE TABLE HOMEPAGE_SERVICES (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    service_title VARCHAR(255) NOT NULL, -- Tên dịch vụ
+    service_description TEXT NOT NULL, -- Mô tả dịch vụ
+    service_image VARCHAR(255) NOT NULL, -- Hình ảnh dịch vụ
+);
