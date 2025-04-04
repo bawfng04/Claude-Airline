@@ -6,6 +6,7 @@ import phone from "../../../assets/phone.png";
 import email from "../../../assets/email.png";
 import location from "../../../assets/location.png";
 import faq from "../../../assets/faq.png";
+import { FaUsers } from "react-icons/fa";
 import {
   FaMapMarkerAlt,
   FaClock,
@@ -35,14 +36,19 @@ const ContactPage = () => {
           <p>We're here to help and answer any questions you might have</p>
         </div>
       </div>
-
-      <div className="contact-breadcrumb">
-        <span>Home</span> <FaChevronRight className="breadcrumb-icon" />{" "}
-        <span className="active">Contact Us</span>
-      </div>
-
       <div className="contact-us-container">
         <div className="contact-section">
+          <div className="text-[1.5rem] mb-6 flex items-center gap-2 text-primary-color fade-in-up">
+            <FaUsers className="text-[2.5rem]" />
+            <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
+            <span className="cursor-pointer hover:underline hover:text-primary-light">
+              <a href="\home">Home</a>
+            </span>
+            <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
+            <span className="text-primary-light font-semibold hover:underline">
+              Contact Us
+            </span>
+          </div>
           <h2 className="contact-us-title">Contact Us</h2>
           <p className="contact-us-subtitle">
             Our team is eager to assist you. Choose the method that works best

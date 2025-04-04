@@ -25,8 +25,10 @@ const ExampleComponent = () => {
         <Notification
           message="This is an example notification
         message: ExampleComponent is rendered!
-
-        "
+          "
+          type="info"
+          duration={5000}
+          onClose={() => console.log("Notification closed")}
         />
         <h1>Example Component</h1>
         <p>API URL: {exampleAPI}</p>

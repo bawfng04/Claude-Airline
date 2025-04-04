@@ -11,6 +11,8 @@ import Register from "./pages/client/authentication/Register/Register";
 import FAQPage from "./pages/client/FAQ/FAQPage";
 import AboutUs from "./pages/client/AboutUs/AboutUs";
 import Planes from "./pages/client/allPlanes/planes";
+import UserDetail from "./pages/client/UserDetail/UserDetail";
+// import NotFound from "./components/NotFound/NotFound";
 
 const routes = (
   <>
@@ -22,8 +24,9 @@ const routes = (
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/unauthorized" element={<Unauthorized />} />
     <Route path="/faq" element={<FAQPage />} />
-    <Route path="/about" element={<AboutUs />} /> 
-    <Route path="/planes" element={<Planes />} /> 
+    <Route path="/about" element={<AboutUs />} />
+    <Route path="/planes" element={<Planes />} />
+    <Route path="/user-detail" element={<UserDetail />} />
     <Route path="*" element={<NotFound />} />
   </>
 );

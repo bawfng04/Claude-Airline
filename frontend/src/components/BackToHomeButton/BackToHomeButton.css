@@ -11,6 +11,6 @@
 }
 
 .back-to-home-button:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-light);
   transform: scale(1.1);
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Header.css";
 import airplaneLogo from "../../assets/airplaneLogo.jpg";
 // import Settings from "../../assets/Settings.png";
@@ -14,9 +14,14 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") || "false"
   );
+  const headerRef = useRef(null);
 
   const handleAvatarClick = () => {
     setSettingsPopup(!settingsPopup);
+  };
+
+  const handleDetail = () => {
+    window.location.href = "/user-detail";
   };
 
   const handleLogout = () => {
@@ -35,6 +40,15 @@ const Header = () => {
     else if (path.includes("/example")) setActiveLink("example");
     else if (path.includes("/login")) setActiveLink("login");
     else if (path.includes("/register")) setActiveLink("register");
+  }, []);
+
+  // tính header height
+  useEffect(() => {
+    const headerHeight = headerRef.current.offsetHeight;
+    document.documentElement.style.setProperty(
+      "--header-height",
+      `${headerHeight}px`
+    );
   }, []);
 
   // Detect scroll for sticky header effect
@@ -79,7 +93,10 @@ const Header = () => {
   };
 
   return (
-    <header className={`header ${isScrolled ? "scrolled" : ""}`}>
+    <header
+      className={`header ${isScrolled ? "scrolled" : ""}`}
+      ref={headerRef}
+    >
       <div className="header-container">
         {/* Logo Section */}
         <div className="header-logo-section">
@@ -197,7 +214,9 @@ const Header = () => {
               ></img>
               {settingsPopup && (
                 <div className="settings">
-                  <button className="settings-buttons">Detail</button>
+                  <button className="settings-buttons" onClick={handleDetail}>
+                    Detail
+                  </button>
                   <button className="settings-buttons" onClick={handleLogout}>
                     Logout
                   </button>
