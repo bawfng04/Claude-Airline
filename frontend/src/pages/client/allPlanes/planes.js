@@ -41,19 +41,26 @@ const FleetPage = () => {
       <div className="relative h-[70vh] bg-plane-bg  bg-cover bg-top flex items-center justify-center text-center text-[white] lg:h-[60vh] sm:h-[50vh]">
         <div className="absolute top-[0] left-[0] w-full h-full bg-[rgba(0,_0,_0,_0.5)]"></div>
         <div className="relative max-w-[800px] px-8 py-[0] animate-[fadeInUp_1s_ease-out_forwards]">
-          <h1 className="text-[3rem] mb-4 font-bold [text-shadow:2px_2px_4px_rgba(0,_0,_0,_0.5)] lg:text-[2.5rem] sm:text-[2rem]">Our Fleet</h1>
+          <h1 className="text-[3rem] mb-4 font-bold [text-shadow:2px_2px_4px_rgba(0,_0,_0,_0.5)] lg:text-[2.5rem] sm:text-[2rem]">
+            Our Fleet
+          </h1>
           <p className="text-[1.5rem] mb-8 [text-shadow:1px_1px_3px_rgba(0,_0,_0,_0.5)] lg:text-[1.3rem] sm:text-[1.1rem]">
-          Discover the modern and efficient aircraft that make up our fleet, ensuring a safe and comfortable journey for every passenger.
+            Discover the modern and efficient aircraft that make up our fleet,
+            ensuring a safe and comfortable journey for every passenger.
           </p>
         </div>
       </div>
-      <div className="max-w-[1200px] mt-12 mx-auto mb-20 p-8 md:p-6">  
+      <div className="max-w-[1200px] mt-12 mx-auto mb-20 p-8 md:p-6">
         <div className="text-[2rem] mb-6 flex items-center gap-2 text-primary-color m-8">
           <FaPlane className="text-[2.5rem]" />
           <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
-          <span className="cursor-pointer hover:underline hover:text-primary-light"><a href="\home">Home</a></span>
+          <span className="cursor-pointer hover:underline hover:text-primary-light">
+            <a href="\home">Home</a>
+          </span>
           <FaChevronRight className="text-[#6c757d] [transition:color_0.3s_ease] hover:text-primary-light text-[1rem]" />
-          <span className="text-primary-light font-semibold hover:underline">Our Fleet</span>
+          <span className="text-primary-light font-semibold hover:underline">
+            Our Fleet
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

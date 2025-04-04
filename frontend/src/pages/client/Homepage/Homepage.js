@@ -8,8 +8,8 @@ import Testimonials from "./Testimonials";
 import FeaturedDestinations from "./FeaturedDestinations";
 import PromotionCountdown from "./PromotionCountdown";
 import NextTrip from "./NextTrip";
-import ServersSection from "./ServicesSection";
 import ImageCarousel from "./ImageCarousel";
+import ServicesSection from "./ServicesSection";
 
 const Homepage = () => {
   return (
@@ -37,7 +37,7 @@ const Homepage = () => {
       </section>
       <ImageCarousel />
       <Testimonials />
-      <ServersSection />
+      <ServicesSection />
       <section className="chom-section">
         <h2>Save more with us</h2>
         <Chom />
