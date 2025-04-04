@@ -123,4 +123,3 @@ The application uses a professional color palette:
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Firebase](https://firebase.google.com/) for hosting
 
-## Contact
