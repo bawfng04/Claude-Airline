@@ -2,30 +2,27 @@
 // public/index.php
 
 // Load Config
-require_once '../config/config.php';
-
-// Load Core Classes (Tự động hoặc thủ công)
-// Cách đơn giản là require_once từng file core
-// require_once '../app/core/Database.php';
-// require_once '../app/core/Controller.php';
-
-// Autoload Core Libraries (Optional - Cách xịn hơn)
-spl_autoload_register(function($className){
+require_once '../app/config/config.php';
+require_once '../app/helpers/url_helper.php';
+// Autoload Core Classes
+spl_autoload_register(function ($className) {
     $corePath = '../app/core/' . $className . '.php';
     if (file_exists($corePath)) {
         require_once $corePath;
     }
 });
 
-// --- Routing đơn giản ---
+// --- Routing ---
+define('DEFAULT_CONTROLLER', 'faq'); // Controller mặc định
+define('DEFAULT_METHOD', 'index');   // Method mặc định
 
 $controllerName = DEFAULT_CONTROLLER; // Controller mặc định
-$methodName = DEFAULT_METHOD;     // Method mặc định
-$params = [];                     // Tham số truyền vào method
+$methodName = DEFAULT_METHOD;         // Method mặc định
+$params = [];                         // Tham số truyền vào method
 
 // Parse URL từ biến 'url' mà .htaccess tạo ra
 if (isset($_GET['url'])) {
-    // Trim dấu / ở cuối, lọc ký tự ko hợp lệ, tách thành mảng bằng dấu /
+    // Trim dấu / ở cuối, lọc ký tự không hợp lệ, tách thành mảng bằng dấu /
     $url = rtrim($_GET['url'], '/');
     $url = filter_var($url, FILTER_SANITIZE_URL);
     $url = explode('/', $url);
@@ -37,43 +34,42 @@ if (isset($_GET['url'])) {
     }
 
     // Phần tử 1: Tên Method (Action)
-    if (isset($url[1])) {
-        if (!empty($url[1])) {
-            $methodName = $url[1];
-            unset($url[1]);
-        }
+    if (isset($url[1]) && !empty($url[1])) {
+        $methodName = $url[1];
+        unset($url[1]);
     }
 
     // Phần còn lại: Tham số
     $params = $url ? array_values($url) : [];
 }
 
-// --- Dispatch (Điều phối) ---
+// --- Điều phối (Dispatch) ---
+try {
+    $controllerFile = '../app/controllers/' . $controllerName . '.php';
 
-// Kiểm tra file Controller có tồn tại không?
-$controllerFile = '../app/controllers/' . $controllerName . '.php';
-if (file_exists($controllerFile)) {
+    // Kiểm tra file Controller có tồn tại không
+    if (!file_exists($controllerFile)) {
+        throw new Exception("Controller file '{$controllerFile}' không tồn tại");
+    }
+
     require_once $controllerFile;
 
-    // Kiểm tra class Controller có tồn tại không?
-    if (class_exists($controllerName)) {
-        // Khởi tạo Controller
-        $controller = new $controllerName;
-
-        // Kiểm tra method có tồn tại trong Controller không?
-        if (method_exists($controller, $methodName)) {
-            // Gọi method và truyền tham số (nếu có)
-            // call_user_func_array dùng để gọi hàm với tham số là mảng
-            call_user_func_array([$controller, $methodName], $params);
-        } else {
-            // Xử lý lỗi: Method không tồn tại
-            die("Method '{$methodName}' không tồn tại trong Controller '{$controllerName}'");
-        }
-    } else {
-        // Xử lý lỗi: Class Controller không tồn tại
-        die("Controller class '{$controllerName}' không tồn tại");
+    // Kiểm tra class Controller có tồn tại không
+    if (!class_exists($controllerName)) {
+        throw new Exception("Controller class '{$controllerName}' không tồn tại");
     }
-} else {
-    // Xử lý lỗi: File Controller không tồn tại
-    die("Controller file '{$controllerFile}' không tồn tại");
+
+    $controller = new $controllerName;
+
+    // Kiểm tra method có tồn tại trong Controller không
+    if (!method_exists($controller, $methodName)) {
+        throw new Exception("Method '{$methodName}' không tồn tại trong Controller '{$controllerName}'");
+    }
+
+    // Gọi method và truyền tham số (nếu có)
+    call_user_func_array([$controller, $methodName], $params);
+
+} catch (Exception $e) {
+    // Hiển thị lỗi nếu có
+    die($e->getMessage());
 }

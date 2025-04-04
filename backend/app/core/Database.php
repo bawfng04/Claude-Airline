@@ -3,6 +3,7 @@
 
 class Database {
     private $host = DB_HOST;
+    private $port = DB_PORT;
     private $user = DB_USER;
     private $pass = DB_PASS;
     private $dbname = DB_NAME;
@@ -13,7 +14,7 @@ class Database {
 
     public function __construct() {
         // Set DSN (Data Source Name)
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $dsn = 'mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbname;
         $options = [
             PDO::ATTR_PERSISTENT => true, // Kết nối bền vững (tùy chọn)
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Ném Exception khi có lỗi SQL
