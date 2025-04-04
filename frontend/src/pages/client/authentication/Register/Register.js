@@ -298,7 +298,9 @@ const Register = () => {
 
             {/* Phone Number */}
             <div className="form-group">
-              <label className="register-form-label">Phone Number</label>
+              <label className="register-form-label">
+                Phone Number<span className="required">*</span>
+              </label>
               <div className="input-with-icon">
                 <FaPhone className="input-icon" />
                 <input
