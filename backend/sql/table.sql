@@ -42,12 +42,12 @@ CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
     destination_image VARCHAR(255) NOT NULL, -- Hình ảnh địa điểm
     destination_name VARCHAR(255) NOT NULL, -- Tên địa điểm
     destination_country VARCHAR(255) NOT NULL, -- Tên quốc gia
-    destination_price: DECIMAL(10, 2) NOT NULL, -- Giá vé
+    destination_price DECIMAL(10, 2) NOT NULL, -- Giá vé
     destination_description TEXT NOT NULL, -- Mô tả địa điểm
-    destination_begin: DATE NOT NULL, -- Ngày bắt đầu
-    destination_end: DATE NOT NULL, -- Ngày kết thúc
-    destination_offer: VARCHAR(255) NOT NULL, -- Ưu đãi địa điểm
-    destination_category: VARCHAR(255) NOT NULL, -- Danh mục địa điểm
+    destination_begin DATE NOT NULL, -- Ngày bắt đầu
+    destination_end DATE NOT NULL, -- Ngày kết thúc
+    destination_offer VARCHAR(255) NOT NULL, -- Ưu đãi địa điểm
+    destination_category VARCHAR(255) NOT NULL -- Danh mục địa điểm
 );
 
 

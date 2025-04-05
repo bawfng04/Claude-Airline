@@ -12,6 +12,7 @@ import FAQPage from "./pages/client/FAQ/FAQPage";
 import AboutUs from "./pages/client/AboutUs/AboutUs";
 import Planes from "./pages/client/allPlanes/planes";
 import UserDetail from "./pages/client/UserDetail/UserDetail";
+import ManageTopDestination from "./pages/admin/ManageTopDestination";
 
 const routes = (
   <>
@@ -26,6 +27,7 @@ const routes = (
     <Route path="/about" element={<AboutUs />} />
     <Route path="/planes" element={<Planes />} />
     <Route path="/user-detail" element={<UserDetail />} />
+    <Route path="/manage-top-destination" element={<ManageTopDestination />} />
     <Route path="*" element={<NotFound />} />
   </>
 );

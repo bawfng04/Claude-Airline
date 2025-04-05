@@ -1,0 +1,34 @@
+.admin-homepage {
+  background-color: #fff; /* Màu nền cho container chính */
+  padding: 20px; /* Khoảng cách lề bên trong container */
+  border-radius: 5px; /* Bo tròn góc */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng nhẹ */
+}
+
+.admin-homepage h1 {
+  color: #333; /* Màu chữ tiêu đề */
+  text-align: center; /* Căn giữa tiêu đề */
+  margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+.table {
+  width: 100%; /* Chiều rộng bảng */
+  border-collapse: collapse; /* Gộp đường viền các ô */
+  margin-bottom: 20px; /* Khoảng cách dưới bảng */
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd; /* Đường viền cho các ô */
+  padding: 8px; /* Khoảng cách bên trong các ô */
+  text-align: left; /* Căn trái chữ trong ô */
+}
+
+.table th {
+  background-color: #f2f2f2; /* Màu nền cho header bảng */
+  font-weight: bold; /* Chữ in đậm cho header */
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Màu nền khác cho các hàng chẵn để dễ nhìn */
+}

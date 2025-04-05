@@ -10,7 +10,7 @@ class Controller {
     public function model($model) {
         // Xác định đường dẫn model
         $modelPath = dirname(__DIR__) . '/models/' . $model . '.php';
-        
+
         if (file_exists($modelPath)) {
             require_once $modelPath;
             return new $model(); // Khởi tạo model
@@ -23,7 +23,7 @@ class Controller {
     public function view($view, $data = []) {
         // Xác định đường dẫn view
         $viewPath = dirname(__DIR__) . '/views/' . $view . '.php';
-        
+
         if (file_exists($viewPath)) {
             extract($data); // Truyền dữ liệu sang View dưới dạng biến
             require_once $viewPath;
@@ -31,4 +31,16 @@ class Controller {
             throw new Exception("View không tồn tại: " . $viewPath);
         }
     }
+
+    protected function jsonResponse($status, $message, $data = null) {
+        header('Content-Type: application/json');
+        http_response_code($status);
+        echo json_encode([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ]);
+    }
+
+
 }

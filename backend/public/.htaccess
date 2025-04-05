@@ -6,6 +6,7 @@ Options -MultiViews
 # Bật module rewrite URL
 RewriteEngine On
 
+
 # Kiểm tra xem request có phải là file hay thư mục thật không. Nếu không phải -> đi tiếp.
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
