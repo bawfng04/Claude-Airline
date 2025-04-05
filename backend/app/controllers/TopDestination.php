@@ -28,15 +28,20 @@ class TopDestination extends Controller {
             'destination_category'
         ];
 
+        $missing_fields = [];
         foreach ($required_fields as $field) {
             if (!isset($data[$field]) || empty($data[$field])) {
-                return false;
+                $missing_fields[] = $field;
             }
+        }
+
+        if (!empty($missing_fields)) {
+            throw new Exception("Missing required fields: " . implode(', ', $missing_fields));
         }
 
         // Validate price là số và lớn hơn 0
         if (!is_numeric($data['destination_price']) || $data['destination_price'] <= 0) {
-            return false;
+            throw new Exception("Price must be a number greater than zero");
         }
 
         // Validate dates
@@ -45,17 +50,17 @@ class TopDestination extends Controller {
         $today = strtotime('today');
 
         if (!$begin || !$end) {
-            return false;
+            throw new Exception("Invalid date format");
         }
 
         // Kiểm tra ngày bắt đầu < ngày kết thúc
         if ($begin >= $end) {
-            return false;
+            throw new Exception("Begin date must be before end date");
         }
 
         // Kiểm tra ngày không nằm trong quá khứ
         if ($begin < $today) {
-            return false;
+            throw new Exception("Begin date cannot be in the past");
         }
 
         return true;
@@ -165,11 +170,16 @@ class TopDestination extends Controller {
                 return;
             }
 
+            // Log received data for debugging
+            error_log("Received update data: " . json_encode($data));
+
             // Sanitize input
             $data = $this->sanitizeInput($data);
 
-            if(!$this->validateDestinationData($data)) {
-                $this->jsonResponse(400, 'Bad Request: Invalid data', null);
+            try {
+                $this->validateDestinationData($data);
+            } catch (Exception $e) {
+                $this->jsonResponse(400, 'Validation error: ' . $e->getMessage(), null);
                 return;
             }
 
