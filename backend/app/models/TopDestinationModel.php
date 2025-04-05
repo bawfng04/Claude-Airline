@@ -62,5 +62,7 @@ class TopDestinationModel extends Database {
         $this->bind(':id', $id);
         return $this->execute();
     }
+
+
 }
 
