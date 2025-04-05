@@ -9,6 +9,19 @@ import "./AdminHomepage.css";
 
 const ManageTopDestination = () => {
   const [topDestinations, setTopDestinations] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDestination, setEditingDestination] = useState({
+    id: "",
+    destination_image: "",
+    destination_name: "",
+    destination_country: "",
+    destination_price: "",
+    destination_description: "",
+    destination_begin: "",
+    destination_end: "",
+    destination_offer: "",
+    destination_category: "",
+  });
 
   // lấy hết top destination
   const fetchTopDestinations = async () => {
@@ -70,6 +83,80 @@ const ManageTopDestination = () => {
     }
   };
 
+  const handleModifyClick = (destination) => {
+    setEditingDestination({
+      ...destination,
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditingDestination({
+      ...editingDestination,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Format the dates properly for PHP's consumption
+      const formattedDestination = {
+        ...editingDestination,
+        destination_price: parseFloat(editingDestination.destination_price),
+        // Make sure dates are in YYYY-MM-DD format
+        destination_begin: new Date(editingDestination.destination_begin)
+          .toISOString()
+          .split("T")[0],
+        destination_end: new Date(editingDestination.destination_end)
+          .toISOString()
+          .split("T")[0],
+      };
+
+      // Log the data being sent to help debug
+      console.log("Sending data:", formattedDestination);
+
+      const response = await fetch(
+        `${UPDATE_TOP_DESTINATION_API}/${editingDestination.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formattedDestination),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${JSON.stringify(
+            errorData
+          )}`
+        );
+      }
+
+      const result = await response.json();
+
+      if (result.status === 200) {
+        alert("Destination updated successfully!");
+        setIsModalOpen(false);
+        // Refresh the destinations list
+        fetchTopDestinations();
+      } else {
+        throw new Error(result.message || "Failed to update destination");
+      }
+    } catch (error) {
+      console.error("Error updating destination:", error);
+      alert(`Failed to update destination: ${error.message}`);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     fetchTopDestinations();
   }, []);
@@ -119,7 +206,12 @@ const ManageTopDestination = () => {
                 <td>{destination.destination_offer}</td>
                 <td>{destination.destination_category}</td>
                 <td className="action-column">
-                  <button className="modify-btn">Modify</button>
+                  <button
+                    className="modify-btn"
+                    onClick={() => handleModifyClick(destination)}
+                  >
+                    Modify
+                  </button>
                   <button
                     className="delete-btn"
                     onClick={() => handleDelete(destination.id)}
@@ -132,6 +224,120 @@ const ManageTopDestination = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Edit Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Edit Destination</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Image URL:</label>
+                <input
+                  type="text"
+                  name="destination_image"
+                  value={editingDestination.destination_image}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="destination_name"
+                  value={editingDestination.destination_name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Country:</label>
+                <input
+                  type="text"
+                  name="destination_country"
+                  value={editingDestination.destination_country}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  name="destination_price"
+                  value={editingDestination.destination_price}
+                  onChange={handleInputChange}
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  name="destination_description"
+                  value={editingDestination.destination_description}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Begin Date:</label>
+                <input
+                  type="date"
+                  name="destination_begin"
+                  value={editingDestination.destination_begin}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>End Date:</label>
+                <input
+                  type="date"
+                  name="destination_end"
+                  value={editingDestination.destination_end}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Offer:</label>
+                <input
+                  type="text"
+                  name="destination_offer"
+                  value={editingDestination.destination_offer}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Category:</label>
+                <input
+                  type="text"
+                  name="destination_category"
+                  value={editingDestination.destination_category}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="modal-actions">
+                <button type="submit" className="save-btn">
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
