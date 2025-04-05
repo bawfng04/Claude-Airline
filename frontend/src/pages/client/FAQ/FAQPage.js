@@ -1,6 +1,7 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import FAQItem from "./FAQItem";
 import { FaQuestionCircle, FaChevronRight } from "react-icons/fa";
+import faq from "../../../api/apiFAQ";
 
 const FAQPage = () => {
   const faqItems = [
@@ -41,6 +42,19 @@ const FAQPage = () => {
         "We recommend arriving at the airport at least 2 hours before domestic flights and 3 hours before international flights. This allows adequate time for check-in, security screening, immigration procedures (for international flights), and boarding. During peak travel seasons or at busy airports, you may want to allow additional time to avoid any stress from unexpected delays.",
     },
   ];
+
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        const response = await faq.getAllFAQs();
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching FAQs:", error);
+      }
+    };
+    fetchFAQs();
+  }
+  , []);
 
   return (
     <div className="max-w-[1200px] mt-12 mx-[auto] mb-20 p-8 font-['Segoe_UI',_Arial,_sans-serif] md:p-6 md:mx-[auto] md:my-8">

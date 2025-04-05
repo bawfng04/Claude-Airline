@@ -1,5 +1,6 @@
 <?php
 // app/controllers/Faq.php
+require_once '../app/helpers/jsonResponse.php';
 
 class Faq extends Controller {
     private $faqModel;
@@ -69,6 +70,21 @@ class Faq extends Controller {
 
             header('Location: ' . base_url('faq'));
             exit();
+        }
+    }
+
+    public function getFaqs() {
+        try {
+            $faqs = $this->faqModel->getAllFaqs();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $faqs
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

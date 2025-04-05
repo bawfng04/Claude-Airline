@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "animejs": "^3.2.2",
+    "axios": "^1.8.4",
     "cra-template": "1.2.0",
     "crypto-browserify": "^3.12.1",
     "dotenv": "^16.4.7",
