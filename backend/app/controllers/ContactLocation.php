@@ -6,6 +6,14 @@ class ContactLocation extends Controller {
         $this->ContactLocationModel = $this->model('ContactLocations');
     }
 
+    private function sanitizeInput($data) {
+        $sanitized = [];
+        foreach($data as $key => $value) {
+            $sanitized[$key] = htmlspecialchars(strip_tags($value));
+        }
+        return $sanitized;
+    }
+
     private function validateDestinationData($data) {
         $required_fields = [
             'des_type',
@@ -45,7 +53,7 @@ class ContactLocation extends Controller {
                 $this->jsonResponse(404, 'No locations found', null);
                 return;
             }
-            $this->jsonResponse(200, 'Success', $destination);
+            $this->jsonResponse(200, 'Success', $location);
         } catch(Exception $e) {
             $this->jsonResponse(500, 'Error', $e->getMessage());
         }
@@ -55,7 +63,7 @@ class ContactLocation extends Controller {
         try {
             $location = $this->ContactLocationModel->getAllContactLocationsById($id);
             if($location) {
-                $this->jsonResponse(200, 'Success', $destination);
+                $this->jsonResponse(200, 'Success', $location);
             } else {
                 $this->jsonResponse(404, 'Location not found', null);
             }

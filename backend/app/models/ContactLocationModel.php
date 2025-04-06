@@ -25,21 +25,21 @@ class ContactLocations extends Database {
     }
 
     public function addContactLocation($des_type, $address_string, $phone_number, $working_hours){
+        $this->query("INSERT INTO CONTACT_LOCATIONS (des_type, address_string, phone_number, working_hours) VALUES (:des_type, :address_string, :phone_number, :working_hours)");
         $this->bind(':des_type', $des_type);
         $this->bind(':address_string', $address_string);
         $this->bind(':phone_number', $phone_number);
         $this->bind(':working_hours', $working_hours);
-        $this->query("INSERT INTO CONTACT_LOCATIONS (des_type, address_string, phone_number, working_hours) VALUES (:des_type, :address_string, :phone_number, :working_hours)");
         return $this->execute();
     }
 
     public function modifyContactLocation($id, $des_type, $address_string, $phone_number, $working_hours){
+        $this->query("UPDATE CONTACT_LOCATIONS SET des_type = :des_type, address_string = :address_string, phone_number = :phone_number, working_hours = :working_hours WHERE id = :id");
         $this->bind(':id', $id);
         $this->bind(':des_type', $des_type);
         $this->bind(':address_string', $address_string);
         $this->bind(':phone_number', $phone_number);
         $this->bind(':working_hours', $working_hours);
-        $this->query("UPDATE CONTACT_LOCATIONS SET des_type = :des_type, address_string = :address_string, phone_number = :phone_number, working_hours = :working_hours WHERE id = :id");
         return $this->execute();
     }
 
