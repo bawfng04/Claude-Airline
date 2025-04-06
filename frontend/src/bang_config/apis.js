@@ -6,3 +6,9 @@ export const GET_TOP_DESTINATION_BY_ID_API = `${API_URL}/TopDestination/getById`
 export const CREATE_TOP_DESTINATION_API = `${API_URL}/TopDestination/create`;
 export const DELETE_TOP_DESTINATION_API = `${API_URL}/TopDestination/delete`;
 export const UPDATE_TOP_DESTINATION_API = `${API_URL}/TopDestination/update`;
+
+export const GET_CONTACT_LOCATIONS_API = `${API_URL}/ContactLocation/index`;
+export const GET_CONTACT_LOCATION_BY_ID_API = `${API_URL}/ContactLocation/getById`;
+export const CREATE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/create`;
+export const DELETE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/delete`;
+export const UPDATE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/update`;

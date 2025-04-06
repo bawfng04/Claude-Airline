@@ -1,3 +1,75 @@
+.admin-manage-container {
+  opacity: 0;
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.admin-manage-h1 {
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slide-down 0.6s ease-out 0.2s forwards;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.manage-unit {
+  opacity: 0;
+  transform: scale(0.9);
+  margin-bottom: 15px;
+  animation: scale-up 0.4s ease-out forwards 0.4s;
+}
+
+.manage-unit:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.admin-manage-h2 {
+  margin-bottom: 5px;
+}
+
+.manage-unit a {
+  display: inline-block;
+  font-size: 2em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.manage-unit a:hover {
+  transform: rotate(360deg) scale(1.2);
+}
+
+
+/* ------------------------------------------------------------------- */
+
+
+/* destination */
 .manage-destination-container {
   background-color: var(--background-color);
   padding: 25px;
@@ -186,4 +258,33 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.add-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #45a049;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+  color: #aaa;
 }

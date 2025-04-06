@@ -10,7 +10,7 @@
 // );
 
 
-class ContactLocations extends Database {
+class ContactLocationModel extends Database {
     // Lấy tất cả các bản ghi
     public function getAllContactLocations(){
         $this->query("SELECT * FROM CONTACT_LOCATIONS");

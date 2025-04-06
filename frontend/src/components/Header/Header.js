@@ -171,6 +171,17 @@ const Header = () => {
                 Example
               </a>
             </li> */}
+            <li className="header-nav-item">
+              <a
+                href="/admin"
+                className={`header-nav-link ${
+                  activeLink === "example" ? "active" : ""
+                }`}
+                onClick={closeMenus}
+              >
+                Admin
+              </a>
+            </li>
           </ul>
         </nav>
 

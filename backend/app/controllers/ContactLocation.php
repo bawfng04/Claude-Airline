@@ -3,7 +3,7 @@ class ContactLocation extends Controller {
     private $ContactLocationModel;
 
     public function __construct() {
-        $this->ContactLocationModel = $this->model('ContactLocations');
+        $this->ContactLocationModel = $this->model('ContactLocationModel');
     }
 
     private function sanitizeInput($data) {
@@ -14,7 +14,7 @@ class ContactLocation extends Controller {
         return $sanitized;
     }
 
-    private function validateDestinationData($data) {
+    private function validateLocationData($data) {
         $required_fields = [
             'des_type',
             'address_string',
@@ -88,7 +88,7 @@ class ContactLocation extends Controller {
             $data = $this->sanitizeInput($data);
 
             try {
-                $this->validateDestinationData($data);
+                $this->validateLocationData($data);
             } catch (Exception $e) {
                 $this->jsonResponse(400, 'Validation error: ' . $e->getMessage(), null);
                 return;
@@ -161,7 +161,7 @@ class ContactLocation extends Controller {
             $data = $this->sanitizeInput($data);
 
             try {
-                $this->validateDestinationData($data);
+                $this->validateLocationData($data);
             } catch (Exception $e) {
                 $this->jsonResponse(400, 'Validation error: ' . $e->getMessage(), null);
                 return;
