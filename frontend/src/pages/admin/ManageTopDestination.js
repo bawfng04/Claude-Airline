@@ -10,8 +10,20 @@ import "./AdminHomepage.css";
 const ManageTopDestination = () => {
   const [topDestinations, setTopDestinations] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingDestination, setEditingDestination] = useState({
     id: "",
+    destination_image: "",
+    destination_name: "",
+    destination_country: "",
+    destination_price: "",
+    destination_description: "",
+    destination_begin: "",
+    destination_end: "",
+    destination_offer: "",
+    destination_category: "",
+  });
+  const [newDestination, setNewDestination] = useState({
     destination_image: "",
     destination_name: "",
     destination_country: "",
@@ -98,6 +110,15 @@ const ManageTopDestination = () => {
     });
   };
 
+  // Handle input change in add form
+  const handleAddInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewDestination({
+      ...newDestination,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -153,8 +174,82 @@ const ManageTopDestination = () => {
     }
   };
 
+  // Handle add form submission
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Format the dates properly for PHP's consumption
+      const formattedDestination = {
+        ...newDestination,
+        destination_price: parseFloat(newDestination.destination_price),
+        // Make sure dates are in YYYY-MM-DD format
+        destination_begin: new Date(newDestination.destination_begin)
+          .toISOString()
+          .split("T")[0],
+        destination_end: new Date(newDestination.destination_end)
+          .toISOString()
+          .split("T")[0],
+      };
+
+      console.log("Sending new destination data:", formattedDestination);
+
+      const response = await fetch(CREATE_TOP_DESTINATION_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formattedDestination),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${JSON.stringify(
+            errorData
+          )}`
+        );
+      }
+
+      const result = await response.json();
+
+      if (result.status === 201) {
+        alert("Destination created successfully!");
+        setIsAddModalOpen(false);
+        // Reset form
+        setNewDestination({
+          destination_image: "",
+          destination_name: "",
+          destination_country: "",
+          destination_price: "",
+          destination_description: "",
+          destination_begin: "",
+          destination_end: "",
+          destination_offer: "",
+          destination_category: "",
+        });
+        // Refresh the destinations list
+        fetchTopDestinations();
+      } else {
+        throw new Error(result.message || "Failed to create destination");
+      }
+    } catch (error) {
+      console.error("Error creating destination:", error);
+      alert(`Failed to create destination: ${error.message}`);
+    }
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  // Close add modal
+  const closeAddModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  // Open add modal
+  const openAddModal = () => {
+    setIsAddModalOpen(true);
   };
 
   useEffect(() => {
@@ -165,6 +260,11 @@ const ManageTopDestination = () => {
     <div className="manage-destination-container">
       <div className="dem"></div>
       <h1>Manage Top Destinations</h1>
+
+      <button className="add-btn" onClick={openAddModal}>
+        Add New Destination
+      </button>
+
       <div className="table-responsive">
         <table className="destination-table">
           <thead>
@@ -330,6 +430,127 @@ const ManageTopDestination = () => {
                   type="button"
                   className="cancel-btn"
                   onClick={closeModal}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
+      {isAddModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Add New Destination</h2>
+            <form onSubmit={handleAddSubmit}>
+              <div className="form-group">
+                <label>Image URL:</label>
+                <input
+                  type="text"
+                  name="destination_image"
+                  value={newDestination.destination_image}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="image.jpg"
+                />
+              </div>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="destination_name"
+                  value={newDestination.destination_name}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="Paris"
+                />
+              </div>
+              <div className="form-group">
+                <label>Country:</label>
+                <input
+                  type="text"
+                  name="destination_country"
+                  value={newDestination.destination_country}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="France"
+                />
+              </div>
+              <div className="form-group">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  name="destination_price"
+                  value={newDestination.destination_price}
+                  onChange={handleAddInputChange}
+                  step="0.01"
+                  min="0"
+                  required
+                  placeholder="499.99"
+                />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  name="destination_description"
+                  value={newDestination.destination_description}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="Explore the city of lights..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Begin Date:</label>
+                <input
+                  type="date"
+                  name="destination_begin"
+                  value={newDestination.destination_begin}
+                  onChange={handleAddInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>End Date:</label>
+                <input
+                  type="date"
+                  name="destination_end"
+                  value={newDestination.destination_end}
+                  onChange={handleAddInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Offer:</label>
+                <input
+                  type="text"
+                  name="destination_offer"
+                  value={newDestination.destination_offer}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="20% off for early bookings!"
+                />
+              </div>
+              <div className="form-group">
+                <label>Category:</label>
+                <input
+                  type="text"
+                  name="destination_category"
+                  value={newDestination.destination_category}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="Europe"
+                />
+              </div>
+              <div className="modal-actions">
+                <button type="submit" className="save-btn">
+                  Add Destination
+                </button>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={closeAddModal}
                 >
                   Cancel
                 </button>

@@ -38,6 +38,7 @@ const Header = () => {
     else if (path.includes("/contact")) setActiveLink("contact");
     else if (path.includes("/faq")) setActiveLink("faq");
     else if (path.includes("/example")) setActiveLink("example");
+    else if (path.includes("/admin")) setActiveLink("admin");
     else if (path.includes("/login")) setActiveLink("login");
     else if (path.includes("/register")) setActiveLink("register");
   }, []);
@@ -175,7 +176,7 @@ const Header = () => {
               <a
                 href="/admin"
                 className={`header-nav-link ${
-                  activeLink === "example" ? "active" : ""
+                  activeLink === "admin" ? "active" : ""
                 }`}
                 onClick={closeMenus}
               >
