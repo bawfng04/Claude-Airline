@@ -61,4 +61,19 @@ class AirlineFleet extends Controller {
             header('Location: ' . base_url('airlinefleet'));
         }
     }
+
+    public function getFleets() {
+        try {
+            $aircrafts = $this->airlineFleetModel->getAllAircrafts();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $aircrafts
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

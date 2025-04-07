@@ -72,12 +72,16 @@
                         <!-- Trường Danh mục -->
                         <div class="mb-3">
                             <label for="category" class="form-label">Danh mục</label>
-                            <select class="form-select" name="category" id="category" required>
+                            <select class="form-select" name="category" id="category" required onchange="toggleNewCategoryInput(this)">
                                 <option value="">-- Chọn danh mục --</option>
-                                <option value="General">General</option>
-                                <option value="Technical">Technical</option>
-                                <option value="Billing">Billing</option>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?php echo htmlspecialchars($category['category']); ?>">
+                                        <?php echo htmlspecialchars($category['category']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                                <option value="new">+ Thêm danh mục mới</option>
                             </select>
+                            <input type="text" class="form-control mt-2" name="new_category" id="newCategoryInput" placeholder="Nhập danh mục mới" style="display: none;">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -142,6 +146,17 @@
                 $('#deleteModal').modal('show');
             });
         });
+
+        function toggleNewCategoryInput(select) {
+            const newCategoryInput = document.getElementById('newCategoryInput');
+            if (select.value === 'new') {
+                newCategoryInput.style.display = 'block';
+                newCategoryInput.required = true;
+            } else {
+                newCategoryInput.style.display = 'none';
+                newCategoryInput.required = false;
+            }
+        }
     </script>
 </body>
 </html>

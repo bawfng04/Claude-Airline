@@ -8,6 +8,11 @@ class FaqModel extends Database {
         return $this->resultSet();
     }
 
+    public function getAllCategories() {
+        $this->query("SELECT category FROM faq GROUP BY category ORDER BY category");
+        return $this->resultSet();
+    }
+
     // Lấy câu hỏi theo ID
     public function getFaqById($id) {
         if (!is_numeric($id)) {

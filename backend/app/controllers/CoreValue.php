@@ -19,26 +19,14 @@ class CoreValue extends Controller {
             $id = $_POST['id'] ?? null;
             $title = $_POST['title'];
             $description = $_POST['description'];
-            $icon = null;
-
-            // Xử lý upload icon
-            if (isset($_FILES['icon']) && $_FILES['icon']['error'] === UPLOAD_ERR_OK) {
-                $fileTmpPath = $_FILES['icon']['tmp_name'];
-                $fileName = uniqid() . '.' . pathinfo($_FILES['icon']['name'], PATHINFO_EXTENSION);
-                $uploadDir = '../public/uploads/';
-                if (move_uploaded_file($fileTmpPath, $uploadDir . $fileName)) {
-                    $icon = $fileName;
-                } else {
-                    die("Không thể tải lên icon.");
-                }
-            }
-
+            $icon = $_POST['icon']; // Lấy text của icon từ form
+    
             if ($id) {
                 $this->coreValueModel->updateCoreValue($id, $title, $description, $icon);
             } else {
                 $this->coreValueModel->addCoreValue($title, $description, $icon);
             }
-
+    
             header('Location: ' . base_url('corevalue'));
         }
     }
@@ -64,6 +52,21 @@ class CoreValue extends Controller {
 
             $this->coreValueModel->deleteCoreValue($id);
             header('Location: ' . base_url('corevalue'));
+        }
+    }
+
+    public function getCoreValues() {
+        try {
+            $coreValues = $this->coreValueModel->getAllCoreValues();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $coreValues
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

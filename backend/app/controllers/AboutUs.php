@@ -38,4 +38,19 @@ class AboutUs extends Controller {
             header('Location: ' . base_url('aboutus'));
         }
     }
+
+    public function getAboutUs() {
+        try {
+            $aboutUs = $this->aboutUsModel->getAllAboutUs();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $aboutUs
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

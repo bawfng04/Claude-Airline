@@ -39,4 +39,19 @@ class Achievements extends Controller {
             header('Location: ' . base_url('achievements'));
         }
     }
+
+    public function getAchievements() {
+        try {
+            $achievements = $this->achievementModel->getAllAchievements();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $achievements
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

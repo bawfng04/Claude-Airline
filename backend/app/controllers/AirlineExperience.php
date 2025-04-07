@@ -18,7 +18,7 @@ class AirlineExperience extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
             $title = $_POST['title'];
-            $description = $_POST['description'];
+            $descriptions = $_POST['descriptions'] ?? [];
             $image = null;
 
             // Xử lý upload ảnh
@@ -31,9 +31,9 @@ class AirlineExperience extends Controller {
             }
 
             if ($id) {
-                $this->airlineExperienceModel->updateExperience($id, $title, $description, $image);
+                $this->airlineExperienceModel->updateExperience($id, $title, $image, $descriptions);
             } else {
-                $this->airlineExperienceModel->addExperience($title, $description, $image);
+                $this->airlineExperienceModel->addExperience($title, $image, $descriptions);
             }
 
             header('Location: ' . base_url('airlineexperience'));
@@ -56,6 +56,40 @@ class AirlineExperience extends Controller {
 
             $this->airlineExperienceModel->deleteExperience($id);
             header('Location: ' . base_url('airlineexperience'));
+        }
+    }
+
+    public function getExperienceById() {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $id = $_GET['id'] ?? null;
+    
+            if (!$id || !is_numeric($id)) {
+                jsonResponse(['status' => 'error', 'message' => 'ID không hợp lệ'], 400);
+                return;
+            }
+    
+            $experience = $this->airlineExperienceModel->getExperienceById($id);
+    
+            if ($experience) {
+                jsonResponse(['status' => 'success', 'data' => $experience]);
+            } else {
+                jsonResponse(['status' => 'error', 'message' => 'Không tìm thấy trải nghiệm'], 404);
+            }
+        }
+    }
+
+    public function getExperiences() {
+        try {
+            $experiences = $this->airlineExperienceModel->getAllExperiencesJSON();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $experiences
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }
