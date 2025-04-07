@@ -12,7 +12,7 @@ const Header = () => {
   const [activeLink, setActiveLink] = useState("");
   const [settingsPopup, setSettingsPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") || "false"
+    localStorage.getItem("accessToken") || "false"
   );
   const headerRef = useRef(null);
 

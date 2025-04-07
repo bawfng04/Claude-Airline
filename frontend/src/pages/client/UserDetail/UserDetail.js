@@ -12,6 +12,7 @@ import {
   FaArrowLeft,
   FaUserCircle,
 } from "react-icons/fa";
+import User from "../../../api/userApi"
 
 const UserDetail = () => {
   const [userData, setUserData] = useState({
@@ -27,27 +28,25 @@ const UserDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserData = () => {
+    const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        setTimeout(() => {
-          const email = localStorage.getItem("currentUserEmail");
+        const id = localStorage.getItem("ID");
+        const response = await User.getUserInfo(id);
 
-          // Mock data - in a real app this would be actual user data
-          const userDetails = {
-            email: email || "user@example.com",
-            familyName: "Nguyen",
-            givenName: "Van A",
-            membershipCard: "VIP123456",
-            phoneNumber: "+84 123 456 789",
-            dateOfBirth: "1990-01-01",
-            nationality: "VI",
-          };
-
-          setUserData(userDetails);
-        }, 1000);
+        const userDetails = {
+          email: response.data.email,
+          familyName: response.data.family_name,
+          givenName: response.data.given_name,
+          membershipCard: response.data.membership,
+          phoneNumber: response.data.phone_number,
+          dateOfBirth: response.data.birthday,
+          nationality: response.data.nationality,
+        };
+        setUserData(userDetails);
       } catch (error) {
         console.error("Error fetching user data:", error);
+        alert(error.message);
       } finally {
         setIsLoading(false);
       }

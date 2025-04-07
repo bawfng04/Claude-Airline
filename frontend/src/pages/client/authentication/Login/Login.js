@@ -9,34 +9,18 @@ import {
   FaHome,
   FaUserPlus,
 } from "react-icons/fa";
+import Authen from '../../../../api/authenApi';
+import { useNavigate, Link } from "react-router-dom";
+
 
 const Login = () => {
+  const nagivate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-
-  const handleLogoClick = () => {
-    window.location.href = "/";
-  };
-
-  const handleLogin = () => {
-    const p = localStorage.getItem(email);
-    if (!p) {
-      setSubmitSuccess(false);
-      alert("Username not found");
-      return;
-    }
-    if (p !== password) {
-      setSubmitSuccess(false);
-      alert("Password incorrect");
-      return;
-    }
-    setSubmitSuccess(true);
-    localStorage.setItem("isLoggedIn", "true");
-  };
 
   const validateForm = () => {
     const errors = {};
@@ -54,23 +38,25 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       setIsSubmitting(true);
-
-      // Simulate API call
+      
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        console.log("Login submitted:", {
-          email,
-          password,
-          rememberMe,
-        });
+        const response = await Authen.login(email, password);
+        
+        if (response.data.role === "ADMIN") {
+          window.location.href = process.env.REACT_APP_BASE_URL;
+        }
 
-        // setSubmitSuccess(true);
+        localStorage.setItem("accessToken", response.data.token);
+        localStorage.setItem("ID", response.data.user_id);
+        localStorage.setItem("email", response.data.email);
+        
+        setSubmitSuccess(true);
         setTimeout(() => {
-          // Redirect to dashboard after success
-          // window.location.href = "/dashboard";
-        }, 2000);
+          nagivate("/");
+        }, 4000);
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error during registration:", error);
+        alert(error.data.message)
       } finally {
         setIsSubmitting(false);
       }
@@ -100,12 +86,13 @@ const Login = () => {
     <div className="login-container">
       <div className="login-container-content">
         <div className="login-title-container">
-          <img
-            src={airplaneLogo}
-            alt="Logo"
-            className="login-logo"
-            onClick={handleLogoClick}
-          />
+          <Link to='/'>
+            <img
+              src={airplaneLogo}
+              alt="Logo"
+              className="login-logo"
+            />
+          </Link>
           <h1 className="login-title">Welcome Back</h1>
           <p className="login-subtitle">
             Log in to access your account and travel plans
@@ -131,7 +118,6 @@ const Login = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
               {formErrors.email && (
@@ -154,7 +140,6 @@ const Login = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
               {formErrors.password && (
@@ -192,7 +177,6 @@ const Login = () => {
             type="submit"
             className="login-button"
             disabled={isSubmitting}
-            onClick={handleLogin}
           >
             {isSubmitting ? (
               <>

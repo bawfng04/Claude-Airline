@@ -145,3 +145,20 @@ CREATE TABLE AIRLINE_FLEET (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE USERS (
+    ID INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    FAMILY_NAME VARCHAR(50) NOT NULL, -- Họ
+    GIVEN_NAME VARCHAR(50) NOT NULL, -- Tên
+    EMAIL VARCHAR(100) NOT NULL UNIQUE, -- Địa chỉ email (duy nhất)
+    PASSWORD VARCHAR(255) NOT NULL, -- Mật khẩu đã mã hóa
+    PHONE_NUMBER VARCHAR(20), -- Số điện thoại (không bắt buộc unique)
+    BIRTHDAY DATE NOT NULL, -- Ngày sinh
+    NATIONALITY VARCHAR(50) NOT NULL, -- Quốc tịch
+    MEMBERSHIP VARCHAR(50), -- Hạng thành viên (nếu có)
+    image VARCHAR(255), -- Hình ảnh người dùng (nếu có)
+    ROLE ENUM('USER', 'ADMIN') DEFAULT 'USER', -- Phân quyền
+    ACTIVE BOOLEAN DEFAULT TRUE, -- Trạng thái tài khoản
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
+    UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
+);
