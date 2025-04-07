@@ -174,3 +174,21 @@ VALUES
 (3, 'Our fleet consists of modern, fuel-efficient aircraft designed for comfort and sustainability. Each aircraft is equipped with the latest technology to ensure a smooth and enjoyable flight.'),
 (3, 'We continuously invest in our fleet to enhance passenger comfort and reduce our environmental impact, with a commitment to sustainability at the core of our operations.');
 
+INSERT INTO HOMEPAGE_TOP_DESTINATIONS (destination_image, destination_name, destination_country, destination_price, destination_description, destination_begin, destination_end, destination_offer, destination_category)
+VALUES
+('image1.jpg', 'Paris', 'France', 499.99, 'Explore the city of lights with our exclusive package.', '2023-12-01', '2023-12-10', '20% off for early bookings!', 'Europe'),
+('image2.jpg', 'Tokyo', 'Japan', 699.99, 'Experience the blend of tradition and modernity in Tokyo.', '2024-01-15', '2024-01-25', 'Free guided tours included!', 'Asia'),
+('image3.jpg', 'New York', 'USA', 899.99, 'Discover the vibrant culture and iconic landmarks of New York City.', '2024-02-05', '2024-02-15', 'Book now and get a free city tour!', 'North America');
+
+-- Claude Airlines
+INSERT INTO CLAUDE_AIRLINES (phone_number, email, destination, descr, facebook, twitter, instagram, linkedIn)
+VALUES
+    ('+84 90 123 4567', 'claude-airline@gmail.com', '123 Aviation Blvd, Los Angeles, CA 90045', 'Claude Airlines is dedicated to providing world-class air travel experiences with modern aircraft, exceptional service, and a commitment to safety and sustainability.', "facebook.com",'x.com', 'instagram.com', 'linkedin.com');
+
+--Contact Locations
+INSERT INTO CONTACT_LOCATIONS (des_type, address_string, phone_number, working_hours)
+VALUES
+    ('Main Office', '123 Aviation Blvd, Los Angeles, CA 90045', '+84 90 123 4567', 'Mon-Fri 9am-5pm'),
+    ('Regional Office', '456 Park Avenue, New York, NY 10022', '+84 90 987 6543', 'Mon-Fri 10am-6pm'),
+    ('Branch Office', '789 Michigan Ave, Chicago, IL 60611', '+84 90 555 5555', 'Mon-Fri 8am-4pm');
+

@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 
 //components
-import ExampleComponent from "./pages/client/ExampleComponent/ExampleComponent";
+// import ExampleComponent from "./pages/client/ExampleComponent/ExampleComponent";
 import NotFound from "./pages/client/NotFound/NotFound";
 import Unauthorized from "./pages/client/Unauthorized/Unauthorized";
 import Homepage from "./pages/client/Homepage/Homepage";
@@ -12,6 +12,11 @@ import FAQPage from "./pages/client/FAQ/FAQPage";
 import AboutUs from "./pages/client/AboutUs/AboutUs";
 import Planes from "./pages/client/allPlanes/planes";
 import UserDetail from "./pages/client/UserDetail/UserDetail";
+
+// admin
+import Admin from "./pages/admin/Admin";
+import ManageTopDestination from "./pages/admin/ManageTopDestination";
+import ManageContactLocation from "./pages/admin/ManageContactLocation";
 
 const routes = (
   <>
@@ -26,6 +31,13 @@ const routes = (
     <Route path="/about" element={<AboutUs />} />
     <Route path="/our-fleet" element={<Planes />} />
     <Route path="/user-detail" element={<UserDetail />} />
+    {/* admin */}
+    <Route path="/admin" element={<Admin />} />
+    <Route path="/manage-top-destination" element={<ManageTopDestination />} />
+    <Route
+      path="/manage-contact-location"
+      element={<ManageContactLocation />}
+    />
     <Route path="*" element={<NotFound />} />
   </>
 );
