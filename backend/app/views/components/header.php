@@ -35,6 +35,11 @@
             <div class="container">
                 <ul>
                     <li class="menu-item">
+                        <a href="users" class="menu-link">
+                            <span><i class="bi bi-person-circle"></i> Users</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="faq" class="menu-link">
                             <span><i class="bi bi-patch-question-fill"></i> FAQ</span>
                         </a>

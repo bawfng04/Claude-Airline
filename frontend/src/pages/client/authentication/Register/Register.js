@@ -12,8 +12,11 @@ import {
   FaCheck,
   FaSpinner,
 } from "react-icons/fa";
+import Authen from '../../../../api/authenApi';
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,53 +31,32 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const handleLogoClick = () => {
-    window.location.href = "/";
-  };
-
-  const handleRegister = () => {
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !familyName ||
-      !givenName ||
-      !phoneNumber ||
-      !dateOfBirth ||
-      !nationality
-    ) {
-      setSubmitSuccess(false);
-      return;
-    }
-    if (localStorage.getItem(email) !== null) {
-      alert("Username is already exists!");
-      setSubmitSuccess(false);
-      return;
-    } else {
-      setSubmitSuccess(true);
-      localStorage.setItem(email, password);
-    }
-  };
-
   const validateForm = () => {
     const errors = {};
     if (!email) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email))
       errors.email = "Email address is invalid";
-
+  
+    if (!phoneNumber) errors.phoneNumber = "Phone number is required";
+    else if (!/^\d+$/.test(phoneNumber) )
+      errors.phoneNumber = "Phone number must be numeric";
+    else if (phoneNumber.length !== 10)
+      errors.phoneNumber = "Phone number must be 10 digits";
+  
     if (!password) errors.password = "Password is required";
     else if (password.length < 8)
       errors.password = "Password must be at least 8 characters";
-
+  
     if (password !== confirmPassword)
       errors.confirmPassword = "Passwords do not match";
-
+  
     if (!familyName) errors.familyName = "Family name is required";
     if (!givenName) errors.givenName = "Given name is required";
     if (!dateOfBirth) errors.dateOfBirth = "Date of birth is required";
     if (!nationality) errors.nationality = "Nationality is required";
-
+  
     setFormErrors(errors);
+
     return Object.keys(errors).length === 0;
   };
 
@@ -98,26 +80,28 @@ const Register = () => {
     if (validateForm()) {
       setIsSubmitting(true);
 
-      // Simulate API call
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        console.log("Form submitted:", {
-          email,
+        const response = await Authen.register(
           familyName,
           givenName,
-          membershipCard,
+          email,
+          password,
           phoneNumber,
           dateOfBirth,
           nationality,
-        });
-
-        // setSubmitSuccess(true);
+          membershipCard,
+        );
+        setSubmitSuccess(true);
         setTimeout(() => {
-          // Redirect or reset form after success
-          // window.location.href = "/login";
-        }, 2000);
+          navigate("/login");
+        }, 5000);
       } catch (error) {
-        console.error("Error submitting form:", error);
+        console.error("Error during registration:", error);
+        if (error.status === 400) {
+          alert("Email already exists. Please use a different email.");
+        } else {
+          alert("An error occurred during registration. Please try again.");
+        }
       } finally {
         setIsSubmitting(false);
       }
@@ -148,12 +132,13 @@ const Register = () => {
     <div className="register-container">
       <div className="register-container-content">
         <div className="register-title-container">
-          <img
-            src={airplaneLogo}
-            alt="Logo"
-            className="register-logo"
-            onClick={handleLogoClick}
-          />
+          <Link to="/">
+            <img
+              src={airplaneLogo}
+              alt="Logo"
+              className="register-logo"
+            />
+          </Link>
           <h1 className="register-title">Create Your Account</h1>
           <p className="register-subtitle">
             Join us to access exclusive travel deals and benefits
@@ -180,7 +165,7 @@ const Register = () => {
                     placeholder="Family Name"
                     value={familyName}
                     onChange={(e) => setFamilyName(e.target.value)}
-                    required
+                    
                   />
                 </div>
                 {formErrors.familyName && (
@@ -203,7 +188,7 @@ const Register = () => {
                     placeholder="Given Name"
                     value={givenName}
                     onChange={(e) => setGivenName(e.target.value)}
-                    required
+                    
                   />
                 </div>
                 {formErrors.givenName && (
@@ -227,7 +212,7 @@ const Register = () => {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    required
+                    
                   />
                 </div>
                 {formErrors.dateOfBirth && (
@@ -249,7 +234,7 @@ const Register = () => {
                     className={`register-input ${
                       formErrors.nationality ? "input-error" : ""
                     }`}
-                    required
+                    
                   >
                     <option value="">Select your nationality</option>
                     <option value="US">United States</option>
@@ -288,7 +273,6 @@ const Register = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
               {formErrors.email && (
@@ -304,13 +288,18 @@ const Register = () => {
               <div className="input-with-icon">
                 <FaPhone className="input-icon" />
                 <input
-                  className="register-input"
+                  className={`register-input ${
+                    formErrors.phoneNumber ? "input-error" : ""
+                  }`}
                   type="tel"
                   placeholder="Phone Number"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
+              {formErrors.phoneNumber && (
+                  <span className="error-message">{formErrors.phoneNumber}</span>
+                )}
             </div>
 
             {/* Membership Card */}
@@ -349,7 +338,7 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={handlePasswordChange}
-                  required
+                  
                 />
               </div>
               {formErrors.password && (
@@ -388,7 +377,7 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
+                  
                 />
               </div>
               {formErrors.confirmPassword && (
@@ -400,7 +389,7 @@ const Register = () => {
           </div>
 
           <div className="terms-privacy">
-            <input type="checkbox" id="terms" required />
+            <input type="checkbox" id="terms" required/>
             <label htmlFor="terms">
               I agree to the <a href="/terms">Terms of Service</a> and{" "}
               <a href="/privacy">Privacy Policy</a>
@@ -420,7 +409,6 @@ const Register = () => {
             type="submit"
             className="register-button"
             disabled={isSubmitting}
-            onClick={handleRegister}
           >
             {isSubmitting ? (
               <>
