@@ -65,12 +65,15 @@
                             <input type="text" class="form-control" name="title" id="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="form-label">Mô tả</label>
-                            <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
                             <label for="image" class="form-label">Hình ảnh</label>
                             <input type="file" class="form-control" name="image" id="image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptions" class="form-label">Mô tả</label>
+                            <div id="descriptionContainer">
+                                <textarea class="form-control mb-2" name="descriptions[]" rows="2" placeholder="Nhập mô tả"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addDescription()">Thêm mô tả</button>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -124,17 +127,50 @@
         $(document).ready(function () {
             $('#manageTable').DataTable();
 
+            // Khi nhấn nút "Sửa"
             $('#manageTable').on('click', '.edit-btn', function () {
                 const row = $(this).closest('tr');
                 const id = row.find('td:eq(0)').text();
                 const title = row.find('td:eq(1)').text();
-                const description = row.find('td:eq(2)').text();
+                const image = row.find('td:eq(3)').find('img').attr('src');
 
-                $('#recordId').val(id);
-                $('#title').val(title);
-                $('#description').val(description);
+                // Gửi AJAX để lấy danh sách mô tả
+                $.ajax({
+                    url: 'airlineexperience/getExperienceById',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (response) {
+                        try {
+                            const data = typeof response === 'string' ? JSON.parse(response) : response;
 
-                $('#addEditModal').modal('show');
+                            if (data.status === 'success') {
+                                // Điền thông tin vào modal
+                                $('#recordId').val(id);
+                                $('#title').val(data.data.title);
+
+                                // Xóa các mô tả cũ trong modal
+                                $('#descriptionContainer').empty();
+
+                                // Thêm các mô tả vào modal
+                                data.data.descriptions.forEach(description => {
+                                    const textarea = `<textarea class="form-control mb-2" name="descriptions[]" rows="2">${description}</textarea>`;
+                                    $('#descriptionContainer').append(textarea);
+                                });
+
+                                // Hiển thị modal
+                                $('#addEditModal').modal('show');
+                            } else {
+                                alert(data.message || 'Không thể tải thông tin.');
+                            }
+                        } catch (e) {
+                            console.error('Phản hồi không phải JSON hợp lệ:', response);
+                            alert('Lỗi khi xử lý dữ liệu từ server.');
+                        }
+                    },
+                    error: function () {
+                        alert('Không thể tải thông tin mô tả.');
+                    }
+                });
             });
 
             $('#manageTable').on('click', '.delete-btn', function () {
@@ -151,6 +187,16 @@
                 $('#imageModal').modal('show');
             });
         });
+
+        function addDescription() {
+            const container = document.getElementById('descriptionContainer');
+            const textarea = document.createElement('textarea');
+            textarea.className = 'form-control mb-2';
+            textarea.name = 'descriptions[]';
+            textarea.rows = 2;
+            textarea.placeholder = 'Nhập mô tả';
+            container.appendChild(textarea);
+        }
     </script>
 </body>
 </html>

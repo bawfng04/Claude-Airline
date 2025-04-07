@@ -1,6 +1,5 @@
 <?php
 // app/controllers/Faq.php
-require_once '../app/helpers/jsonResponse.php';
 
 class Faq extends Controller {
     private $faqModel;
@@ -12,7 +11,8 @@ class Faq extends Controller {
     // Hiển thị tất cả câu hỏi
     public function index() {
         $faqs = $this->faqModel->getAllFaqs();
-        $data = ['faqs' => $faqs];
+        $categories = $this->faqModel->getAllCategories(); // Lấy danh mục từ model
+        $data = ['faqs' => $faqs, 'categories' => $categories]; // Truyền danh mục vào view
         $this->view('faq', $data);
     }
 
@@ -23,6 +23,12 @@ class Faq extends Controller {
             $question = trim($_POST['question']);
             $answer = trim($_POST['answer']);
             $category = trim($_POST['category']);
+            $newCategory = isset($_POST['new_category']) ? trim($_POST['new_category']) : null;
+
+            // Kiểm tra nếu người dùng thêm danh mục mới
+            if ($category === 'new' && !empty($newCategory)) {
+                $category = $newCategory;
+            }
 
             if (empty($question) || empty($answer) || empty($category)) {
                 $_SESSION['error'] = 'Vui lòng nhập đầy đủ thông tin!';

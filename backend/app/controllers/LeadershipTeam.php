@@ -58,4 +58,19 @@ class LeadershipTeam extends Controller {
             header('Location: ' . base_url('leadershipteam'));
         }
     }
+
+    public function getTeams() {
+        try {
+            $members = $this->leadershipTeamModel->getAllMembers();
+            jsonResponse([
+                'status' => 'success',
+                'data' => $members
+            ]);
+        } catch (Exception $e) {
+            jsonResponse([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

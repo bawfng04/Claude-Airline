@@ -24,7 +24,7 @@ const routes = (
     <Route path="/unauthorized" element={<Unauthorized />} />
     <Route path="/faq" element={<FAQPage />} />
     <Route path="/about" element={<AboutUs />} />
-    <Route path="/planes" element={<Planes />} />
+    <Route path="/our-fleet" element={<Planes />} />
     <Route path="/user-detail" element={<UserDetail />} />
     <Route path="*" element={<NotFound />} />
   </>

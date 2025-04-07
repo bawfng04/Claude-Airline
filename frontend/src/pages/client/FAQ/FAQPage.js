@@ -1,60 +1,64 @@
-import React, { use, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FAQItem from "./FAQItem";
 import { FaQuestionCircle, FaChevronRight } from "react-icons/fa";
+import Pagination from "./Pagination";
 import faq from "../../../api/apiFAQ";
 
 const FAQPage = () => {
-  const faqItems = [
-    {
-      question: "How do I book a flight?",
-      answer:
-        "To book a flight, navigate to our homepage and use the booking form. Enter your departure and arrival destinations, select your travel dates, and click 'Search Flights'. You'll then be presented with available options where you can select your preferred flight and complete the booking process by entering passenger details and payment information.",
-    },
-    {
-      question: "What is your baggage allowance policy?",
-      answer:
-        "Our standard baggage allowance includes one carry-on bag (max. 7kg) and one checked bag (max. 23kg) per passenger. Premium and business class passengers are entitled to additional baggage allowance. Excess baggage can be purchased during booking or at check-in. Please note that specific routes may have different restrictions, so we recommend checking your flight details.",
-    },
-    {
-      question: "Can I change or cancel my reservation?",
-      answer:
-        "Yes, changes and cancellations can be made through your account on our website or by contacting our customer service. Changes made at least 24 hours before departure typically incur a change fee plus any fare difference. Cancellation policies vary based on the fare type you purchased - flexible fares offer more generous cancellation terms compared to promotional fares.",
-    },
-    {
-      question: "How do I join your frequent flyer program?",
-      answer:
-        "Joining our frequent flyer program is easy and free. Simply click on the 'Join Now' button on our website and complete the registration form. Once registered, you'll receive a membership number that you can use when booking flights to earn miles. These miles can be redeemed for free flights, upgrades, and various other rewards with our partner airlines and businesses.",
-    },
-    {
-      question:
-        "Do you provide special assistance for passengers with disabilities?",
-      answer:
-        "Yes, we offer special assistance services for passengers with disabilities or reduced mobility. These services include wheelchair assistance, priority boarding, and special seating arrangements. To ensure a smooth travel experience, please inform us of any requirements at least 48 hours before your flight by contacting our customer service team or including this information during the booking process.",
-    },
-    {
-      question: "What COVID-19 measures are currently in place?",
-      answer:
-        "We continue to maintain enhanced hygiene protocols on all our flights. These include regular disinfection of high-touch surfaces, HEPA air filters on aircraft, and modified meal services where appropriate. Requirements for testing, vaccination, or mask-wearing vary by destination and are regularly updated in line with local regulations. Please check the latest requirements for your specific route before traveling.",
-    },
-    {
-      question: "How early should I arrive at the airport?",
-      answer:
-        "We recommend arriving at the airport at least 2 hours before domestic flights and 3 hours before international flights. This allows adequate time for check-in, security screening, immigration procedures (for international flights), and boarding. During peak travel seasons or at busy airports, you may want to allow additional time to avoid any stress from unexpected delays.",
-    },
-  ];
+  const [faqItems, setFaqItems] = useState([]); 
+  const [filteredItems, setFilteredItems] = useState([]); // Danh sách câu hỏi sau khi lọc
+  const [categories, setCategories] = useState([]); // Danh sách danh mục
+  const [selectedCategory, setSelectedCategory] = useState("All"); // Danh mục được chọn
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Số lượng câu hỏi trên mỗi trang
 
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
         const response = await faq.getAllFAQs();
-        console.log(response.data);
+        setFaqItems(response.data); // Lưu danh sách câu hỏi gốc
+        setFilteredItems(response.data); 
+
+        // Trích xuất danh mục duy nhất
+        const uniqueCategories = ["All", ...new Set(response.data.map((item) => item.category))];
+        setCategories(uniqueCategories);
       } catch (error) {
         console.error("Error fetching FAQs:", error);
       }
     };
     fetchFAQs();
-  }
-  , []);
+  }, []);
+
+  // Xử lý tìm kiếm
+  const handleSearch = () => {
+    const filtered = faqItems.filter((item) =>
+      item.question.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory === "All" || item.category === selectedCategory)
+    );
+    setFilteredItems(filtered);
+    setCurrentPage(1); // Reset về trang đầu tiên
+  };
+
+  // Xử lý chọn danh mục
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    const filtered = faqItems.filter((item) =>
+      (category === "All" || item.category === category) &&
+      item.question.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredItems(filtered);
+    setCurrentPage(1); // Reset về trang đầu tiên
+  };
+
+  // Tính toán dữ liệu hiển thị
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="max-w-[1200px] mt-12 mx-[auto] mb-20 p-8 font-['Segoe_UI',_Arial,_sans-serif] md:p-6 md:mx-[auto] md:my-8">
@@ -74,27 +78,46 @@ const FAQPage = () => {
         </p>
       </div>
 
+      {/* Ô tìm kiếm */}
       <div className="flex justify-center mt-8 mx-[0] mb-12 animate-[fadeInUp_0.8s_ease-out_forwards]">
         <input
           type="text"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }} // Gọi hàm tìm kiếm khi nhấn Enter
           placeholder="Search for questions..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật từ khóa tìm kiếm
           className="w-[70%] px-6 py-3.5 text-[1rem] border-[2px] border-[solid] border-color rounded-tl-[8px] rounded-bl-[8px] [transition:all_0.3s_ease] focus:outline-[none] focus:[box-shadow:0_0_0_3px_rgba(139,_0,_0,_0.1)] focus:border-primary-color md:w-[65%]"
         />
-        <button className="px-6 py-3.5 text-[white] border-[none] rounded-tr-[8px] rounded-br-[8px] cursor-pointer [transition:all_0.3s_ease] font-semibold bg-primary-color hover:bg-primary-light hover:-translate-y-[2px]">
+        <button
+          onClick={handleSearch} // Gọi hàm tìm kiếm
+          className="px-6 py-3.5 text-[white] border-[none] rounded-tr-[8px] rounded-br-[8px] cursor-pointer [transition:all_0.3s_ease] font-semibold bg-primary-color hover:bg-primary-light hover:-translate-y-[2px]"
+        >
           Search
         </button>
       </div>
 
+      {/* Nút danh mục */}
       <div className="flex flex-wrap justify-center gap-4 mb-12 animate-[fadeInUp_0.8s_ease-out_forwards] [animation-delay:0.2s] md:gap-2">
-        <button className="px-6 py-3 border-[2px] border-[solid] rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium text-[white] -translate-y-[3px] [box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] bg-primary-color border-primary-color md:px-4 md:py-2 md:text-[0.9rem]">All</button>
-        <button className="px-6 py-3 bg-[#f8f9fa] border-[2px] border-[solid] border-color rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium hover:text-[white] hover:-translate-y-[3px] hover:[box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] hover:bg-primary-color hover:border-primary-color md:px-4 md:py-2 md:text-[0.9rem]">Booking</button>
-        <button className="px-6 py-3 bg-[#f8f9fa] border-[2px] border-[solid] border-color rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium hover:text-[white] hover:-translate-y-[3px] hover:[box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] hover:bg-primary-color hover:border-primary-color md:px-4 md:py-2 md:text-[0.9rem]">Baggage</button>
-        <button className="px-6 py-3 bg-[#f8f9fa] border-[2px] border-[solid] border-color rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium hover:text-[white] hover:-translate-y-[3px] hover:[box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] hover:bg-primary-color hover:border-primary-color md:px-4 md:py-2 md:text-[0.9rem]">Check-in</button>
-        <button className="px-6 py-3 bg-[#f8f9fa] border-[2px] border-[solid] border-color rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium hover:text-[white] hover:-translate-y-[3px] hover:[box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] hover:bg-primary-color hover:border-primary-color md:px-4 md:py-2 md:text-[0.9rem]">Special Assistance</button>
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => handleCategorySelect(category)}
+            className={`px-6 py-3 border-[2px] border-[solid] rounded-[50px] cursor-pointer [transition:all_0.3s_ease] font-medium ${
+              selectedCategory === category
+                ? "text-[white] -translate-y-[3px] [box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] bg-primary-color border-primary-color"
+                : "bg-light-color hover:text-[white] hover:-translate-y-[3px] hover:[box-shadow:0_5px_15px_rgba(139,_0,_0,_0.2)] hover:bg-primary-color hover:border-primary-color"
+            } md:px-4 md:py-2 md:text-[0.9rem]`}
+          >
+            {category}
+          </button>
+        ))}
       </div>
 
+      {/* Danh sách câu hỏi */}
       <div className="flex flex-col gap-6 mb-16">
-      {faqItems.map((item, index) => (
+        {currentItems.map((item, index) => (
           <FAQItem 
             key={index} 
             question={item.question} 
@@ -103,6 +126,13 @@ const FAQPage = () => {
           />
         ))}
       </div>
+
+      {/* Phân trang */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       <div className="bg-[linear-gradient(135deg,_#f8f9fa_0%,_#ffffff_100%)] p-12 text-center rounded-[15px] [box-shadow:0_10px_30px_rgba(0,_0,_0,_0.05)] mt-16 animate-[fadeInUp_0.8s_ease-out_forwards] [animation-delay:0.7s] md:p-8">
         <h2 className="mb-4 text-[1.8rem] text-primary-color">Still have questions?</h2>

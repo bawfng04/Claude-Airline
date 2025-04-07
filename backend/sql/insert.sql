@@ -1,11 +1,118 @@
 -- Chèn dữ liệu mẫu vào bảng faq
 INSERT INTO faq (question, answer, category)
-VALUES
-('Làm thế nào để đặt vé máy bay?', 'Bạn có thể đặt vé máy bay qua website hoặc ứng dụng di động của chúng tôi.', 'General'),
-('Tôi có thể hoàn vé không?', 'Có, bạn có thể hoàn vé theo chính sách hoàn vé của chúng tôi.', 'General'),
-('Làm thế nào để thay đổi thông tin hành khách?', 'Bạn có thể thay đổi thông tin hành khách qua mục Quản lý đặt chỗ trên website.', 'Technical'),
-('Phương thức thanh toán nào được hỗ trợ?', 'Chúng tôi hỗ trợ thanh toán qua thẻ tín dụng, thẻ ghi nợ và ví điện tử.', 'Billing'),
-('Tôi có thể mang bao nhiêu hành lý xách tay?', 'Bạn được phép mang 7kg hành lý xách tay miễn phí.', 'General');
+VALUES 
+-- Booking
+(
+  'How do I book a flight?',
+  'To book a flight, navigate to our homepage and use the booking form. Enter your departure and arrival destinations, select your travel dates, and click ''Search Flights''. You''ll then be presented with available options where you can select your preferred flight and complete the booking process by entering passenger details and payment information.',
+  'Booking'
+),
+(
+  'Can I book a flight for someone else?',
+  'Yes, you can book a flight for someone else. Simply enter their details in the passenger information section during the booking process.',
+  'Booking'
+),
+(
+  'What payment methods do you accept?',
+  'We accept major credit cards, debit cards, and online payment methods such as PayPal. Some routes may also allow payment via bank transfer.',
+  'Booking'
+),
+-- Baggage
+(
+  'What is your baggage allowance policy?',
+  'Our standard baggage allowance includes one carry-on bag (max. 7kg) and one checked bag (max. 23kg) per passenger. Premium and business class passengers are entitled to additional baggage allowance. Excess baggage can be purchased during booking or at check-in. Please note that specific routes may have different restrictions, so we recommend checking your flight details.',
+  'Baggage'
+),
+(
+  'Can I bring sports equipment as checked baggage?',
+  'Yes, sports equipment such as golf clubs, skis, and bicycles can be checked in. Additional fees may apply depending on the size and weight of the equipment.',
+  'Baggage'
+),
+(
+  'What items are prohibited in carry-on baggage?',
+  'Prohibited items include sharp objects, flammable liquids, and any items that pose a security risk. Please check our website for a full list of restricted items.',
+  'Baggage'
+),
+-- Reservation
+(
+  'Can I change or cancel my reservation?',
+  'Yes, changes and cancellations can be made through your account on our website or by contacting our customer service. Changes made at least 24 hours before departure typically incur a change fee plus any fare difference. Cancellation policies vary based on the fare type you purchased - flexible fares offer more generous cancellation terms compared to promotional fares.',
+  'Reservation'
+),
+(
+  'How do I check my booking status?',
+  'You can check your booking status by logging into your account on our website or using the booking reference number provided in your confirmation email.',
+  'Reservation'
+),
+(
+  'What happens if I miss my flight?',
+  'If you miss your flight, please contact our customer service team immediately. Depending on your fare type, you may be able to rebook for a later flight with an additional fee.',
+  'Reservation'
+),
+-- Membership
+(
+  'How do I join your frequent flyer program?',
+  'Joining our frequent flyer program is easy and free. Simply click on the ''Join Now'' button on our website and complete the registration form. Once registered, you''ll receive a membership number that you can use when booking flights to earn miles. These miles can be redeemed for free flights, upgrades, and various other rewards with our partner airlines and businesses.',
+  'Membership'
+),
+(
+  'How do I redeem my frequent flyer miles?',
+  'You can redeem your miles for free flights, seat upgrades, and other rewards through your account on our website. Simply log in and navigate to the ''Redeem Miles'' section.',
+  'Membership'
+),
+(
+  'Do my frequent flyer miles expire?',
+  'Yes, miles typically expire after 24 months of inactivity. To keep your account active, ensure you earn or redeem miles within this period.',
+  'Membership'
+),
+-- Accessibility
+(
+  'Do you provide special assistance for passengers with disabilities?',
+  'Yes, we offer special assistance services for passengers with disabilities or reduced mobility. These services include wheelchair assistance, priority boarding, and special seating arrangements. To ensure a smooth travel experience, please inform us of any requirements at least 48 hours before your flight by contacting our customer service team or including this information during the booking process.',
+  'Accessibility'
+),
+(
+  'Can I travel with a service animal?',
+  'Yes, service animals are allowed on our flights. Please provide documentation and notify us at least 48 hours before your flight to ensure proper arrangements.',
+  'Accessibility'
+),
+(
+  'Are there special facilities for visually impaired passengers?',
+  'Yes, we provide assistance for visually impaired passengers, including priority boarding and in-flight support. Please inform us of your needs during booking.',
+  'Accessibility'
+),
+-- Health & Safety
+(
+  'What COVID-19 measures are currently in place?',
+  'We continue to maintain enhanced hygiene protocols on all our flights. These include regular disinfection of high-touch surfaces, HEPA air filters on aircraft, and modified meal services where appropriate. Requirements for testing, vaccination, or mask-wearing vary by destination and are regularly updated in line with local regulations. Please check the latest requirements for your specific route before traveling.',
+  'Health & Safety'
+),
+(
+  'Do I need a COVID-19 test before flying?',
+  'Testing requirements vary by destination. Please check the latest travel advisories for your departure and arrival locations.',
+  'Health & Safety'
+),
+(
+  'What should I do if I feel unwell before my flight?',
+  'If you feel unwell, we recommend consulting a doctor and contacting our customer service team to discuss your options for rescheduling your flight.',
+  'Health & Safety'
+),
+-- Travel Guidelines
+(
+  'How early should I arrive at the airport?',
+  'We recommend arriving at the airport at least 2 hours before domestic flights and 3 hours before international flights. This allows adequate time for check-in, security screening, immigration procedures (for international flights), and boarding. During peak travel seasons or at busy airports, you may want to allow additional time to avoid any stress from unexpected delays.',
+  'Travel Guidelines'
+),
+(
+  'What documents do I need for international travel?',
+  'For international travel, you will need a valid passport, visa (if required), and any additional documents specified by the destination country. Please check the entry requirements before your trip.',
+  'Travel Guidelines'
+),
+(
+  'Can I bring food and drinks on board?',
+  'Yes, you can bring food and non-alcoholic beverages on board. However, liquids must comply with the 100ml limit for carry-on baggage.',
+  'Travel Guidelines'
+);
 
 INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
 VALUES
@@ -15,15 +122,55 @@ VALUES
 
 INSERT INTO ABOUT_US (title, content)
 VALUES
-('Our Story', 'Founded in 1998, our airline began with a small fleet of just 3
-              aircraft serving domestic routes. Today, we\'ve grown to become one
-              of Southeast Asia\'s leading carriers, connecting passengers to
-              over 100 destinations worldwide with a modern fleet of 78
-              aircraft.'),
-('Our Mission', 'To connect people and places with safe, reliable air travel
-                  that is accessible to all, while delivering exceptional
-                  service that exceeds expectations at every step of the
-                  journey.'),
-('Our Vision', 'To be recognized globally as the airline of choice, known for
-                  innovation, sustainability, and a customer experience that
-                  sets the industry standard.');
+('Our Story', 'Founded in 1998, our airline began with a small fleet of just 3 aircraft serving domestic routes. Today, we\'ve grown to become one of Southeast Asia\'s leading carriers, connecting passengers to over 100 destinations worldwide with a modern fleet of 78 aircraft.'),
+('Our Mission', 'To connect people and places with safe, reliable air travel that is accessible to all, while delivering exceptional service that exceeds expectations at every step of the journey.'),
+('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer experience that sets the industry standard.');
+
+
+INSERT INTO CORE_VALUE (title, description)
+VALUES
+('Customer Focus', 'We prioritize our customers in everything we do, ensuring their needs and preferences are at the forefront of our services.', 'FaUsers'),
+('Safety First', 'Safety is non-negotiable, and we maintain the highest standards in all our operations.', 'FaCheckCircle'),
+('Excellence', 'We strive for excellence in every aspect of our service, continuously improving to exceed expectations.', 'FaMedal'),
+('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory')
+
+INSERT INTO ACHIEVEMENTS (title, description, year)
+VALUES
+('Best Airline in Asia', 'Awarded by Skytrax World Airline Awards for the second consecutive year', '2024'),
+('Best Airline in Southeast Asia', 'Awarded by Skytrax World Airline Awards for the third consecutive year', '2023'),
+('Top 10 Airlines Worldwide', 'Ranked by AirlineRatings.com for safety and service excellence', '2022'),
+('Green Airline of the Year', 'Recognized for our commitment to sustainability and reducing carbon emissions', '2021'),
+('Best Cabin Crew', 'Awarded by Skytrax World Airline Awards for outstanding service and hospitality', '2020'),
+('Best Low-Cost Airline', 'Recognized for providing affordable travel options without compromising on quality', '2019'),
+('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018')
+
+
+INSERT INTO LEADERSHIP_TEAM (name, position, bio)
+VALUES
+('John Doe', 'CEO', 'John has over 20 years of experience in the aviation industry and has been instrumental in the airline\'s growth and success. He is passionate about customer service and innovation.'),
+('Jane Smith', 'CFO', 'Jane is a seasoned finance professional with a strong background in corporate finance and strategic planning. She ensures the airline\'s financial health and sustainability.'),
+('Michael Brown', 'COO', 'Michael oversees the airline\'s operations, ensuring safety, efficiency, and reliability in all aspects of our service.'),
+('Emily Davis', 'CMO', 'Emily leads the marketing and customer experience teams, focusing on enhancing brand loyalty and customer satisfaction.');
+
+INSERT INTO AIRLINE_FLEET (aircraft_model, description)
+VALUES
+('Boeing 737 MAX', "The Boeing 737 MAX is a narrow-body aircraft designed for short to medium-haul routes, featuring advanced aerodynamics and fuel efficiency."),
+('Airbus A320', 'The Airbus A320 is a popular choice for airlines around the world, offering comfort and advanced technology for passengers and crew.'),
+('Boeing 787 Dreamliner', 'The Boeing 787 Dreamliner is a long-haul aircraft that provides exceptional fuel efficiency and passenger comfort with its spacious cabin and modern amenities.'),
+('Airbus A350', 'The Airbus A350 is a state-of-the-art long-haul aircraft designed for maximum comfort and fuel efficiency, featuring the latest in aviation technology.');
+
+INSERT INTO AIRLINE_EXPERIENCE (title)
+VALUES
+('Comfort Above All'),
+('Culinary Excellence'),
+('Our Fleet');
+
+INSERT INTO EXPERIENCE_DESCRIPTION (airline_experience_id, description)
+VALUES
+(1, 'Our aircraft are equipped with ergonomically designed seats, providing optimal comfort even on long-haul flights. With generous legroom and adjustable headrests, you can relax and arrive at your destination feeling refreshed.'),
+(1, 'Premium cabins feature fully-flat beds and private suites for an unparalleled travel experience.'),
+(2, 'We believe that airline food should be something to look forward to. Our menus are crafted by award-winning chefs, featuring both international favorites and local specialties from our destination countries.'),
+(2, 'All meals are prepared using fresh, high-quality ingredients, with special dietary requirements accommodated with advance notice.'),
+(3, 'Our fleet consists of modern, fuel-efficient aircraft designed for comfort and sustainability. Each aircraft is equipped with the latest technology to ensure a smooth and enjoyable flight.'),
+(3, 'We continuously invest in our fleet to enhance passenger comfort and reduce our environmental impact, with a commitment to sustainability at the core of our operations.');
+

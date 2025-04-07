@@ -1,40 +1,27 @@
-import React from "react";
-import Boeing_787 from "../../../assets/boeing-787.jpg";
-import Airbus_A350 from "../../../assets/airbus-a350.jpg";
-import Boeing_737_MAX from "../../../assets/boeing-737-max.jpg";
-import Airbus_A320neo from "../../../assets/airbus-a320neo.jpg";
+import React, { useState, useEffect } from "react";
+import about from '../../../api/apiAboutUs';
 import {
   FaPlane,
   FaChevronRight,
 } from "react-icons/fa";
 
 const FleetPage = () => {
-  const fleet = [
-    {
-      name: "Boeing 787 Dreamliner",
-      image: Boeing_787,
-      description:
-        "The Boeing 787 Dreamliner is a long-haul, mid-size wide-body, twin-engine jet airliner known for its fuel efficiency and passenger comfort.",
-    },
-    {
-      name: "Airbus A350",
-      image: Airbus_A350,
-      description:
-        "The Airbus A350 is a state-of-the-art aircraft offering exceptional range, fuel efficiency, and advanced passenger amenities.",
-    },
-    {
-      name: "Boeing 737 MAX",
-      image: Boeing_737_MAX,
-      description:
-        "The Boeing 737 MAX is a narrow-body aircraft designed for short to medium-haul routes, featuring advanced aerodynamics and fuel efficiency.",
-    },
-    {
-      name: "Airbus A320neo",
-      image: Airbus_A320neo,
-      description:
-        "The Airbus A320neo is a popular choice for short-haul flights, offering reduced emissions and enhanced passenger comfort.",
-    },
-  ];
+  const [fleet, setFleet] = useState([]);
+
+  useEffect(() => {
+    const fetchFleet = async () => {
+      try {
+        const response = await about.getAllFleets();
+        setFleet(response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.error("Error fetching fleet data:", error);
+      }
+    };
+
+    fetchFleet();
+  }, []);
 
   return (
     <div className="font-segoe-ui text-[#343a40] overflow-x-hidden">
@@ -72,7 +59,7 @@ const FleetPage = () => {
               {/* Image Section */}
               <div className="flex-[70%] flex justify-center">
                 <img
-                  src={plane.image}
+                  src={`${process.env.REACT_APP_BASE_URL}uploads/${plane.image}`}
                   alt={plane.name}
                   className="w-full h-[80%] rounded-[20px] shadow-lg object-cover transition-transform duration-300 group-hover:scale-105"
                 />

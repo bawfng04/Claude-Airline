@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosClient from "./apiManager";
 
 const faq = {

@@ -25,7 +25,7 @@ class CoreValueModel extends Database {
         $this->query("INSERT INTO core_value (title, description, icon) VALUES (:title, :description, :icon)");
         $this->bind(':title', $title);
         $this->bind(':description', $description);
-        $this->bind(':icon', $icon);
+        $this->bind(':icon', $icon); // Lưu text của icon
         return $this->execute();
     }
 
@@ -33,7 +33,7 @@ class CoreValueModel extends Database {
     public function updateCoreValue($id, $title, $description, $icon = null) {
         if ($icon) {
             $this->query("UPDATE core_value SET title = :title, description = :description, icon = :icon WHERE id = :id");
-            $this->bind(':icon', $icon);
+            $this->bind(':icon', $icon); // Lưu text của icon
         } else {
             $this->query("UPDATE core_value SET title = :title, description = :description WHERE id = :id");
         }

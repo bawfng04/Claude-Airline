@@ -21,7 +21,7 @@
                                 <th>ID</th>
                                 <th>Tiêu đề</th>
                                 <th>Mô tả</th>
-                                <th>Icon</th>
+                                <th>Icon (Font Awesome)</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -31,14 +31,7 @@
                                     <td><?php echo htmlspecialchars($coreValue['id']); ?></td>
                                     <td><?php echo htmlspecialchars($coreValue['title']); ?></td>
                                     <td><?php echo htmlspecialchars($coreValue['description']); ?></td>
-                                    <td>
-                                        <?php if (!empty($coreValue['icon'])): ?>
-                                            <img src="uploads/<?php echo htmlspecialchars($coreValue['icon']); ?>" 
-                                                 alt="Icon" 
-                                                 class="img-thumbnail" 
-                                                 style="width: 50px; height: 50px;">
-                                        <?php endif; ?>
-                                    </td>
+                                    <td><?php echo htmlspecialchars($coreValue['icon']); ?></td>
                                     <td>
                                         <?php echo getActionButtons($coreValue['id']); ?>
                                     </td>
@@ -71,8 +64,8 @@
                             <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="icon" class="form-label">Icon</label>
-                            <input type="file" class="form-control" name="icon" id="icon" accept="image/*">
+                            <label for="icon" class="form-label">Tên Icon (Font Awesome)</label>
+                            <input type="text" class="form-control" name="icon" id="icon" placeholder="Tên Icon (Font Awesome)" required>
                         </div>
                     </div>
                     <div class="modal-footer">
