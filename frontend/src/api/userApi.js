@@ -1,10 +1,12 @@
 import axiosClient from "./apiManager";
 
 const user = {
-    getUserInfo: async (user_id) => { 
+    getUserInfo: async (token) => { 
         try {
-            const response = await axiosClient.post("users/getUserInfo", {
-                user_id: user_id,
+            const response = await axiosClient.get("users/getUserInfo", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
             return response.data;
         } catch (error) {

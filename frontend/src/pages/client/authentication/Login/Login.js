@@ -40,15 +40,13 @@ const Login = () => {
       setIsSubmitting(true);
       
       try {
-        const response = await Authen.login(email, password);
+        const response = await Authen.login(email, password, rememberMe);
         
         if (response.data.role === "ADMIN") {
           window.location.href = process.env.REACT_APP_BASE_URL;
         }
 
         localStorage.setItem("accessToken", response.data.token);
-        localStorage.setItem("ID", response.data.user_id);
-        localStorage.setItem("email", response.data.email);
         
         setSubmitSuccess(true);
         setTimeout(() => {

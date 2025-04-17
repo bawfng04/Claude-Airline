@@ -14,3 +14,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 # Lấy tất cả những gì sau public/ (ví dụ home/index) và chuyển thành tham số url cho index.php.
 # [QSA] giữ lại các query string khác (nếu có), [L] là dừng xử lý rule tại đ
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>

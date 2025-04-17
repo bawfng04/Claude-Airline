@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/../helpers/JwtHelper.php';
+require_once __DIR__ . '/../config/env.php';
+loadEnv();
+
 class Users extends Controller {
     private $userModel;
 
@@ -168,8 +172,7 @@ class Users extends Controller {
                 // Lấy dữ liệu từ request
                 $rawInput = file_get_contents("php://input");
                 $data = json_decode($rawInput, true);
-
-                // Nếu có lỗi khi parse JSON
+    
                 if (!is_array($data)) {
                     jsonResponse([
                         'status' => 'error',
@@ -177,11 +180,12 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-
-                // Kiểm tra dữ liệu đầu vào
+    
+                // Lấy email, password và remember
                 $email = trim($data['email'] ?? '');
                 $password = trim($data['password'] ?? '');
-
+                $remember = $data['remember'] ?? false;
+    
                 if (empty($email) || empty($password)) {
                     jsonResponse([
                         'status' => 'error',
@@ -189,10 +193,10 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-
-                // Lấy thông tin người dùng từ cơ sở dữ liệu
+    
+                // Lấy người dùng từ DB
                 $user = $this->userModel->getUserByEmail($email);
-
+    
                 if (!$user) {
                     jsonResponse([
                         'status' => 'error',
@@ -200,7 +204,7 @@ class Users extends Controller {
                     ], 404);
                     return;
                 }
-
+    
                 // Kiểm tra mật khẩu
                 if (!password_verify($password, $user['PASSWORD'])) {
                     jsonResponse([
@@ -209,7 +213,7 @@ class Users extends Controller {
                     ], 401);
                     return;
                 }
-
+    
                 // Kiểm tra trạng thái tài khoản
                 if (!$user['ACTIVE']) {
                     jsonResponse([
@@ -218,24 +222,40 @@ class Users extends Controller {
                     ], 403);
                     return;
                 }
+    
+                // ==========================
+                // Tạo JWT (thuần PHP)
+                // ==========================
+                $jwtHelper = new JwtHelper();
 
-                // Tạo token (giả lập, bạn có thể thay bằng JWT hoặc các phương pháp khác)
-                $token = base64_encode(json_encode([
+                $secret = getenv('JWT_SECRET'); // bạn nên cho vào file cấu hình
+    
+                // Thời gian hết hạn token
+                $exp = $remember ? (time() + 60 * 60 * 24 * 30) : (time() + 60 * 60 * 2); // 30 ngày hoặc 2 giờ
+    
+                $header = [
+                    'alg' => 'HS256',
+                    'typ' => 'JWT'
+                ];
+    
+                $payload = [
                     'id' => $user['ID'],
                     'email' => $user['EMAIL'],
-                    'role' => $user['ROLE'],
-                    'timestamp' => time()
-                ]));
-
-                // Trả về phản hồi thành công
+                    'exp' => $exp
+                ];
+    
+                $jwt = $jwtHelper->generateJWT($header, $payload, $secret);
+    
+                // ==========================
+                // Trả kết quả
+                // ==========================
                 jsonResponse([
                     'status' => 'success',
                     'message' => 'Đăng nhập thành công!',
                     'data' => [
-                        'user_id' => $user['ID'],
-                        'email' => $user['EMAIL'],
                         'role' => $user['ROLE'],
-                        'token' => $token
+                        'token' => $jwt,
+                        'token_expiration' => $exp
                     ]
                 ]);
             } catch (Exception $e) {
@@ -251,37 +271,28 @@ class Users extends Controller {
             ], 405);
         }
     }
-
+    
     public function getUserInfo() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             try {
-                // Lấy dữ liệu từ request
-                $rawInput = file_get_contents("php://input");
-                $data = json_decode($rawInput, true);
-
-                // Nếu có lỗi khi parse JSON
-                if (!is_array($data)) {
+                // Gọi middleware xác thực JWT
+                require_once __DIR__ . '/../middlewares/authMiddleware.php';
+                $authPayload = authMiddleware(); // trả về payload nếu hợp lệ
+    
+                // Lấy user_id từ token (đã xác thực)
+                $userId = $GLOBALS['user_id'];
+    
+                if (!$userId) {
                     jsonResponse([
                         'status' => 'error',
-                        'message' => 'Dữ liệu gửi lên không hợp lệ!'
-                    ], 400);
+                        'message' => 'Không tìm thấy user_id trong token!'
+                    ], 401);
                     return;
                 }
-
-                // Kiểm tra dữ liệu đầu vào
-                $userId = trim($data['user_id'] ?? '');
-
-                if (empty($userId)) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => $data
-                    ], 400);
-                    return;
-                }
-
-                // Lấy thông tin người dùng từ cơ sở dữ liệu
+    
+                // Lấy thông tin người dùng từ CSDL
                 $user = $this->userModel->getUserById($userId);
-
+    
                 if (!$user) {
                     jsonResponse([
                         'status' => 'error',
@@ -289,7 +300,7 @@ class Users extends Controller {
                     ], 404);
                     return;
                 }
-
+    
                 // Trả về thông tin người dùng
                 jsonResponse([
                     'status' => 'success',
@@ -317,5 +328,5 @@ class Users extends Controller {
                 'message' => 'Phương thức không được hỗ trợ!'
             ], 405);
         }
-    }
+    }    
 }

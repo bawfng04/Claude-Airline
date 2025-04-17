@@ -31,8 +31,9 @@ const UserDetail = () => {
     const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        const id = localStorage.getItem("ID");
-        const response = await User.getUserInfo(id);
+        const token = localStorage.getItem("accessToken");
+        
+        const response = await User.getUserInfo(token);
 
         const userDetails = {
           email: response.data.email,

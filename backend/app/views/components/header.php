@@ -44,9 +44,6 @@
                             <span><i class="bi bi-patch-question-fill"></i> FAQ</span>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        
-                    </li>
                     <li class="menu-item  has-sub">
                         <a href="#" class='menu-link'>
                             <span><i class="bi bi-stack"></i> About Us</span>
