@@ -4,6 +4,7 @@ import airplaneLogo from "../../assets/airplaneLogo.jpg";
 // import Settings from "../../assets/Settings.png";
 import { FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import userDefaultAvatar from "../../assets/userDefaultIcon.svg";
+import { isTokenValid } from "../../helpers/checkValidToken"
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,9 +12,12 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
   const [settingsPopup, setSettingsPopup] = useState(false);
+  const rawToken = localStorage.getItem("accessToken");
+  
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("accessToken") || "false"
+    rawToken && isTokenValid(rawToken) ? 1 : 0
   );
+
   const headerRef = useRef(null);
 
   const handleAvatarClick = () => {
@@ -25,13 +29,13 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem("isLoggedIn", "false");
+    localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
     window.location.reload();
   };
 
   // Detect current page for active link styling
-  useEffect(() => {
+  useEffect(() => {    
     const path = window.location.pathname;
     if (path === "/" || path === "/home") setActiveLink("home");
     else if (path.includes("/about")) setActiveLink("about");
@@ -196,7 +200,7 @@ const Header = () => {
             <FaSearch />
           </button>
 
-          {isLoggedIn === "false" ? (
+          {!isLoggedIn ? (
             <div className="header-auth-buttons">
               <a
                 href="/login"

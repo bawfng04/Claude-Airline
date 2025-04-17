@@ -5,4 +5,4 @@ apphosting.yaml
 
 /backend/public/uploads/*
 
-/backend/app/config/*
+/backend/app/.env

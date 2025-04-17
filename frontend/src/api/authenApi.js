@@ -19,13 +19,14 @@ const authen = {
             throw error.response;
         }
     },
-    login: async (email, password) => { 
-        
+    login: async (email, password, remember) => {         
         try {
             const response = await axiosClient.post("users/login", {
                 email: email,
                 password: password,
+                remember: remember,
             });
+            
             return response.data;
         } catch (error) {
             console.error("Error: ", error);
