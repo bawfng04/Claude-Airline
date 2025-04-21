@@ -4,6 +4,7 @@ import {
   CREATE_TOP_DESTINATION_API,
   DELETE_TOP_DESTINATION_API,
   UPDATE_TOP_DESTINATION_API,
+  API_URL,
 } from "../../bang_config/apis";
 import "./AdminHomepage.css";
 
@@ -11,6 +12,8 @@ const ManageTopDestination = () => {
   const [topDestinations, setTopDestinations] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // State cho form sửa
   const [editingDestination, setEditingDestination] = useState({
     id: "",
     destination_image: "",
@@ -23,8 +26,12 @@ const ManageTopDestination = () => {
     destination_offer: "",
     destination_category: "",
   });
+  const [editingFile, setEditingFile] = useState(null); // State lưu file đang sửa
+  const [editingImagePreview, setEditingImagePreview] = useState(""); // State cho preview ảnh sửa
+
+  // State cho form thêm mới
   const [newDestination, setNewDestination] = useState({
-    destination_image: "",
+    // destination_image: "",
     destination_name: "",
     destination_country: "",
     destination_price: "",
@@ -34,71 +41,94 @@ const ManageTopDestination = () => {
     destination_offer: "",
     destination_category: "",
   });
+  const [newFile, setNewFile] = useState(null); // State lưu file mới
+  const [newImagePreview, setNewImagePreview] = useState(""); // State cho preview ảnh mới
 
-  // lấy hết top destination
+  // --- Hàm fetch dữ liệu ---
   const fetchTopDestinations = async () => {
     try {
+      // Sử dụng API_BASE_URL đã được cấu hình trong axios hoặc định nghĩa riêng
       const response = await fetch(GET_TOP_DESTINATION_API);
       const result = await response.json();
       if (result.status === 200) {
-        setTopDestinations(result.data);
+        const destinationsWithFullImagePath = result.data.map((dest) => ({
+          ...dest,
+          // Giả sử API_BASE_URL là http://localhost/backend/public
+          // và destination_image là /uploads/destinations/abc.jpg
+          // thì fullImagePath sẽ là http://localhost/backend/public/uploads/destinations/abc.jpg
+          fullImagePath: dest.destination_image
+            ? `${API_URL}${dest.destination_image}`
+            : null,
+        }));
+        setTopDestinations(destinationsWithFullImagePath);
       } else {
-        console.error("Error:", result.message);
+        console.error("Error fetching destinations:", result.message);
+        alert(`Error: ${result.message}`);
       }
     } catch (error) {
       console.error("Error fetching top destinations:", error);
+      alert("Failed to fetch destinations. Please check the console.");
     }
   };
 
+  // --- Hàm xử lý xóa ---
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this destination?")) {
+      return;
+    }
     try {
-      if (
-        !window.confirm("Are you sure you want to delete this destination?")
-      ) {
-        return;
-      }
-
       const response = await fetch(`${DELETE_TOP_DESTINATION_API}?id=${id}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
-      //   bug
-      if (!response.ok && response.status === 404) {
-        alert("Destination deleted successfully!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
 
-        return;
-      }
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (result.status === 200) {
-        setTopDestinations((prevDestinations) =>
-          prevDestinations.filter((destination) => destination.id !== id)
-        );
-        alert("Top destination deleted successfully!");
+      // Xử lý response từ backend (có thể trả về JSON hoặc chỉ status)
+      if (response.ok) {
+        // Nếu backend trả về JSON
+        try {
+          const result = await response.json();
+          if (result.status === 200) {
+            alert("Top destination deleted successfully!");
+            fetchTopDestinations(); // Tải lại danh sách
+          } else {
+            throw new Error(result.message || "Failed to delete destination");
+          }
+        } catch (jsonError) {
+          // Nếu backend không trả về JSON nhưng status là OK (ví dụ 204 No Content)
+          console.log(
+            "Destination deleted (non-JSON response). Status:",
+            response.status
+          );
+          alert("Top destination deleted successfully!");
+          fetchTopDestinations(); // Tải lại danh sách
+        }
       } else {
-        throw new Error(result.message || "Failed to delete destination");
+        // Xử lý lỗi HTTP
+        const errorData = await response.text(); // Đọc lỗi dưới dạng text
+        console.error("Delete failed:", errorData);
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorData}`
+        );
       }
     } catch (error) {
       console.error("Error deleting top destination:", error);
-      alert(
-        `Failed to delete destination ${id}. Please try again. Error: ${error.message}`
-      );
+      alert(`Failed to delete destination. ${error.message}`);
     }
   };
 
+  // --- Xử lý cho Modal Sửa ---
   const handleModifyClick = (destination) => {
     setEditingDestination({
-      ...destination,
+      ...destination, // Bao gồm cả id và fullImagePath
+      // Lấy ngày tháng đúng định dạng YYYY-MM-DD cho input type="date"
+      destination_begin: destination.destination_begin
+        ? destination.destination_begin.split(" ")[0]
+        : "",
+      destination_end: destination.destination_end
+        ? destination.destination_end.split(" ")[0]
+        : "",
     });
+    setEditingImagePreview(destination.fullImagePath || ""); // Đặt preview là ảnh hiện tại
+    setEditingFile(null); // Reset file đã chọn
     setIsModalOpen(true);
   };
 
@@ -110,51 +140,71 @@ const ManageTopDestination = () => {
     });
   };
 
-  // Handle input change in add form
-  const handleAddInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewDestination({
-      ...newDestination,
-      [name]: value,
-    });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditingFile(file);
+      // Tạo preview cho ảnh mới chọn
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditingImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Nếu người dùng hủy chọn file, quay lại ảnh gốc (nếu có)
+      setEditingFile(null);
+      setEditingImagePreview(editingDestination.fullImagePath || "");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    // Append các trường dữ liệu vào FormData
+    formData.append("id", editingDestination.id); // Gửi cả ID để backend biết là update
+    formData.append("destination_name", editingDestination.destination_name);
+    formData.append(
+      "destination_country",
+      editingDestination.destination_country
+    );
+    formData.append("destination_price", editingDestination.destination_price);
+    formData.append(
+      "destination_description",
+      editingDestination.destination_description
+    );
+    formData.append("destination_begin", editingDestination.destination_begin);
+    formData.append("destination_end", editingDestination.destination_end);
+    formData.append("destination_offer", editingDestination.destination_offer);
+    formData.append(
+      "destination_category",
+      editingDestination.destination_category
+    );
+
+    // Chỉ append file nếu người dùng đã chọn file mới
+    if (editingFile) {
+      formData.append("destination_image", editingFile); // Tên field phải khớp với backend $_FILES['destination_image']
+    }
+    // Không cần gửi destination_image cũ nếu không đổi ảnh, backend sẽ tự xử lý
+
     try {
-      // Format the dates properly for PHP's consumption
-      const formattedDestination = {
-        ...editingDestination,
-        destination_price: parseFloat(editingDestination.destination_price),
-        // Make sure dates are in YYYY-MM-DD format
-        destination_begin: new Date(editingDestination.destination_begin)
-          .toISOString()
-          .split("T")[0],
-        destination_end: new Date(editingDestination.destination_end)
-          .toISOString()
-          .split("T")[0],
-      };
-
-      // Log the data being sent to help debug
-      console.log("Sending data:", formattedDestination);
-
       const response = await fetch(
-        `${UPDATE_TOP_DESTINATION_API}/${editingDestination.id}`,
+        `${UPDATE_TOP_DESTINATION_API}/${editingDestination.id}`, // URL endpoint update
         {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedDestination),
+          method: "POST", // Sử dụng POST để gửi FormData (một số server cấu hình PUT không nhận FormData tốt)
+          body: formData,
+          // Không cần set 'Content-Type': 'multipart/form-data', trình duyệt sẽ tự làm khi body là FormData
         }
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => response.text()); // Cố gắng parse JSON, nếu lỗi thì lấy text
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${JSON.stringify(
-            errorData
-          )}`
+          `HTTP error! status: ${response.status}, message: ${
+            typeof errorData === "string"
+              ? errorData
+              : JSON.stringify(errorData)
+          }`
         );
       }
 
@@ -162,9 +212,8 @@ const ManageTopDestination = () => {
 
       if (result.status === 200) {
         alert("Destination updated successfully!");
-        setIsModalOpen(false);
-        // Refresh the destinations list
-        fetchTopDestinations();
+        closeModal();
+        fetchTopDestinations(); // Tải lại danh sách
       } else {
         throw new Error(result.message || "Failed to update destination");
       }
@@ -174,61 +223,104 @@ const ManageTopDestination = () => {
     }
   };
 
-  // Handle add form submission
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingImagePreview(""); // Reset preview khi đóng modal
+    setEditingFile(null);
+  };
+
+  // --- Xử lý cho Modal Thêm Mới ---
+  const openAddModal = () => {
+    // Reset form thêm mới
+    setNewDestination({
+      destination_name: "",
+      destination_country: "",
+      destination_price: "",
+      destination_description: "",
+      destination_begin: "",
+      destination_end: "",
+      destination_offer: "",
+      destination_category: "",
+    });
+    setNewFile(null);
+    setNewImagePreview("");
+    setIsAddModalOpen(true);
+  };
+
+  const handleAddInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewDestination({
+      ...newDestination,
+      [name]: value,
+    });
+  };
+
+  const handleAddFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewFile(file);
+      // Tạo preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setNewFile(null);
+      setNewImagePreview("");
+    }
+  };
+
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+
+    if (!newFile) {
+      alert("Please select an image for the new destination.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("destination_name", newDestination.destination_name);
+    formData.append("destination_country", newDestination.destination_country);
+    formData.append("destination_price", newDestination.destination_price);
+    formData.append(
+      "destination_description",
+      newDestination.destination_description
+    );
+    formData.append("destination_begin", newDestination.destination_begin);
+    formData.append("destination_end", newDestination.destination_end);
+    formData.append("destination_offer", newDestination.destination_offer);
+    formData.append(
+      "destination_category",
+      newDestination.destination_category
+    );
+    formData.append("destination_image", newFile); // Gửi file mới
+
     try {
-      // Format the dates properly for PHP's consumption
-      const formattedDestination = {
-        ...newDestination,
-        destination_price: parseFloat(newDestination.destination_price),
-        // Make sure dates are in YYYY-MM-DD format
-        destination_begin: new Date(newDestination.destination_begin)
-          .toISOString()
-          .split("T")[0],
-        destination_end: new Date(newDestination.destination_end)
-          .toISOString()
-          .split("T")[0],
-      };
-
-      console.log("Sending new destination data:", formattedDestination);
-
       const response = await fetch(CREATE_TOP_DESTINATION_API, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formattedDestination),
+        body: formData,
+        // Không cần 'Content-Type'
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => response.text());
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${JSON.stringify(
-            errorData
-          )}`
+          `HTTP error! status: ${response.status}, message: ${
+            typeof errorData === "string"
+              ? errorData
+              : JSON.stringify(errorData)
+          }`
         );
       }
 
       const result = await response.json();
 
+      // Backend trả về 201 Created khi thành công
       if (result.status === 201) {
         alert("Destination created successfully!");
-        setIsAddModalOpen(false);
-        // Reset form
-        setNewDestination({
-          destination_image: "",
-          destination_name: "",
-          destination_country: "",
-          destination_price: "",
-          destination_description: "",
-          destination_begin: "",
-          destination_end: "",
-          destination_offer: "",
-          destination_category: "",
-        });
-        // Refresh the destinations list
-        fetchTopDestinations();
+        closeAddModal();
+        fetchTopDestinations(); // Tải lại danh sách
       } else {
         throw new Error(result.message || "Failed to create destination");
       }
@@ -238,24 +330,18 @@ const ManageTopDestination = () => {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Close add modal
   const closeAddModal = () => {
     setIsAddModalOpen(false);
+    setNewImagePreview(""); // Reset preview khi đóng
+    setNewFile(null);
   };
 
-  // Open add modal
-  const openAddModal = () => {
-    setIsAddModalOpen(true);
-  };
-
+  // --- useEffect để fetch dữ liệu lần đầu ---
   useEffect(() => {
     fetchTopDestinations();
   }, []);
 
+  // --- JSX ---
   return (
     <div className="manage-destination-container">
       <div className="dem"></div>
@@ -265,6 +351,7 @@ const ManageTopDestination = () => {
         Add New Destination
       </button>
 
+      {/* --- Bảng hiển thị --- */}
       <div className="table-responsive">
         <table className="destination-table">
           <thead>
@@ -289,11 +376,19 @@ const ManageTopDestination = () => {
                 <td>{destination.destination_name}</td>
                 <td>
                   <div className="image-preview">
-                    <img
-                      src={destination.destination_image}
-                      alt={destination.destination_name}
-                      className="destination-image"
-                    />
+                    {/* Sử dụng fullImagePath đã có base URL */}
+                    {destination.fullImagePath ? (
+                      <img
+                        src={destination.fullImagePath}
+                        alt={destination.destination_name}
+                        className="destination-image"
+                        onError={(e) => {
+                          e.target.style.display = "none"; /* Ẩn nếu ảnh lỗi */
+                        }}
+                      />
+                    ) : (
+                      <span>No Image</span>
+                    )}
                   </div>
                 </td>
                 <td>{destination.destination_country}</td>
@@ -301,8 +396,16 @@ const ManageTopDestination = () => {
                 <td className="description-cell">
                   {destination.destination_description}
                 </td>
-                <td>{destination.destination_begin}</td>
-                <td>{destination.destination_end}</td>
+                <td>
+                  {destination.destination_begin
+                    ? destination.destination_begin.split(" ")[0]
+                    : ""}
+                </td>
+                <td>
+                  {destination.destination_end
+                    ? destination.destination_end.split(" ")[0]
+                    : ""}
+                </td>
                 <td>{destination.destination_offer}</td>
                 <td>{destination.destination_category}</td>
                 <td className="action-column">
@@ -325,22 +428,37 @@ const ManageTopDestination = () => {
         </table>
       </div>
 
-      {/* Edit Modal */}
+      {/* --- Edit Modal --- */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Edit Destination</h2>
             <form onSubmit={handleSubmit}>
+              {/* Input File và Preview */}
               <div className="form-group">
-                <label>Image URL:</label>
+                <label>Image:</label>
+                {editingImagePreview && (
+                  <img
+                    src={editingImagePreview}
+                    alt="Preview"
+                    style={{
+                      maxWidth: "100px",
+                      maxHeight: "100px",
+                      display: "block",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
                 <input
-                  type="text"
-                  name="destination_image"
-                  value={editingDestination.destination_image}
-                  onChange={handleInputChange}
-                  required
+                  type="file"
+                  name="destination_image_file" // Đổi name để không trùng state
+                  accept="image/png, image/jpeg, image/gif, image/webp" // Giới hạn loại file
+                  onChange={handleFileChange}
                 />
+                <small>Leave blank to keep the current image.</small>
               </div>
+
+              {/* Các input khác giữ nguyên */}
               <div className="form-group">
                 <label>Name:</label>
                 <input
@@ -422,6 +540,8 @@ const ManageTopDestination = () => {
                   required
                 />
               </div>
+
+              {/* Nút bấm */}
               <div className="modal-actions">
                 <button type="submit" className="save-btn">
                   Save Changes
@@ -439,23 +559,37 @@ const ManageTopDestination = () => {
         </div>
       )}
 
-      {/* Add Modal */}
+      {/* --- Add Modal --- */}
       {isAddModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Add New Destination</h2>
             <form onSubmit={handleAddSubmit}>
+              {/* Input File và Preview */}
               <div className="form-group">
-                <label>Image URL:</label>
+                <label>Image:</label>
+                {newImagePreview && (
+                  <img
+                    src={newImagePreview}
+                    alt="Preview"
+                    style={{
+                      maxWidth: "100px",
+                      maxHeight: "100px",
+                      display: "block",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
                 <input
-                  type="text"
-                  name="destination_image"
-                  value={newDestination.destination_image}
-                  onChange={handleAddInputChange}
-                  required
-                  placeholder="image.jpg"
+                  type="file"
+                  name="destination_image_file" // Đổi name
+                  accept="image/png, image/jpeg, image/gif, image/webp"
+                  onChange={handleAddFileChange}
+                  required // Bắt buộc chọn ảnh khi thêm mới
                 />
               </div>
+
+              {/* Các input khác */}
               <div className="form-group">
                 <label>Name:</label>
                 <input
@@ -543,6 +677,8 @@ const ManageTopDestination = () => {
                   placeholder="Europe"
                 />
               </div>
+
+              {/* Nút bấm */}
               <div className="modal-actions">
                 <button type="submit" className="save-btn">
                   Add Destination

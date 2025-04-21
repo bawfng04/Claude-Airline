@@ -1,7 +1,7 @@
 import axiosClient from "./apiManager";
 
 const authen = {
-    register: async (family_name, given_name, email, password, phone_number, birthday, nationality, membership) => { 
+    register: async (family_name, given_name, email, password, phone_number, birthday, nationality, membership) => {
         try {
             const response = await axiosClient.post("users/register", {
                 family_name: family_name,
@@ -19,14 +19,14 @@ const authen = {
             throw error.response;
         }
     },
-    login: async (email, password, remember) => {         
+    login: async (email, password, remember) => {
         try {
             const response = await axiosClient.post("users/login", {
                 email: email,
                 password: password,
                 remember: remember,
             });
-            
+
             return response.data;
         } catch (error) {
             console.error("Error: ", error);
@@ -34,6 +34,6 @@ const authen = {
         }
     },
 };
-  
+
 
 export default authen;
