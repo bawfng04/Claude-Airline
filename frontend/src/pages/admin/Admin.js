@@ -66,7 +66,7 @@ const Admin = () => {
             <div className="widget-icon">❓</div>
             <h3>FAQs</h3>
             <p>Manage frequently asked questions.</p>
-            <a href="#" className="widget-button widget-button-disabled">
+            <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>
@@ -75,7 +75,7 @@ const Admin = () => {
             <div className="widget-icon">👥</div>
             <h3>Users</h3>
             <p>Manage user accounts and permissions.</p>
-            <a href="#" className="widget-button widget-button-disabled">
+            <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>
@@ -84,7 +84,7 @@ const Admin = () => {
             <div className="widget-icon">🛫</div>
             <h3>Aircraft Fleet</h3>
             <p>Manage aircraft information.</p>
-            <a href="#" className="widget-button widget-button-disabled">
+            <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>
@@ -93,7 +93,7 @@ const Admin = () => {
             <div className="widget-icon">📊</div>
             <h3>Analytics</h3>
             <p>View booking and traffic statistics.</p>
-            <a href="#" className="widget-button widget-button-disabled">
+            <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>

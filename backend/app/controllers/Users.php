@@ -80,7 +80,7 @@ class Users extends Controller {
                 // Lấy dữ liệu từ request
                 $rawInput = file_get_contents("php://input");
                 $data = json_decode($rawInput, true);
-    
+
                 // Nếu có lỗi khi parse JSON
                 if (!is_array($data)) {
                     jsonResponse([
@@ -89,7 +89,7 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-    
+
                 // Gán giá trị mặc định nếu thiếu
                 $data = array_merge([
                     'family_name' => '',
@@ -104,7 +104,7 @@ class Users extends Controller {
                     'role' => 'USER',
                     'active' => 1
                 ], $data);
-    
+
                 // Kiểm tra dữ liệu đầu vào
                 if (empty($data['family_name']) || empty($data['given_name']) || empty($data['email']) || empty($data['password']) || empty($data['birthday']) || empty($data['nationality'])) {
                     jsonResponse([
@@ -113,7 +113,7 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-    
+
                 // Kiểm tra email đã tồn tại chưa
                 if ($this->userModel->getUserByEmail($data['email'])) {
                     jsonResponse([
@@ -122,10 +122,10 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-    
+
                 // Mã hóa mật khẩu
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-    
+
                 // Xử lý upload ảnh (nếu có)
                 if (!empty($_FILES['image']['tmp_name'])) {
                     $fileName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -139,7 +139,7 @@ class Users extends Controller {
                     }
                     $data['image'] = $fileName;
                 }
-    
+
                 // Thêm người dùng vào cơ sở dữ liệu
                 if ($this->userModel->addUser($data)) {
                     jsonResponse([
@@ -172,7 +172,7 @@ class Users extends Controller {
                 // Lấy dữ liệu từ request
                 $rawInput = file_get_contents("php://input");
                 $data = json_decode($rawInput, true);
-    
+
                 if (!is_array($data)) {
                     jsonResponse([
                         'status' => 'error',
@@ -180,12 +180,12 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-    
+
                 // Lấy email, password và remember
                 $email = trim($data['email'] ?? '');
                 $password = trim($data['password'] ?? '');
                 $remember = $data['remember'] ?? false;
-    
+
                 if (empty($email) || empty($password)) {
                     jsonResponse([
                         'status' => 'error',
@@ -193,10 +193,10 @@ class Users extends Controller {
                     ], 400);
                     return;
                 }
-    
+
                 // Lấy người dùng từ DB
                 $user = $this->userModel->getUserByEmail($email);
-    
+
                 if (!$user) {
                     jsonResponse([
                         'status' => 'error',
@@ -204,7 +204,7 @@ class Users extends Controller {
                     ], 404);
                     return;
                 }
-    
+
                 // Kiểm tra mật khẩu
                 if (!password_verify($password, $user['PASSWORD'])) {
                     jsonResponse([
@@ -213,7 +213,7 @@ class Users extends Controller {
                     ], 401);
                     return;
                 }
-    
+
                 // Kiểm tra trạng thái tài khoản
                 if (!$user['ACTIVE']) {
                     jsonResponse([
@@ -222,30 +222,30 @@ class Users extends Controller {
                     ], 403);
                     return;
                 }
-    
+
                 // ==========================
                 // Tạo JWT (thuần PHP)
                 // ==========================
                 $jwtHelper = new JwtHelper();
 
                 $secret = getenv('JWT_SECRET'); // bạn nên cho vào file cấu hình
-    
+
                 // Thời gian hết hạn token
                 $exp = $remember ? (time() + 60 * 60 * 24 * 30) : (time() + 60 * 60 * 2); // 30 ngày hoặc 2 giờ
-    
+
                 $header = [
                     'alg' => 'HS256',
                     'typ' => 'JWT'
                 ];
-    
+
                 $payload = [
                     'id' => $user['ID'],
                     'email' => $user['EMAIL'],
                     'exp' => $exp
                 ];
-    
+
                 $jwt = $jwtHelper->generateJWT($header, $payload, $secret);
-    
+
                 // ==========================
                 // Trả kết quả
                 // ==========================
@@ -271,17 +271,17 @@ class Users extends Controller {
             ], 405);
         }
     }
-    
+
     public function getUserInfo() {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             try {
                 // Gọi middleware xác thực JWT
                 require_once __DIR__ . '/../middlewares/authMiddleware.php';
                 $authPayload = authMiddleware(); // trả về payload nếu hợp lệ
-    
+
                 // Lấy user_id từ token (đã xác thực)
                 $userId = $GLOBALS['user_id'];
-    
+
                 if (!$userId) {
                     jsonResponse([
                         'status' => 'error',
@@ -289,10 +289,10 @@ class Users extends Controller {
                     ], 401);
                     return;
                 }
-    
+
                 // Lấy thông tin người dùng từ CSDL
                 $user = $this->userModel->getUserById($userId);
-    
+
                 if (!$user) {
                     jsonResponse([
                         'status' => 'error',
@@ -300,7 +300,7 @@ class Users extends Controller {
                     ], 404);
                     return;
                 }
-    
+
                 // Trả về thông tin người dùng
                 jsonResponse([
                     'status' => 'success',
@@ -328,5 +328,5 @@ class Users extends Controller {
                 'message' => 'Phương thức không được hỗ trợ!'
             ], 405);
         }
-    }    
+    }
 }

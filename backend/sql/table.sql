@@ -56,7 +56,7 @@ CREATE TABLE HOMEPAGE_TRAVEL_PACKAGES (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
     package_image VARCHAR(255) NOT NULL, -- Hình ảnh gói du lịch
     package_name VARCHAR(255) NOT NULL, -- Tên gói du lịch
-    package_description TEXT NOT NULL, -- Mô tả gói du lịch
+    package_description TEXT NOT NULL -- Mô tả gói du lịch
 );
 
 -- HOMEPAGE_USER_TESTIMONIALS
@@ -66,7 +66,7 @@ CREATE TABLE HOMEPAGE_USER_TESTIMONIALS (
     user_testimonial TEXT NOT NULL, -- Đánh giá của người dùng
     user_image VARCHAR(255) NOT NULL, -- Hình ảnh người dùng
     user_stars INT NOT NULL, -- Số sao đánh giá
-    user_location VARCHAR(255) NOT NULL, -- Địa điểm của người dùng
+    user_location VARCHAR(255) NOT NULL -- Địa điểm của người dùng
 );
 
 -- HOMEPAGE_SERVICES
