@@ -1,43 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlane, FaCalendarAlt, FaArrowRight } from "react-icons/fa";
-import tokyo from "../../../assets/tokyo.webp";
-import newyork from "../../../assets/newyork.jpg";
-import barca from "../../../assets/barca.jpg";
-
-const destinations = [
-  {
-    id: 1,
-    city: "Tokyo",
-    country: "Japan",
-    price: 799,
-    image: tokyo,
-    departure: "Jun 15",
-    return: "Jun 30",
-    discount: 15,
-  },
-  {
-    id: 2,
-    city: "New York",
-    country: "USA",
-    price: 649,
-    image: newyork,
-    departure: "Jul 10",
-    return: "Jul 25",
-    discount: 0,
-  },
-  {
-    id: 3,
-    city: "Barcelona",
-    country: "Spain",
-    price: 399,
-    image: barca,
-    departure: "Aug 5",
-    return: "Aug 15",
-    discount: 22,
-  },
-];
+import { GET_TOP_DESTINATION_API, API_URL } from "../../../bang_config/apis";
+// import './FeaturedDestinations.css';
 
 const FeaturedDestinations = () => {
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showAll, setShowAll] = useState(false); // State mới để kiểm soát hiển thị
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(GET_TOP_DESTINATION_API);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+
+        if (result.status === 200 && Array.isArray(result.data)) {
+          const processedData = result.data.map((dest) => ({
+            ...dest,
+            fullImagePath: dest.destination_image
+              ? `${API_URL}${dest.destination_image}`
+              : null,
+            departure: dest.destination_begin
+              ? dest.destination_begin.split(" ")[0]
+              : "N/A",
+            return: dest.destination_end
+              ? dest.destination_end.split(" ")[0]
+              : "N/A",
+            discount: dest.destination_offer
+              ? parseInt(dest.destination_offer.match(/\d+/)?.[0] || "0", 10)
+              : 0,
+          }));
+          setDestinations(processedData);
+        } else {
+          throw new Error(result.message || "Failed to fetch valid data");
+        }
+      } catch (err) {
+        console.error("Error fetching featured destinations:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDestinations();
+  }, []);
+
+  // Hàm xử lý việc hiển thị/ẩn bớt
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
+
+  // Xác định danh sách cần hiển thị
+  const displayedDestinations = showAll
+    ? destinations
+    : destinations.slice(0, 3);
+
+  if (loading) {
+    return (
+      <div className="featured-destinations-container">
+        <p>Loading destinations...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="featured-destinations-container">
+        <p>Error loading destinations: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="featured-destinations-container">
       <h2 className="featured-title">Top Destinations</h2>
@@ -46,13 +85,18 @@ const FeaturedDestinations = () => {
       </h3>
 
       <div className="destinations-grid">
-        {destinations.map((destination) => (
+        {/* Map qua mảng displayedDestinations */}
+        {displayedDestinations.map((destination) => (
           <div className="destination-card" key={destination.id}>
             <div className="destination-image-container">
               <img
-                src={destination.image}
-                alt={destination.city}
+                src={destination.fullImagePath || "placeholder.jpg"}
+                alt={destination.destination_name}
                 className="destination-image"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "placeholder.jpg";
+                }}
               />
               {destination.discount > 0 && (
                 <div className="discount-badge">-{destination.discount}%</div>
@@ -60,11 +104,17 @@ const FeaturedDestinations = () => {
             </div>
             <div className="destination-details">
               <div className="destination-header">
-                <h3 className="destination-name">{destination.city}</h3>
-                <p className="destination-country">{destination.country}</p>
+                <h3 className="destination-name">
+                  {destination.destination_name}
+                </h3>
+                <p className="destination-country">
+                  {destination.destination_country}
+                </p>
               </div>
               <div className="destination-price">
-                <span className="price-value">${destination.price}</span>
+                <span className="price-value">
+                  ${parseFloat(destination.destination_price).toFixed(2)}
+                </span>
                 <span className="price-suffix">round trip</span>
               </div>
               <div className="destination-dates">
@@ -89,9 +139,13 @@ const FeaturedDestinations = () => {
         ))}
       </div>
 
-      <button className="view-all-destinations">
-        View All Destinations <FaArrowRight className="btn-arrow" />
-      </button>
+      {/* Chỉ hiển thị nút nếu có nhiều hơn 3 địa điểm */}
+      {destinations.length > 3 && (
+        <button className="view-all-destinations" onClick={toggleShowAll}>
+          {showAll ? "Show Less Destinations" : "View All Destinations"}
+          <FaArrowRight className="btn-arrow" />
+        </button>
+      )}
     </div>
   );
 };
