@@ -12,3 +12,8 @@ export const GET_CONTACT_LOCATION_BY_ID_API = `${API_URL}/ContactLocation/getByI
 export const CREATE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/create`;
 export const DELETE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/delete`;
 export const UPDATE_CONTACT_LOCATION_API = `${API_URL}/ContactLocation/update`;
+
+export const GET_TRAVEL_PACKAGES_API = `${API_URL}/travelpackage`;
+export const CREATE_TRAVEL_PACKAGE_API = `${API_URL}/travelpackage/create`;
+export const UPDATE_TRAVEL_PACKAGE_API = `${API_URL}/travelpackage/update`;
+export const DELETE_TRAVEL_PACKAGE_API = `${API_URL}/travelpackage/delete`;
