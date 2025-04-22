@@ -17,6 +17,7 @@ import UserDetail from "./pages/client/UserDetail/UserDetail";
 import Admin from "./pages/admin/Admin";
 import ManageTopDestination from "./pages/admin/ManageTopDestination";
 import ManageContactLocation from "./pages/admin/ManageContactLocation";
+import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
 
 const routes = (
   <>
@@ -37,6 +38,10 @@ const routes = (
     <Route
       path="/manage-contact-location"
       element={<ManageContactLocation />}
+    />
+    <Route
+      path="/manage-travel-package"
+      element={<ManageTravelPackage />}
     />
     <Route path="*" element={<NotFound />} />
   </>
