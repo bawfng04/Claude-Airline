@@ -1,27 +1,40 @@
+## Cách chạy (vi)
+Clone project:
+`git clone https://github.com/bawfng04/ClaudeAirlines`
+
+Chạy frontend:
+1. `cd frontend`
+2. `npm i`
+3. `npm start`
+
+Chạy backend:
+1. Tạo file `.env` tương tự như file .env.example, điền vào chỗ trống mấy cái config.
+2. Chạy XAMPP, lên `http://localhost/phpmyadmin` tạo cái database tương ứng như cái `.env` mới tạo.
+
+Notes: Nhớ là set cái root trong XAMPP tới cái thư mục chứa project mới clone về.
+
+
 # Flight Booking System
 
 A modern web application for flight booking and management built with React.js and PHP. This project provides a user-friendly interface for booking flights, managing user profiles, and handling flight-related operations.
 
-## Features
+## How to start
 
-- **User Authentication**
-  - User registration and login
-  - Profile management
-  - Secure password handling
+Clone project:
+`git clone https://github.com/bawfng04/ClaudeAirlines`
 
-- **Flight Booking**
-  - Search and filter flights
-  - Booking management
-  - Seat selection
-  - Payment integration
+Install dependencies and start frontend:
+1. `cd frontend`
+2. `npm i`
+3. `npm start`
 
-- **User Dashboard**
-  - View booking history
-  - Manage personal information
-  - Flight status tracking
-  - Membership card management
+Install dependencies and start the server
+1. Create the `.env` file similar to `.env.example` file and fill in the required values.
+2. Start the XAMPP, go to `http://localhost/phpmyadmin` and create the database.
 
-## Tech Stack
+(Remember to set the root path in XAMPP to the project's folder)
+
+## Components
 
 ### Frontend
 - React.js
@@ -34,6 +47,7 @@ A modern web application for flight booking and management built with React.js a
 - MySQL
 - MVC Architecture
 - RESTful API
+- Composer
 
 ## Project Structure
 
@@ -54,72 +68,4 @@ A modern web application for flight booking and management built with React.js a
 │   ├── config/           # Configuration files
 │   └── public/           # Public entry point
 ```
-
-## Getting Started
-
-### Prerequisites
-- Node.js (v14 or higher)
-- PHP 7.4 or higher
-- MySQL
-- Composer
-
-### Frontend Setup
-
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-
-# Build for production
-npm run build
-```
-
-### Backend Setup
-
-```bash
-# Navigate to backend directory
-cd backend
-
-# Install dependencies
-composer install
-
-# Configure environment variables
-cp .env.example .env
-```
-
-Configure your database credentials in the `.env` file.
-
-## Color Scheme
-
-The application uses a professional color palette:
-
-- Primary Color: `#8B0000` (Dark Red)
-- Secondary Colors:
-  - `#66CDAA` (Light Sea Green)
-  - `#4682B4` (Steel Blue)
-  - `#FFD700` (Gold)
-- Neutral Colors:
-  - `#D3D3D3` (Light Gray)
-  - `#FFFFFF` (White)
-  - `#000000` (Black)
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-## Acknowledgments
-
-- [Day.js](https://day.js.org/) for date handling
-- [Tailwind CSS](https://tailwindcss.com/) for styling
-- [Firebase](https://firebase.google.com/) for hosting
 
