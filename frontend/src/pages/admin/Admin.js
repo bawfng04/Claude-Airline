@@ -88,6 +88,16 @@ const Admin = () => {
               Manage
             </a>
           </div>
+
+          <div className="widget-card">
+            <div className="widget-icon">📷</div>
+            <h3>Image Carousel</h3>
+            <p>Manage Image Carousel</p>
+            <a href="/manage-image-carousel" className="widget-button">
+              Manage
+            </a>
+          </div>
+
           <div className="widget-card">
             <div className="widget-icon">❓</div>
             <h3>FAQs</h3>
