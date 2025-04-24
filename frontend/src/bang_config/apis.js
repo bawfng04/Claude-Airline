@@ -22,3 +22,8 @@ export const GET_SERVICES_API = `${API_URL}/services/index`;
 export const CREATE_SERVICE_API = `${API_URL}/services/create`;
 export const UPDATE_SERVICE_API = `${API_URL}/services/update`;
 export const DELETE_SERVICE_API = `${API_URL}/services/delete`;
+
+export const GET_TESTIMONIALS_API = `${API_URL}/testimonial/index`
+export const CREATE_TESTIMONIAL_API = `${API_URL}/testimonial/create`;
+export const UPDATE_TESTIMONIAL_API = `${API_URL}/testimonial/update`;
+export const DELETE_TESTIMONIAL_API = `${API_URL}/testimonial/delete`;
