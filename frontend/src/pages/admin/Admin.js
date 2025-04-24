@@ -63,10 +63,19 @@ const Admin = () => {
           </div>
 
           <div className="widget-card">
-            <div className="widget-icon">💀</div>
+            <div className="widget-icon">🧳</div>
             <h3>Travel Packages</h3>
             <p>Manage travel packages and offers.</p>
             <a href="/manage-travel-package" className="widget-button">
+              Manage
+            </a>
+          </div>
+
+          <div className="widget-card">
+            <div className="widget-icon">🛠️</div>
+            <h3>Services</h3>
+            <p>Manage services and amenities.</p>
+            <a href="/manage-services" className="widget-button">
               Manage
             </a>
           </div>

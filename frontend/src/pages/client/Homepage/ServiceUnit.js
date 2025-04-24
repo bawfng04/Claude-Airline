@@ -4,7 +4,7 @@ const ServiceUnit = ({ img, title, description, features = [], icon }) => {
   return (
     <div className="service">
       <div className="service-image-container">
-        <img src={img} alt={title} className="service-image" />
+        <img src={img || "placeholder.jpg"} alt={title} className="service-image" />
       </div>
       <div className="service-content">
         <div className="service-icon">
