@@ -68,13 +68,19 @@ const Testimonials = () => {
     fetchTestimonials();
   }, [])
 
-  // Auto-slide functionality
   useEffect(() => {
+    if (fetchedTestimonials.length === 0) {
+      return;
+    }
+
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % fetchedTestimonials.length);
+      setActiveIndex(
+        (prevIndex) => (prevIndex + 1) % fetchedTestimonials.length
+      );
     }, 5000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchedTestimonials.length]);
 
   return (
     <div className="testimonials-container">
