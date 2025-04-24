@@ -18,6 +18,7 @@ import Admin from "./pages/admin/Admin";
 import ManageTopDestination from "./pages/admin/ManageTopDestination";
 import ManageContactLocation from "./pages/admin/ManageContactLocation";
 import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
+import ManageServices from "./pages/admin/ManageServices";
 
 const routes = (
   <>
@@ -43,6 +44,7 @@ const routes = (
       path="/manage-travel-package"
       element={<ManageTravelPackage />}
     />
+    <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />
   </>
 );

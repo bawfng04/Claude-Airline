@@ -2,7 +2,7 @@
 
 // homepage_services: id, service_title, service_description, service_image
 
-class ServiceModel extends Database {
+class ServicesModel extends Database {
     // Lấy hết services
     public function getAllServices() {
         $this->query("SELECT * FROM HOMEPAGE_SERVICES ORDER BY id DESC"); // Sắp xếp theo ID mới nhất
