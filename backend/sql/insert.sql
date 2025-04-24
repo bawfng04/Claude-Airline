@@ -1,6 +1,6 @@
 -- Chèn dữ liệu mẫu vào bảng faq
 INSERT INTO faq (question, answer, category)
-VALUES 
+VALUES
 -- Booking
 (
   'How do I book a flight?',

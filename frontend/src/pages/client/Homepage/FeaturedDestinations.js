@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { FaPlane, FaCalendarAlt, FaArrowRight } from "react-icons/fa";
+import { FaPlane, FaCalendarAlt, FaArrowRight, FaFilter } from "react-icons/fa";
 import { GET_TOP_DESTINATION_API, API_URL } from "../../../bang_config/apis";
 // import './FeaturedDestinations.css';
 
 const FeaturedDestinations = () => {
   const [destinations, setDestinations] = useState([]);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showAll, setShowAll] = useState(false); // State mới để kiểm soát hiển thị
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -37,6 +40,13 @@ const FeaturedDestinations = () => {
               : 0,
           }));
           setDestinations(processedData);
+          setFilteredDestinations(processedData);
+
+          // Extract unique categories for filter
+          const uniqueCategories = [
+            ...new Set(processedData.map((dest) => dest.destination_category)),
+          ];
+          setCategories(uniqueCategories);
         } else {
           throw new Error(result.message || "Failed to fetch valid data");
         }
@@ -51,15 +61,34 @@ const FeaturedDestinations = () => {
     fetchDestinations();
   }, []);
 
+  // Filter destinations when category changes
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      setFilteredDestinations(destinations);
+    } else {
+      const filtered = destinations.filter(
+        (dest) => dest.destination_category === selectedCategory
+      );
+      setFilteredDestinations(filtered);
+    }
+    // Reset showAll when filter changes
+    setShowAll(false);
+  }, [selectedCategory, destinations]);
+
   // Hàm xử lý việc hiển thị/ẩn bớt
   const toggleShowAll = () => {
     setShowAll(!showAll);
   };
 
+  // Handle category change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
   // Xác định danh sách cần hiển thị
   const displayedDestinations = showAll
-    ? destinations
-    : destinations.slice(0, 3);
+    ? filteredDestinations
+    : filteredDestinations.slice(0, 3);
 
   if (loading) {
     return (
@@ -84,67 +113,110 @@ const FeaturedDestinations = () => {
         Explore our most popular flight destinations with special fares
       </h3>
 
-      <div className="destinations-grid">
-        {/* Map qua mảng displayedDestinations */}
-        {displayedDestinations.map((destination) => (
-          <div className="destination-card" key={destination.id}>
-            <div className="destination-image-container">
-              <img
-                src={destination.fullImagePath || "placeholder.jpg"}
-                alt={destination.destination_name}
-                className="destination-image"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "placeholder.jpg";
-                }}
-              />
-              {destination.discount > 0 && (
-                <div className="discount-badge">-{destination.discount}%</div>
-              )}
-            </div>
-            <div className="destination-details">
-              <div className="destination-header">
-                <h3 className="destination-name">
-                  {destination.destination_name}
-                </h3>
-                <p className="destination-country">
-                  {destination.destination_country}
-                </p>
-              </div>
-              <div className="destination-price">
-                <span className="price-value">
-                  ${parseFloat(destination.destination_price).toFixed(2)}
-                </span>
-                <span className="price-suffix">round trip</span>
-              </div>
-              <div className="destination-dates">
-                <div className="date-group">
-                  <FaCalendarAlt className="date-icon" />
-                  <span className="date-label">
-                    From {destination.departure}
-                  </span>
-                </div>
-                <FaArrowRight className="date-arrow" />
-                <div className="date-group">
-                  <FaCalendarAlt className="date-icon" />
-                  <span className="date-label">To {destination.return}</span>
-                </div>
-              </div>
-              <button className="book-destination-btn">
-                <FaPlane className="btn-icon" />
-                <span>Book Now</span>
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Category filter */}
+      <div className="category-filter">
+        <div className="filter-header">
+          <FaFilter className="filter-icon" />
+          <span>Filter by category:</span>
+        </div>
+        <div className="filter-buttons">
+          <button
+            className={`filter-btn ${
+              selectedCategory === "all" ? "active" : ""
+            }`}
+            onClick={() => handleCategoryChange("all")}
+          >
+            All
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`filter-btn ${
+                selectedCategory === category ? "active" : ""
+              }`}
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Chỉ hiển thị nút nếu có nhiều hơn 3 địa điểm */}
-      {destinations.length > 3 && (
-        <button className="view-all-destinations" onClick={toggleShowAll}>
-          {showAll ? "Show Less Destinations" : "View All Destinations"}
-          <FaArrowRight className="btn-arrow" />
-        </button>
+      {filteredDestinations.length === 0 ? (
+        <div className="no-destinations">
+          <p>No destinations found for the selected category.</p>
+        </div>
+      ) : (
+        <>
+          <div className="destinations-grid">
+            {/* Map qua mảng displayedDestinations */}
+            {displayedDestinations.map((destination) => (
+              <div className="destination-card" key={destination.id}>
+                <div className="destination-image-container">
+                  <img
+                    src={destination.fullImagePath || "placeholder.jpg"}
+                    alt={destination.destination_name}
+                    className="destination-image"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "placeholder.jpg";
+                    }}
+                  />
+                  {destination.discount > 0 && (
+                    <div className="discount-badge">
+                      -{destination.discount}%
+                    </div>
+                  )}
+                  <div className="category-badge">
+                    {destination.destination_category}
+                  </div>
+                </div>
+                <div className="destination-details">
+                  <div className="destination-header">
+                    <h3 className="destination-name">
+                      {destination.destination_name}
+                    </h3>
+                    <p className="destination-country">
+                      {destination.destination_country}
+                    </p>
+                  </div>
+                  <div className="destination-price">
+                    <span className="price-value">
+                      ${parseFloat(destination.destination_price).toFixed(2)}
+                    </span>
+                    <span className="price-suffix">round trip</span>
+                  </div>
+                  <div className="destination-dates">
+                    <div className="date-group">
+                      <FaCalendarAlt className="date-icon" />
+                      <span className="date-label">
+                        From {destination.departure}
+                      </span>
+                    </div>
+                    <FaArrowRight className="date-arrow" />
+                    <div className="date-group">
+                      <FaCalendarAlt className="date-icon" />
+                      <span className="date-label">
+                        To {destination.return}
+                      </span>
+                    </div>
+                  </div>
+                  <button className="book-destination-btn">
+                    <FaPlane className="btn-icon" />
+                    <span>Book Now</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredDestinations.length > 3 && (
+            <button className="view-all-destinations" onClick={toggleShowAll}>
+              {showAll ? "Show Less Destinations" : "View All Destinations"}
+              <FaArrowRight className="btn-arrow" />
+            </button>
+          )}
+        </>
       )}
     </div>
   );
