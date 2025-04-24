@@ -20,6 +20,7 @@ import ManageContactLocation from "./pages/admin/ManageContactLocation";
 import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
 import ManageServices from "./pages/admin/ManageServices";
 import ManageTestimonials from "./pages/admin/ManageTestimonials";
+import ManageImageCarousel from "./pages/admin/ManageImageCarousel";
 
 const routes = (
   <>
@@ -48,6 +49,10 @@ const routes = (
     <Route
       path="/manage-testimonials"
     element={<ManageTestimonials/>}
+    />
+    <Route
+      path="/manage-image-carousel"
+      element={<ManageImageCarousel />}
     />
     <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />

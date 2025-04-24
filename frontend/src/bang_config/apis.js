@@ -27,3 +27,8 @@ export const GET_TESTIMONIALS_API = `${API_URL}/testimonial/index`
 export const CREATE_TESTIMONIAL_API = `${API_URL}/testimonial/create`;
 export const UPDATE_TESTIMONIAL_API = `${API_URL}/testimonial/update`;
 export const DELETE_TESTIMONIAL_API = `${API_URL}/testimonial/delete`;
+
+export const GET_CAROUSEL_API = `${API_URL}/imagecarousel/index`;
+export const CREATE_CAROUSEL_API = `${API_URL}/imagecarousel/create`;
+export const UPDATE_CAROUSEL_API = `${API_URL}/imagecarousel/update`;
+export const DELETE_CAROUSEL_API = `${API_URL}/imagecarousel/delete`;
