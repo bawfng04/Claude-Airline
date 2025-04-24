@@ -81,6 +81,14 @@ const Admin = () => {
           </div>
 
           <div className="widget-card">
+            <div className="widget-icon">🗨️</div>
+            <h3>Testimonials</h3>
+            <p>Manage testimonial</p>
+            <a href="/manage-testimonials" className="widget-button">
+              Manage
+            </a>
+          </div>
+          <div className="widget-card">
             <div className="widget-icon">❓</div>
             <h3>FAQs</h3>
             <p>Manage frequently asked questions.</p>

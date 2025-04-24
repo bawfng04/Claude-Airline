@@ -19,6 +19,7 @@ import ManageTopDestination from "./pages/admin/ManageTopDestination";
 import ManageContactLocation from "./pages/admin/ManageContactLocation";
 import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
 import ManageServices from "./pages/admin/ManageServices";
+import ManageTestimonials from "./pages/admin/ManageTestimonials";
 
 const routes = (
   <>
@@ -43,6 +44,10 @@ const routes = (
     <Route
       path="/manage-travel-package"
       element={<ManageTravelPackage />}
+    />
+    <Route
+      path="/manage-testimonials"
+    element={<ManageTestimonials/>}
     />
     <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />
