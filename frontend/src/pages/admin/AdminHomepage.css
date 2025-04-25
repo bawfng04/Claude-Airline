@@ -97,7 +97,8 @@
 
 .widget-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* 200px */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 25px;
 }
 
@@ -449,4 +450,98 @@
 
 .form-group input::placeholder {
   color: #aaa;
+}
+
+
+.management-section {
+  margin-bottom: 40px;
+}
+
+.management-section h2 {
+  color: var(--text-color);
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-left: 15px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.management-section h2:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 10px;
+  width: 5px;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+}
+
+/* Legacy links section */
+.legacy-links {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.legacy-links-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.legacy-link {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #e9ecef;
+  color: #495057;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.legacy-link:hover {
+  background-color: #dee2e6;
+  color: #212529;
+}
+
+/* Vertical management sections layout */
+.management-sections-vertical {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.management-column {
+  flex: 1;
+  min-width: 0; /* Prevent flex items from overflowing */
+}
+
+/* Widget column (vertical layout) */
+.widget-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Adjust widget cards for vertical layout */
+.widget-column .widget-card {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Additional responsive styles */
+@media (max-width: 992px) {
+  .management-sections-vertical {
+    flex-direction: column;
+  }
+
+  .management-column {
+    width: 100%;
+  }
 }

@@ -223,6 +223,7 @@ class TravelPackage extends Controller {
         }
         $id = $_GET['id'];
 
+
         try {
             // Lấy thông tin package để xóa ảnh
             $package = $this->travelPackageModel->getTravelPackageById($id);
@@ -247,5 +248,19 @@ class TravelPackage extends Controller {
             $this->jsonResponse(500, 'Error', $e->getMessage()); // 500 Internal Server Error hoặc 404 nếu không tìm thấy
         }
     }
+
+    public function manage(){
+        if(!defined('BASE_URL')) {
+            define('BASE_URL', base_url());
+        }
+        if(!defined('BASEURL')) {
+            define('BASEURL', base_url());
+        }
+        $data = [
+            'base_url' => base_url(),
+        ];
+        $this->view('travel_package', $data);
+    }
+
 
 }

@@ -96,6 +96,7 @@ class Services extends Controller {
         return null;
     }
 
+
     public function create() {
         $data = $_POST;
 
@@ -218,4 +219,19 @@ class Services extends Controller {
             $this->jsonResponse(400, 'Error', $e->getMessage());
         }
     }
+
+
+    public function manage(){
+        if(!defined('BASE_URL')) {
+            define('BASE_URL', base_url());
+        }
+        if(!defined('BASEURL')) {
+            define('BASEURL', base_url());
+        }
+        $data = [
+            'base_url' => base_url(),
+        ];
+        $this->view('services', $data);
+    }
+
 }
