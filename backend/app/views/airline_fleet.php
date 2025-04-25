@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'components/meta_header.php'; ?>
-    <title>Quản lý Đội bay</title>
+    <title>Airline Fleets Management</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý Đội bay</h3>
+                <h3 class="mb-4">Airline Fleets Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">

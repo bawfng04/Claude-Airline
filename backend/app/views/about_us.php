@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'components/meta_header.php'; ?>
-    <title>Quản lý About Us</title>
+    <title>About Us Management</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý About Us</h3>
+                <h3 class="mb-4">About Us Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">

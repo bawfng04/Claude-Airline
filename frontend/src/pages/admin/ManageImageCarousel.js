@@ -270,6 +270,7 @@ const ManageImageCarousel = () => {
                   value={editingImage.carousel_alt}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -280,6 +281,7 @@ const ManageImageCarousel = () => {
                   value={editingImage.carousel_caption}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -290,6 +292,7 @@ const ManageImageCarousel = () => {
                   name="carousel_image"
                   accept="image/*"
                   onChange={handleFileChange}
+                  className="input-text"
                 />
                 {editingImagePreview && (
                   <div className="image-preview" style={{ marginTop: "10px", width: "100px", height: "auto" }}>
@@ -325,6 +328,7 @@ const ManageImageCarousel = () => {
                   value={newImage.carousel_alt}
                   onChange={handleAddInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -335,6 +339,7 @@ const ManageImageCarousel = () => {
                   value={newImage.carousel_caption}
                   onChange={handleAddInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -346,6 +351,7 @@ const ManageImageCarousel = () => {
                   accept="image/*"
                   onChange={handleAddFileChange}
                   required
+                  className="input-text"
                 />
                 {newImagePreview && (
                   <div className="image-preview" style={{ marginTop: "10px", width: "100px", height: "auto" }}>

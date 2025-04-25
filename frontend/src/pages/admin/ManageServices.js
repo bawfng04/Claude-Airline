@@ -360,6 +360,7 @@ const ManageServices = () => {
                   name="service_image"
                   accept="image/*"
                   onChange={handleFileChange}
+                  className="input-text"
                 />
                 <small>Leave blank to keep the current image.</small>
               </div>
@@ -374,6 +375,7 @@ const ManageServices = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Enter service title"
+                  className="input-text"
                 />
               </div>
 
@@ -387,6 +389,7 @@ const ManageServices = () => {
                   required
                   rows="4"
                   placeholder="Enter service description"
+                  className="input-text"
                 ></textarea>
               </div>
 
@@ -422,6 +425,7 @@ const ManageServices = () => {
                   accept="image/*"
                   onChange={handleAddFileChange}
                   required // Bắt buộc chọn ảnh khi thêm mới
+                  className="input-text"
                 />
               </div>
 
@@ -435,6 +439,7 @@ const ManageServices = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Enter service title"
+                  className="input-text"
                 />
               </div>
 
@@ -448,6 +453,7 @@ const ManageServices = () => {
                   required
                   rows="4"
                   placeholder="Enter service description"
+                  className="input-text"
                 ></textarea>
               </div>
 

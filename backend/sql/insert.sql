@@ -122,12 +122,12 @@ VALUES
 
 INSERT INTO ABOUT_US (title, content)
 VALUES
-('Our Story', 'Founded in 1998, our airline began with a small fleet of just 3 aircraft serving domestic routes. Today, we\'ve grown to become one of Southeast Asia\'s leading carriers, connecting passengers to over 100 destinations worldwide with a modern fleet of 78 aircraft.'),
+('Our Story', "Founded in 1998, our airline began with a small fleet of just 3 aircraft serving domestic routes. Today, we've grown to become one of Southeast Asia's leading carriers, connecting passengers to over 100 destinations worldwide with a modern fleet of 78 aircraft."),
 ('Our Mission', 'To connect people and places with safe, reliable air travel that is accessible to all, while delivering exceptional service that exceeds expectations at every step of the journey.'),
 ('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer experience that sets the industry standard.');
 
 
-INSERT INTO CORE_VALUE (title, description)
+INSERT INTO CORE_VALUE (title, description, icon)
 VALUES
 ('Customer Focus', 'We prioritize our customers in everything we do, ensuring their needs and preferences are at the forefront of our services.', 'FaUsers'),
 ('Safety First', 'Safety is non-negotiable, and we maintain the highest standards in all our operations.', 'FaCheckCircle'),
@@ -147,9 +147,9 @@ VALUES
 
 INSERT INTO LEADERSHIP_TEAM (name, position, bio)
 VALUES
-('John Doe', 'CEO', 'John has over 20 years of experience in the aviation industry and has been instrumental in the airline\'s growth and success. He is passionate about customer service and innovation.'),
-('Jane Smith', 'CFO', 'Jane is a seasoned finance professional with a strong background in corporate finance and strategic planning. She ensures the airline\'s financial health and sustainability.'),
-('Michael Brown', 'COO', 'Michael oversees the airline\'s operations, ensuring safety, efficiency, and reliability in all aspects of our service.'),
+('John Doe', 'CEO', "John has over 20 years of experience in the aviation industry and has been instrumental in the airline's growth and success. He is passionate about customer service and innovation."),
+('Jane Smith', 'CFO', "Jane is a seasoned finance professional with a strong background in corporate finance and strategic planning. She ensures the airline's financial health and sustainability."),
+('Michael Brown', 'COO', "Michael oversees the airline's operations, ensuring safety, efficiency, and reliability in all aspects of our service."),
 ('Emily Davis', 'CMO', 'Emily leads the marketing and customer experience teams, focusing on enhancing brand loyalty and customer satisfaction.');
 
 INSERT INTO AIRLINE_FLEET (aircraft_model, description)

@@ -50,7 +50,7 @@ const Admin = () => {
             <h3>Top Destinations</h3>
             <p>Quản lý điểm đến nổi bật</p>
             <a
-              href="http://localhost/backend/public/TopDestination/manage"
+              href={`${process.env.REACT_APP_BASE_URL}TopDestination/manage`}
               className="widget-button"
             >
               Manage
@@ -62,7 +62,7 @@ const Admin = () => {
             <h3>Travel Packages</h3>
             <p>Quản lý gói du lịch</p>
             <a
-              href="http://localhost/backend/public/travelpackage/manage"
+              href={`${process.env.REACT_APP_BASE_URL}travelpackage/manage`}
               className="widget-button"
             >
               Manage
@@ -74,7 +74,7 @@ const Admin = () => {
             <h3>Services</h3>
             <p>Quản lý dịch vụ và tiện ích</p>
             <a
-              href="http://localhost/backend/public/Services/manage"
+              href={`${process.env.REACT_APP_BASE_URL}Services/manage`}
               className="widget-button"
             >
               Manage
@@ -86,7 +86,7 @@ const Admin = () => {
             <h3>Testimonials</h3>
             <p>Quản lý đánh giá khách hàng</p>
             <a
-              href="http://localhost/backend/public/testimonial/manage"
+              href={`${process.env.REACT_APP_BASE_URL}testimonial/manage`}
               className="widget-button"
             >
               Manage
@@ -98,7 +98,7 @@ const Admin = () => {
             <h3>Image Carousel</h3>
             <p>Quản lý trình chiếu hình ảnh</p>
             <a
-              href="http://localhost/backend/public/imagecarousel/manage"
+              href={`${process.env.REACT_APP_BASE_URL}imagecarousel/manage`}
               className="widget-button"
             >
               Manage
@@ -116,7 +116,7 @@ const Admin = () => {
             <h3>Contact Locations</h3>
             <p>Quản lý địa điểm liên hệ</p>
             <a
-              href="http://localhost/backend/public/ContactLocation/manage"
+              href={`${process.env.REACT_APP_BASE_URL}ContactLocation/manage`}
               className="widget-button"
             >
               Manage

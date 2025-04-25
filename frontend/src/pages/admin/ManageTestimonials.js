@@ -404,6 +404,7 @@ const ManageTestimonials = () => {
                   name="user_image"
                   accept="image/*"
                   onChange={handleFileChange}
+                  className="input-text"
                 />
                 <small>Leave blank to keep the current image.</small>
               </div>
@@ -418,6 +419,7 @@ const ManageTestimonials = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Enter user name"
+                  className="input-text"
                 />
               </div>
 
@@ -447,6 +449,7 @@ const ManageTestimonials = () => {
                   max="5"
                   step="1"
                   placeholder="Enter rating (1-5)"
+                  className="input-text"
                 />
               </div>
 
@@ -460,6 +463,7 @@ const ManageTestimonials = () => {
                   required
                   rows="4"
                   placeholder="Enter testimonial text"
+                  className="input-text"
                 ></textarea>
               </div>
 
@@ -502,6 +506,7 @@ const ManageTestimonials = () => {
                   accept="image/*"
                   onChange={handleAddFileChange}
                   required // Bắt buộc ảnh khi thêm mới
+                  className="input-text"
                 />
               </div>
 
@@ -514,6 +519,7 @@ const ManageTestimonials = () => {
                   value={newTestimonial.user_name}
                   onChange={handleAddInputChange}
                   required
+                  className="input-text"
                   placeholder="Enter user name"
                 />
               </div>
@@ -528,6 +534,7 @@ const ManageTestimonials = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="e.g., London, UK"
+                  className="input-text"
                 />
               </div>
 
@@ -544,6 +551,7 @@ const ManageTestimonials = () => {
                   max="5"
                   step="1"
                   placeholder="Enter rating (1-5)"
+                  className="input-text"
                 />
               </div>
 
@@ -557,6 +565,7 @@ const ManageTestimonials = () => {
                   required
                   rows="4"
                   placeholder="Enter testimonial text"
+                  className="input-text"
                 ></textarea>
               </div>
 

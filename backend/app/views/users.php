@@ -2,8 +2,10 @@
 <html lang="en">
 
 <head>
+    <?php session_start(); ?>
+
     <?php include 'components/meta_header.php'; ?>
-    <title>Quản lý Người dùng</title>
+    <title>Users Management</title>
 </head>
 
 <body>
@@ -12,7 +14,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý Người dùng</h3>
+                <h3 class="mb-4">Users Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">
@@ -38,10 +40,12 @@
                                     <td><?php echo htmlspecialchars($user['PHONE_NUMBER']); ?></td>
                                     <td><?php echo htmlspecialchars($user['ROLE']); ?></td>
                                     <td>
-                                        <img src="uploads/<?php echo htmlspecialchars($user['image']); ?>" 
-                                                alt="Hình ảnh" 
-                                                class="img-thumbnail view-image" 
-                                                style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php if (!empty($user['image'])): ?>
+                                            <img src="uploads/<?php echo htmlspecialchars($user['image']); ?>" 
+                                                    alt="Hình ảnh" 
+                                                    class="img-thumbnail view-image" 
+                                                    style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php echo getActionButtons($user['ID'], $user['ACTIVE']); ?>
@@ -84,7 +88,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="phoneNumber" class="form-label">Số điện thoại</label>
-                            <input type="text" class="form-control" name="phone_number" id="phoneNumber">
+                            <input type="text" class="form-control" name="phone_number" id="phoneNumber" required>
                         </div>
                         <div class="mb-3">
                             <label for="birthday" class="form-label">Ngày sinh</label>
@@ -92,26 +96,27 @@
                         </div>
                         <div class="mb-3">
                             <label for="nationality" class="form-label">Quốc tịch</label>
-                            <input type="text" class="form-control" name="nationality" id="nationality" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="membership" class="form-label">Hạng thành viên</label>
-                            <input type="text" class="form-control" name="membership" id="membership">
+                                <select class="form-control" name="nationality" id="nationality" required>
+                                <option value="">-- Chọn quốc tịch --</option>
+                                <option value="vietnam">Việt Nam</option>
+                                <option value="usa">Hoa Kỳ</option>
+                                <option value="japan">Nhật Bản</option>
+                                <option value="korea">Hàn Quốc</option>
+                                <option value="france">Pháp</option>
+                                <!-- Thêm các quốc tịch khác nếu cần -->
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Hình ảnh</label>
                             <input type="file" class="form-control" name="image" id="image" accept="image/*">
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Quyền</label>
-                            <select class="form-select" name="role" id="role">
-                                <option value="USER">USER</option>
-                                <option value="ADMIN">ADMIN</option>
-                            </select>
+                            <label for="role" class="form-label" hidden>Quyền</label>
+                            <input class="form-select" name="role" id="role" type="text" value ="ADMIN" hidden>
                         </div>
                         <div class="mb-3">
-                            <label for="active" class="form-label">Hoạt động</label>
-                            <input type="checkbox" name="active" id="active">
+                            <label for="active" class="form-label" hidden>Hoạt động</label>
+                            <input value=1 name="active" id="active" hidden>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -160,6 +165,22 @@
     </div>
 
     <?php include 'components/script.php'; ?>
+    <?php if (!empty($_SESSION['js_error'])): ?>
+    <script>
+        alert("<?= $_SESSION['js_error'] ?>");
+    </script>
+    <?php unset($_SESSION['js_error']); endif; ?>
+    <?php if (!empty($_SESSION['success'])): ?>
+    <script>
+        alert("<?= $_SESSION['success'] ?>");
+    </script>
+    <?php unset($_SESSION['success']); endif; ?>
+    <?php if (!empty($_SESSION['error'])): ?>
+    <script>
+        alert("<?= $_SESSION['error'] ?>");
+    </script>
+    <?php unset($_SESSION['error']); endif; ?>
+
 
     <script>
         $(document).ready(function () {
