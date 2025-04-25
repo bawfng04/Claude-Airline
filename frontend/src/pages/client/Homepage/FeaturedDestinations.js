@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaPlane, FaCalendarAlt, FaArrowRight, FaFilter } from "react-icons/fa";
 import { GET_TOP_DESTINATION_API, API_URL } from "../../../bang_config/apis";
-// import './FeaturedDestinations.css';
 
 const FeaturedDestinations = () => {
   const [destinations, setDestinations] = useState([]);

@@ -13,16 +13,22 @@ const ManageContactLocation = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLocation, setEditingLocation] = useState({
     id: "",
+    location_name: "",
     des_type: "",
     address_string: "",
     phone_number: "",
     working_hours: "",
+    email: "",
+    location_embed_code: "",
   });
   const [newLocation, setNewLocation] = useState({
+    location_name: "",
     des_type: "",
     address_string: "",
     phone_number: "",
     working_hours: "",
+    email: "",
+    location_embed_code: "",
   });
 
   // Fetch all contact locations
@@ -221,10 +227,13 @@ const ManageContactLocation = () => {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Name</th>
               <th>Type</th>
               <th>Address</th>
-              <th>Phone Number</th>
-              <th>Working Hours</th>
+              <th>Phone</th>
+              <th>Hours</th>
+              <th>Email</th>
+              <th>Embed Code</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -232,10 +241,13 @@ const ManageContactLocation = () => {
             {locations.map((location) => (
               <tr key={location.id}>
                 <td>{location.id}</td>
+                <td>{location.location_name}</td>
                 <td>{location.des_type}</td>
                 <td>{location.address_string}</td>
                 <td>{location.phone_number}</td>
                 <td>{location.working_hours}</td>
+                <td>{location.email}</td>
+                <td>{location.location_embed_code}</td>
                 <td className="action-column">
                   <button
                     className="modify-btn"
@@ -262,6 +274,17 @@ const ManageContactLocation = () => {
           <div className="modal-content">
             <h2>Edit Location</h2>
             <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Location Name:</label>
+                <input
+                  type="text"
+                  name="location_name"
+                  value={editingLocation.location_name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Location name"
+                />
+              </div>
               <div className="form-group">
                 <label>Location Type:</label>
                 <input
@@ -306,6 +329,28 @@ const ManageContactLocation = () => {
                   placeholder="Mon-Fri 9am-5pm"
                 />
               </div>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={editingLocation.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Email address"
+                />
+              </div>
+              <div className="form-group">
+                <label>Location Embed Code:</label>
+                <input
+                  type="text"
+                  name="location_embed_code"
+                  value={editingLocation.location_embed_code}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Google Maps embed code for map"
+                />
+              </div>
               <div className="modal-actions">
                 <button type="submit" className="save-btn">
                   Save Changes
@@ -329,6 +374,17 @@ const ManageContactLocation = () => {
           <div className="modal-content">
             <h2>Add New Location</h2>
             <form onSubmit={handleAddSubmit}>
+              <div className="form-group">
+                <label>Location Name:</label>
+                <input
+                  type="text"
+                  name="location_name"
+                  value={newLocation.location_name}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="Location name"
+                />
+              </div>
               <div className="form-group">
                 <label>Location Type:</label>
                 <input
@@ -371,6 +427,28 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Mon-Fri 9am-5pm"
+                />
+              </div>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={newLocation.email}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="exampleemail@gmail.com"
+                />
+              </div>
+              <div className="form-group">
+                <label>Location Embed Code:</label>
+                <input
+                  type="text"
+                  name="location_embed_code"
+                  value={newLocation.location_embed_code}
+                  onChange={handleAddInputChange}
+                  required
+                  placeholder="Embed code for map"
                 />
               </div>
               <div className="modal-actions">

@@ -28,12 +28,16 @@ CREATE TABLE CLAUDE_AIRLINES (
 );
 
 -- CONTACT_LOCATIONS
+DROP TABLE IF EXISTS CONTACT_LOCATIONS;
 CREATE TABLE CONTACT_LOCATIONS (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    location_name VARCHAR(255) NOT NULL, -- Tên địa điểm
     des_type VARCHAR(50) NOT NULL, -- Loại địa chỉ (ví dụ: văn phòng, chi nhánh)
     address_string VARCHAR(255) NOT NULL, -- Địa chỉ
     phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
+    email VARCHAR(255) NOT NULL, -- Địa chỉ email
+    location_embed_code TEXT NOT NULL, -- Sđịa điểm (Google Maps)
 );
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
