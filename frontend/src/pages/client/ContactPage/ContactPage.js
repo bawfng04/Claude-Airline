@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ContactPage.css";
 import ContactUnit from "./ContactUnit";
 import ContactForm from "./ContactForm";
@@ -6,7 +6,7 @@ import phone from "../../../assets/phone.png";
 import email from "../../../assets/email.png";
 import location from "../../../assets/location.png";
 import faq from "../../../assets/faq.png";
-import { FaUsers } from "react-icons/fa";
+import { FaTrophy, FaUsers } from "react-icons/fa";
 import {
   FaMapMarkerAlt,
   FaClock,
@@ -16,9 +16,49 @@ import {
   FaLinkedinIn,
   FaChevronRight,
 } from "react-icons/fa";
+import { GET_CONTACT_LOCATIONS_API } from "../../../bang_config/apis";
+import LocationMap from "./LocationMap";
+
+
 
 const ContactPage = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [contactLocations, setContactLocations] = useState([]);
+
+  const fetchContactLocations = async () => {
+    try {
+      const response = await fetch(GET_CONTACT_LOCATIONS_API,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch contact locations");
+      }
+      const data = await response.json();
+      // console.log("Contact-location-data:", data);
+      if (data && data.data && Array.isArray(data.data)) {
+        setContactLocations(data.data);
+        console.log("contact locations:", data.data)
+      }
+      else{
+        setContactLocations([]);
+        console.error("No contact locations found in the response.");
+      }
+    }
+    catch (error) {
+      console.error("Error fetching contact locations:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchContactLocations();
+  }, []);
+
+
 
   const handleFormSubmit = () => {
     setFormSubmitted(true);
@@ -183,7 +223,39 @@ const ContactPage = () => {
             </p>
 
             <div className="locations-grid">
-              <div className="location-card">
+              {contactLocations.map((location) => (
+                <div className="location-card" key={location.id}>
+                  <div className="location-header">
+                    <h3>{location.location_name}</h3>
+                    <span className="location-badge">{location.des_type}</span>
+                  </div>
+                  <div className="location-details">
+                    <p>
+                      <strong>Address:</strong> {location.address}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {location.phone_number}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {location.email}
+                    </p>
+                    <p>
+                      <strong>Hours:</strong> {location.working_hours}
+                    </p>
+                  </div>
+                  <LocationMap
+                    embedCode={location.location_embed_code}
+                    locationName={
+                      location.location_name + location.address_string
+                    }
+                  />
+                </div>
+              ))}
+
+              {
+                contactLocations.length === 0 && (
+                  <>
+                <div className="location-card">
                 <div className="location-header">
                   <h3>Headquarters</h3>
                   <span className="location-badge">Main Office</span>
@@ -262,7 +334,12 @@ const ContactPage = () => {
                 >
                   Get Directions
                 </a>
-              </div>
+                    </div>
+                    </>
+                )
+              }
+
+
             </div>
           </div>
 

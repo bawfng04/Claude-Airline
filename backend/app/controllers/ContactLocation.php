@@ -16,10 +16,13 @@ class ContactLocation extends Controller {
 
     private function validateLocationData($data) {
         $required_fields = [
+            'location_name',
             'des_type',
             'address_string',
             'phone_number',
-            'working_hours'
+            'working_hours',
+            'email',
+            'location_embed_code'
         ];
 
         $missing_fields = [];
@@ -95,10 +98,13 @@ class ContactLocation extends Controller {
             }
 
             $result = $this->ContactLocationModel->addContactLocation(
+                $data['location_name'],
                 $data['des_type'],
                 $data['address_string'],
                 $data['phone_number'],
-                $data['working_hours']
+                $data['working_hours'],
+                $data['email'],
+                $data['location_embed_code']
             );
 
             if($result) {
@@ -169,10 +175,13 @@ class ContactLocation extends Controller {
 
             $result = $this->ContactLocationModel->modifyContactLocation(
                 $id,
+                $data['location_name'],
                 $data['des_type'],
                 $data['address_string'],
                 $data['phone_number'],
-                $data['working_hours']
+                $data['working_hours'],
+                $data['email'],
+                $data['location_embed_code']
             );
 
             if($result) {
