@@ -91,6 +91,11 @@ const ManageContactLocation = () => {
   // Handle input change in edit form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // check phone number length
+    if (name === "phone_number" && value.length > 15) {
+      alert("Phone number cannot exceed 15 characters.");
+      return;
+    }
     setEditingLocation({
       ...editingLocation,
       [name]: value,
@@ -285,7 +290,7 @@ const ManageContactLocation = () => {
                   placeholder="Location name"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Location Type:</label>
                 <input
                   type="text"
@@ -295,6 +300,19 @@ const ManageContactLocation = () => {
                   required
                   placeholder="Main Office, Branch Office, etc."
                 />
+              </div> */}
+              <div className="form-group">
+                <label>Location Type:</label>
+                <select
+                  name="des_type"
+                  value={editingLocation.des_type}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Location Type</option>
+                  <option value="Main Office">Main Office</option>
+                  <option value="Branch Office">Branch Office</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>Address:</label>
@@ -387,14 +405,16 @@ const ManageContactLocation = () => {
               </div>
               <div className="form-group">
                 <label>Location Type:</label>
-                <input
-                  type="text"
+                <select
                   name="des_type"
                   value={newLocation.des_type}
                   onChange={handleAddInputChange}
                   required
-                  placeholder="Main Office, Branch Office, etc."
-                />
+                >
+                  <option value="">Select Location Type</option>
+                  <option value="Main Office">Main Office</option>
+                  <option value="Branch Office">Branch Office</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>Address:</label>
