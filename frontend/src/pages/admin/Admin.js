@@ -41,23 +41,18 @@ const Admin = () => {
         </div>
       </div>
 
-      <div className="dashboard-widgets">
-        <h2>Management Modules</h2>
+      {/* Homepage Management Section */}
+      <div className="management-section">
+        <h2>Quản lý Homepage</h2>
         <div className="widget-grid">
           <div className="widget-card">
             <div className="widget-icon">✈️</div>
             <h3>Top Destinations</h3>
-            <p>Manage featured travel destinations.</p>
-            <a href="/manage-top-destination" className="widget-button">
-              Manage
-            </a>
-          </div>
-
-          <div className="widget-card">
-            <div className="widget-icon">📍</div>
-            <h3>Contact Locations</h3>
-            <p>Manage office and contact information.</p>
-            <a href="/manage-contact-location" className="widget-button">
+            <p>Quản lý điểm đến nổi bật</p>
+            <a
+              href="http://localhost/backend/public/TopDestination/manage"
+              className="widget-button"
+            >
               Manage
             </a>
           </div>
@@ -65,8 +60,11 @@ const Admin = () => {
           <div className="widget-card">
             <div className="widget-icon">🧳</div>
             <h3>Travel Packages</h3>
-            <p>Manage travel packages and offers.</p>
-            <a href="/manage-travel-package" className="widget-button">
+            <p>Quản lý gói du lịch</p>
+            <a
+              href="http://localhost/backend/public/travelpackage/manage"
+              className="widget-button"
+            >
               Manage
             </a>
           </div>
@@ -74,8 +72,11 @@ const Admin = () => {
           <div className="widget-card">
             <div className="widget-icon">🛠️</div>
             <h3>Services</h3>
-            <p>Manage services and amenities.</p>
-            <a href="/manage-services" className="widget-button">
+            <p>Quản lý dịch vụ và tiện ích</p>
+            <a
+              href="http://localhost/backend/public/Services/manage"
+              className="widget-button"
+            >
               Manage
             </a>
           </div>
@@ -83,8 +84,11 @@ const Admin = () => {
           <div className="widget-card">
             <div className="widget-icon">🗨️</div>
             <h3>Testimonials</h3>
-            <p>Manage testimonial</p>
-            <a href="/manage-testimonials" className="widget-button">
+            <p>Quản lý đánh giá khách hàng</p>
+            <a
+              href="http://localhost/backend/public/testimonial/manage"
+              className="widget-button"
+            >
               Manage
             </a>
           </div>
@@ -92,47 +96,87 @@ const Admin = () => {
           <div className="widget-card">
             <div className="widget-icon">📷</div>
             <h3>Image Carousel</h3>
-            <p>Manage Image Carousel</p>
-            <a href="/manage-image-carousel" className="widget-button">
+            <p>Quản lý trình chiếu hình ảnh</p>
+            <a
+              href="http://localhost/backend/public/imagecarousel/manage"
+              className="widget-button"
+            >
               Manage
             </a>
           </div>
+        </div>
+      </div>
 
+      {/* Contact Management Section */}
+      <div className="management-section">
+        <h2>Quản lý Contact</h2>
+        <div className="widget-grid">
+          <div className="widget-card">
+            <div className="widget-icon">📍</div>
+            <h3>Contact Locations</h3>
+            <p>Quản lý địa điểm liên hệ</p>
+            <a
+              href="http://localhost/backend/public/ContactLocation/manage"
+              className="widget-button"
+            >
+              Manage
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Management Section */}
+      <div className="management-section">
+        <h2>Quản lý FAQ</h2>
+        <div className="widget-grid">
           <div className="widget-card">
             <div className="widget-icon">❓</div>
             <h3>FAQs</h3>
-            <p>Manage frequently asked questions.</p>
+            <p>Quản lý câu hỏi thường gặp</p>
             <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>
+        </div>
+      </div>
 
+      {/* About Management Section */}
+      <div className="management-section">
+        <h2>Quản lý About</h2>
+        <div className="widget-grid">
           <div className="widget-card">
-            <div className="widget-icon">👥</div>
-            <h3>Users</h3>
-            <p>Manage user accounts and permissions.</p>
+            <div className="widget-icon">ℹ️</div>
+            <h3>About Us</h3>
+            <p>Quản lý thông tin giới thiệu</p>
             <a href="/" className="widget-button widget-button-disabled">
               Coming Soon
             </a>
           </div>
+        </div>
+      </div>
 
-          <div className="widget-card">
-            <div className="widget-icon">🛫</div>
-            <h3>Aircraft Fleet</h3>
-            <p>Manage aircraft information.</p>
-            <a href="/" className="widget-button widget-button-disabled">
-              Coming Soon
-            </a>
-          </div>
-
-          <div className="widget-card">
-            <div className="widget-icon">📊</div>
-            <h3>Analytics</h3>
-            <p>View booking and traffic statistics.</p>
-            <a href="/" className="widget-button widget-button-disabled">
-              Coming Soon
-            </a>
-          </div>
+      {/* Legacy Links - For Reference */}
+      <div className="management-section legacy-links">
+        <h2>Legacy Links (For Reference)</h2>
+        <div className="legacy-links-container">
+          <a href="/manage-top-destination" className="legacy-link">
+            Manage Top Destination
+          </a>
+          <a href="/manage-contact-location" className="legacy-link">
+            Manage Contact Location
+          </a>
+          <a href="/manage-travel-package" className="legacy-link">
+            Manage Travel Package
+          </a>
+          <a href="/manage-services" className="legacy-link">
+            Manage Services
+          </a>
+          <a href="/manage-testimonials" className="legacy-link">
+            Manage Testimonials
+          </a>
+          <a href="/manage-image-carousel" className="legacy-link">
+            Manage Image Carousel
+          </a>
         </div>
       </div>
 
