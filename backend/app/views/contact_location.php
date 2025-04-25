@@ -1,6 +1,19 @@
+<!-- API URL: localhost/backend/public/ContactLocation/index -->
+<!-- localhost/backend/public/ContactLocation/getById -->
+<!-- localhost/backend/public/ContactLocation/create -->
+<!-- localhost/backend/public/ContactLocation/update -->
+<!-- localhost/backend/public/ContactLocation/delete -->
+<!-- chỉ cho phép URL "http://localhost/backend/public/ContactLocation/manage" -->
+<!-- chặn "http://localhost/backend/app/views/contact_location.php" -->
+
+
+
 <?php
-// Base URL definition might be needed here depending on your setup.
-// Defined directly in JavaScript for now.
+if (!defined('BASEURL') && !defined('BASE_URL')) {
+    header('HTTP/1.0 403 Forbidden');
+    echo "Direct access to this file is not allowed.";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +30,7 @@
     <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
     <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
     <style>
+        /* Optional: Add custom styles if needed */
         .action-column button {
             margin-right: 5px;
         }
@@ -26,13 +40,6 @@
         .modal-body .form-group {
             margin-bottom: 1rem;
         }
-        .embed-code-display {
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            cursor: help;
-        }
     </style>
 </head>
 
@@ -40,14 +47,15 @@
     <div id="app">
         <div id="main" class="layout-horizontal">
             <header class="mb-5">
-                <!-- Standard header include -->
+                <!-- You can include your standard header here if it's in a separate file -->
+                <!-- Simplified header for this example -->
                 <div class="header-top">
                     <div class="container">
                         <div class="logo">
                             <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
                         </div>
                         <div class="header-top-right">
-                            <!-- User dropdown etc. -->
+                            <!-- Add user dropdown or other header elements if needed -->
                             <a href="#" class="burger-btn d-block d-xl-none">
                                 <i class="bi bi-justify fs-3"></i>
                             </a>
@@ -57,9 +65,9 @@
                 <nav class="main-navbar">
                     <div class="container">
                         <ul>
-                            <!-- Navigation items -->
+                            <!-- Add navigation items if needed -->
                              <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-geo-alt-fill"></i> Location Management</span></a>
+                                <a href="#" class='menu-link'><span><i class="bi bi-geo-alt-fill"></i> Quản lý Địa điểm</span></a>
                             </li>
                         </ul>
                     </div>
@@ -68,12 +76,12 @@
 
             <div class="container">
                 <div class="page-heading">
-                    <h3>Contact Location Management</h3>
+                    <h3>Quản lý Địa điểm Liên hệ</h3>
                 </div>
                 <div class="page-content">
                     <section class="row">
                         <div class="col-12">
-                            <button class="btn btn-primary mb-3" id="addLocationBtn">Add New Location</button>
+                            <button class="btn btn-primary mb-3" id="addLocationBtn">Thêm mới Địa điểm</button>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -81,18 +89,18 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Type</th>
-                                                    <th>Address</th>
-                                                    <th>Phone</th>
-                                                    <th>Working Hours</th>
+                                                    <th>Tên</th>
+                                                    <th>Loại</th>
+                                                    <th>Địa chỉ</th>
+                                                    <th>Điện thoại</th>
+                                                    <th>Giờ làm việc</th>
                                                     <th>Email</th>
-                                                    <th>Embed Code</th>
-                                                    <th>Actions</th>
+                                                    <th>Mã nhúng</th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Data loaded by DataTables -->
+                                                <!-- Data will be loaded by DataTables -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -103,7 +111,7 @@
                 </div>
             </div>
 
-            <!-- Footer include -->
+            <!-- Footer can be included here -->
 
         </div>
     </div>
@@ -113,35 +121,35 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addEditModalLabel">Add/Edit Location</h5>
+                    <h5 class="modal-title" id="addEditModalLabel">Thêm/Sửa Địa điểm</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addEditForm">
                     <div class="modal-body">
                         <input type="hidden" id="locationId">
                         <div class="form-group">
-                            <label for="location_name">Location Name</label>
+                            <label for="location_name">Tên Địa điểm</label>
                             <input type="text" class="form-control" id="location_name" name="location_name" required>
                         </div>
                         <div class="form-group">
-                            <label for="des_type">Location Type</label>
+                            <label for="des_type">Loại Địa điểm</label>
                             <select class="form-control" id="des_type" name="des_type" required>
-                                <option value="">Select type</option>
-                                <option value="Main Office">Main Office</option>
-                                <option value="Branch Office">Branch Office</option>
+                                <option value="">Chọn loại</option>
+                                <option value="Main Office">Văn phòng chính</option>
+                                <option value="Branch Office">Chi nhánh</option>
                                 <!-- Add other types if needed -->
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="address_string">Address</label>
+                            <label for="address_string">Địa chỉ</label>
                             <input type="text" class="form-control" id="address_string" name="address_string" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone_number">Phone Number</label>
-                            <input type="text" class="form-control" id="phone_number" name="phone_number" required pattern="^\+?[0-9]{10,15}$" title="Valid phone number (10-15 digits, optionally starting with +)">
+                            <label for="phone_number">Số Điện thoại</label>
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" required pattern="^\+?[0-9]{10,15}$" title="Số điện thoại hợp lệ (10-15 chữ số, có thể bắt đầu bằng +)">
                         </div>
                         <div class="form-group">
-                            <label for="working_hours">Working Hours</label>
+                            <label for="working_hours">Giờ làm việc</label>
                             <input type="text" class="form-control" id="working_hours" name="working_hours" required>
                         </div>
                          <div class="form-group">
@@ -149,13 +157,13 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="form-group">
-                            <label for="location_embed_code">Map Embed Code</label>
+                            <label for="location_embed_code">Mã nhúng Bản đồ (Embed Code)</label>
                             <textarea class="form-control" id="location_embed_code" name="location_embed_code" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -167,15 +175,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Xác nhận Xóa</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this location?
+                    Bạn có chắc chắn muốn xóa địa điểm này không?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
                 </div>
             </div>
         </div>
@@ -187,50 +195,36 @@
     <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> --> <!-- Might conflict with Bootstrap 5.3 -->
+    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> --> <!-- Might conflict with Bootstrap 5.3, include specific components if needed -->
+
 
     <script>
         $(document).ready(function () {
             // Adjust this URL based on your actual backend public path
             const API_BASE_URL = '/backend/public/ContactLocation';
-            let locationsTable;
+            let table;
             let currentDeleteId = null;
-            const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-
-            // Function to handle AJAX errors
-            function handleAjaxError(xhr, defaultMessage) {
-                console.error("AJAX error:", xhr.responseText);
-                let errorMsg = defaultMessage || 'A server error occurred.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                } else {
-                    try { // Try parsing if not auto-parsed
-                        const errResponse = JSON.parse(xhr.responseText);
-                        errorMsg = errResponse.message || errorMsg;
-                    } catch (e) { /* Ignore parsing error */ }
-                }
-                alert('Error: ' + errorMsg);
-            }
 
             // Initialize DataTable
-            locationsTable = $('#locationsTable').DataTable({
+            table = $('#locationsTable').DataTable({
                 processing: true,
-                serverSide: false, // Keep false if loading all data at once
+                serverSide: false, // Set to true if using server-side processing
                 ajax: {
                     url: `${API_BASE_URL}/index`,
                     type: 'GET',
                     dataSrc: function(json) {
-                        if (json.status === 200 && Array.isArray(json.data)) {
+                        // Assuming your API returns { status: 200, message: 'Success', data: [...] }
+                        if (json.status === 200 && json.data) {
                             return json.data;
                         } else {
-                            console.error("Error fetching data:", json.message || 'Invalid data format');
-                            alert('Could not load location data.');
+                            console.error("Error fetching data:", json.message);
+                            alert('Không thể tải dữ liệu địa điểm.');
                             return [];
                         }
                     },
                     error: function (xhr, error, thrown) {
-                        handleAjaxError(xhr, 'Failed to connect to the server.');
+                        console.error("AJAX error:", error, thrown);
+                        alert('Lỗi khi kết nối đến máy chủ.');
                     }
                 },
                 columns: [
@@ -244,30 +238,25 @@
                     {
                         data: 'location_embed_code',
                         render: function(data) {
-                            // Show a truncated version or placeholder
-                            if (data && data.trim() !== '') {
-                                // Simple check if it looks like an iframe
-                                const isIframe = data.toLowerCase().includes('<iframe');
-                                const display_text = isIframe ? 'View Embed' : data;
-                                return `<div class="embed-code-display" title="${data}">${display_text}</div>`;
-                            }
-                            return '<span class="text-muted">Not set</span>';
+                            // Show only a snippet or placeholder for embed code
+                            return data ? data.substring(0, 30) + '...' : 'Chưa có mã nhúng';
                         }
                     },
                     {
-                        data: 'id',
+                        data: 'id', // Use 'id' or null if you don't need data for rendering buttons
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}" title="Edit Location">Edit</button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}" title="Delete Location">Delete</button>
+                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}">Sửa</button>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Xóa</button>
                             `;
                         }
                     }
                 ],
-                // Use default English language settings
-                // language: { url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/English.json" } // Optional: Explicitly set English
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Vietnamese.json"
+                }
             });
 
             // --- Modal Handling ---
@@ -276,18 +265,16 @@
             $('#addLocationBtn').on('click', function() {
                 $('#addEditForm')[0].reset();
                 $('#locationId').val(''); // Clear ID for adding
-                $('#addEditModalLabel').text('Add New Location');
-                addEditModal.show();
+                $('#addEditModalLabel').text('Thêm Địa điểm Mới');
+                $('#addEditModal').modal('show');
             });
 
-            // Delegate click event for edit buttons
+            // Open Edit modal and populate data
             $('#locationsTable tbody').on('click', '.edit-btn', function () {
                 const id = $(this).data('id');
-                // Find the row data using DataTables API for efficiency
-                const rowData = locationsTable.rows().data().toArray().find(loc => loc.id == id);
+                const rowData = table.rows().data().toArray().find(loc => loc.id == id);
 
                 if (rowData) {
-                    // Populate form fields
                     $('#locationId').val(rowData.id);
                     $('#location_name').val(rowData.location_name);
                     $('#des_type').val(rowData.des_type);
@@ -297,20 +284,17 @@
                     $('#email').val(rowData.email);
                     $('#location_embed_code').val(rowData.location_embed_code);
 
-                    $('#addEditModalLabel').text('Edit Location');
-                    addEditModal.show();
+                    $('#addEditModalLabel').text('Sửa Địa điểm');
+                    $('#addEditModal').modal('show');
                 } else {
-                    alert('Could not find data for this location.');
+                    alert('Không tìm thấy dữ liệu cho địa điểm này.');
                 }
             });
 
-            // Delegate click event for delete buttons
+            // Open Delete confirmation modal
             $('#locationsTable tbody').on('click', '.delete-btn', function () {
                 currentDeleteId = $(this).data('id');
-                // Optional: Add location name to confirmation message
-                // const rowData = locationsTable.row($(this).parents('tr')).data();
-                // $('#deleteModal .modal-body').text(`Are you sure you want to delete "${rowData.location_name}"?`);
-                deleteModal.show();
+                $('#deleteModal').modal('show');
             });
 
             // --- Form Submission (Add/Edit) ---
@@ -338,17 +322,22 @@
                     contentType: 'application/json',
                     data: JSON.stringify(locationData),
                     success: function(response) {
-                        // Check for explicit success status or rely on HTTP status codes
                         if (response.status === 200 || response.status === 201) {
-                            alert(response.message || (isEdit ? 'Update successful!' : 'Creation successful!'));
-                            addEditModal.hide();
-                            locationsTable.ajax.reload(); // Reload table data
+                            alert(response.message || (isEdit ? 'Cập nhật thành công!' : 'Thêm mới thành công!'));
+                            $('#addEditModal').modal('hide');
+                            table.ajax.reload(); // Reload table data
                         } else {
-                             alert('Error: ' + (response.message || 'Could not save location.'));
+                            alert('Lỗi: ' + (response.message || 'Không thể lưu địa điểm.'));
                         }
                     },
-                    error: function(xhr) {
-                        handleAjaxError(xhr, 'Failed to save location.');
+                    error: function(xhr, status, error) {
+                        console.error("Save error:", xhr.responseText);
+                        let errorMsg = 'Lỗi máy chủ.';
+                        try {
+                            const errResponse = JSON.parse(xhr.responseText);
+                            errorMsg = errResponse.message || errorMsg;
+                        } catch (e) {}
+                        alert('Lỗi khi lưu địa điểm: ' + errorMsg);
                     }
                 });
             });
@@ -357,22 +346,27 @@
             $('#confirmDeleteBtn').on('click', function() {
                 if (!currentDeleteId) return;
 
-                const deleteUrl = `${API_BASE_URL}/delete/${currentDeleteId}`;
-
                 $.ajax({
-                    url: deleteUrl,
+                    url: `${API_BASE_URL}/delete/${currentDeleteId}`, // Use path parameter if your routing supports it
+                    // url: `${API_BASE_URL}/delete?id=${currentDeleteId}`, // Or use query parameter
                     method: 'DELETE',
                     success: function(response) {
-                         if (response.status === 200) {
-                            alert(response.message || 'Deletion successful!');
-                            deleteModal.hide();
-                            locationsTable.ajax.reload(); // Reload table data
+                        if (response.status === 200) {
+                            alert(response.message || 'Xóa thành công!');
+                            $('#deleteModal').modal('hide');
+                            table.ajax.reload(); // Reload table data
                         } else {
-                            alert('Error: ' + (response.message || 'Could not delete location.'));
+                            alert('Lỗi: ' + (response.message || 'Không thể xóa địa điểm.'));
                         }
                     },
-                    error: function(xhr) {
-                         handleAjaxError(xhr, 'Failed to delete location.');
+                    error: function(xhr, status, error) {
+                        console.error("Delete error:", xhr.responseText);
+                         let errorMsg = 'Lỗi máy chủ.';
+                        try {
+                            const errResponse = JSON.parse(xhr.responseText);
+                            errorMsg = errResponse.message || errorMsg;
+                        } catch (e) {}
+                        alert('Lỗi khi xóa địa điểm: ' + errorMsg);
                     },
                     complete: function() {
                         currentDeleteId = null; // Reset delete ID

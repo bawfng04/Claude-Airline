@@ -1,5 +1,9 @@
 <?php
-// Define base URL if needed
+if (!defined('BASEURL') && !defined('BASE_URL')) {
+    header('HTTP/1.0 403 Forbidden');
+    echo "Direct access to this file is not allowed.";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

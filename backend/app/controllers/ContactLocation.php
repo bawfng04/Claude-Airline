@@ -193,4 +193,17 @@ class ContactLocation extends Controller {
             $this->jsonResponse(500, 'Error', $e->getMessage());
         }
     }
+
+    public function manage(){
+        if(!defined('BASE_URL')) {
+            define('BASE_URL', base_url());
+        }
+        if(!defined('BASEURL')) {
+            define('BASEURL', base_url());
+        }
+        $data = [
+            'base_url' => base_url(),
+        ];
+        $this->view('contact_location', $data);
+    }
 }

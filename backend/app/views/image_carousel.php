@@ -1,7 +1,9 @@
 <?php
-// Define base URL if needed, otherwise rely on absolute paths or JS definition
-// Example: define('BASE_URL', 'http://localhost/backend/public');
-// We'll use the API_URL defined in JS for image paths for now.
+if (!defined('BASEURL') && !defined('BASE_URL')) {
+    header('HTTP/1.0 403 Forbidden');
+    echo "Direct access to this file is not allowed.";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

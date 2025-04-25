@@ -173,7 +173,6 @@ class ImageCarousel extends Controller {
                 $data['carousel_caption']
             );
 
-
             if ($result) {
                 if ($newImagePath !== null && $oldImagePath && file_exists($this->publicDir . ltrim($oldImagePath, '/'))) {
                     if (!unlink($this->publicDir . ltrim($oldImagePath, '/'))) {
@@ -233,4 +232,18 @@ class ImageCarousel extends Controller {
             $this->jsonResponse(500, 'Error deleting image', $e->getMessage());
         }
     }
+
+    public function manage(){
+        if(!defined('BASE_URL')) {
+            define('BASE_URL', base_url());
+        }
+        if(!defined('BASEURL')) {
+            define('BASEURL', base_url());
+        }
+        $data = [
+            'base_url' => base_url(),
+        ];
+        $this->view('image_carousel', $data);
+    }
+
 }

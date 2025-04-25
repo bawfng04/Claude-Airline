@@ -224,6 +224,7 @@ class TopDestination extends Controller {
             // Nếu không có ảnh mới được upload, giữ lại ảnh cũ
             if ($imagePath === null) {
                 $data['destination_image'] = $oldImagePath;
+
             } else {
                  $data['destination_image'] = $imagePath;
             }
@@ -266,4 +267,19 @@ class TopDestination extends Controller {
             $this->jsonResponse(400, 'Error', $e->getMessage());
         }
     }
+
+    public function manage(){
+        if(!defined('BASE_URL')) {
+            define('BASE_URL', base_url());
+        }
+        if(!defined('BASEURL')) {
+            define('BASEURL', base_url());
+        }
+        $data = [
+            'base_url' => base_url(),
+        ];
+        $this->view('top_destination', $data);
+    }
+
+
 }
