@@ -12,7 +12,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý Airline Experience</h3>
+                <h3 class="mb-4">Airline Experience Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">
@@ -32,10 +32,12 @@
                                     <td><?php echo htmlspecialchars($experience['title']); ?></td>
                                     <td><?php echo htmlspecialchars($experience['description']); ?></td>
                                     <td>
-                                        <img src="uploads/<?php echo htmlspecialchars($experience['image']); ?>" 
-                                             alt="Hình ảnh" 
-                                             class="img-thumbnail view-image" 
-                                             style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php if (!empty($experience['image'])): ?>
+                                            <img src="uploads/<?php echo htmlspecialchars($experience['image']); ?>" 
+                                                alt="Hình ảnh" 
+                                                class="img-thumbnail view-image" 
+                                                style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php echo getActionButtons($experience['id']); ?>

@@ -288,6 +288,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Location name"
+                  className="input-text"
                 />
               </div>
               {/* <div className="form-group">
@@ -323,6 +324,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Full address"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -334,6 +336,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="+xx xx xxxx xxxx"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -345,6 +348,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Mon-Fri 9am-5pm"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -356,6 +360,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Email address"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -367,6 +372,7 @@ const ManageContactLocation = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="Google Maps embed code for map"
+                  className="input-text"
                 />
               </div>
               <div className="modal-actions">
@@ -401,6 +407,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Location name"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -425,6 +432,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Full address"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -436,6 +444,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="+xx xx xxxx xxxx"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -447,6 +456,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Mon-Fri 9am-5pm"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -458,6 +468,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="exampleemail@gmail.com"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -469,6 +480,7 @@ const ManageContactLocation = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Embed code for map"
+                  className="input-text"
                 />
               </div>
               <div className="modal-actions">

@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'components/meta_header.php'; ?> 
-    <title>Quản lý Leadership Team</title>
+    <title>Leadership Team Management</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý Leadership Team</h3>
+                <h3 class="mb-4">Leadership Team Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">
@@ -34,10 +34,12 @@
                                     <td><?php echo htmlspecialchars($member['position']); ?></td>
                                     <td><?php echo htmlspecialchars($member['bio']); ?></td>
                                     <td>
-                                        <img src="uploads/<?php echo htmlspecialchars($member['image']); ?>" 
-                                        alt="Hình ảnh" 
-                                        class="img-thumbnail view-image" 
-                                        style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php if (!empty($member['image'])): ?>
+                                            <img src="uploads/<?php echo htmlspecialchars($member['image']); ?>" 
+                                            alt="Hình ảnh" 
+                                            class="img-thumbnail view-image" 
+                                            style="width: 50px; height: 50px; cursor: pointer;">
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php echo getActionButtons($member['id']); ?>

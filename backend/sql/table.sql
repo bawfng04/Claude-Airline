@@ -28,7 +28,6 @@ CREATE TABLE CLAUDE_AIRLINES (
 );
 
 -- CONTACT_LOCATIONS
-DROP TABLE IF EXISTS CONTACT_LOCATIONS;
 CREATE TABLE CONTACT_LOCATIONS (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
     location_name VARCHAR(255) NOT NULL, -- Tên địa điểm
@@ -78,7 +77,7 @@ CREATE TABLE HOMEPAGE_SERVICES (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
     service_title VARCHAR(255) NOT NULL, -- Tên dịch vụ
     service_description TEXT NOT NULL, -- Mô tả dịch vụ
-    service_image VARCHAR(255) NOT NULL, -- Hình ảnh dịch vụ
+    service_image VARCHAR(255) NOT NULL -- Hình ảnh dịch vụ
 );
 
 -- Table: about_us

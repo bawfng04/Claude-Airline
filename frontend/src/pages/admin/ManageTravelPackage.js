@@ -366,6 +366,7 @@ const ManageTravelPackage = () => {
                   name="package_image_file"
                   accept="image/*"
                   onChange={handleFileChange}
+                  className="input-text"
                 />
                 <small>Leave blank to keep the current image.</small>
               </div>
@@ -377,6 +378,7 @@ const ManageTravelPackage = () => {
                   value={editingPackage.package_name}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -386,6 +388,7 @@ const ManageTravelPackage = () => {
                   value={editingPackage.package_description}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="modal-actions">
@@ -431,6 +434,7 @@ const ManageTravelPackage = () => {
                   accept="image/*"
                   onChange={handleAddFileChange}
                   required // Ảnh là bắt buộc khi thêm mới
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -442,6 +446,7 @@ const ManageTravelPackage = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="e.g., Summer Vacation"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -452,6 +457,7 @@ const ManageTravelPackage = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="e.g., A wonderful trip to the beach..."
+                  className="input-text"
                 />
               </div>
               <div className="modal-actions">

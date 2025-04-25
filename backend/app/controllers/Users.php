@@ -20,38 +20,54 @@ class Users extends Controller {
     // Thêm hoặc cập nhật người dùng
     public function save() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start(); 
             $id = $_POST['id'] ?? null;
+            $email = $_POST['email'];
+    
+            // Kiểm tra email đã tồn tại
+            $existingUser = $this->userModel->getUserByEmail($email);
+            if ($existingUser && (!$id || $existingUser['id'] != $id)) {
+                // Email đã tồn tại và không phải là user đang cập nhật chính mình
+                $_SESSION['js_error'] = 'Email đã tồn tại.';
+                header('Location: ' . base_url('users')); // hoặc trang form cụ thể bạn muốn
+                exit;
+            }
+    
+            // Xử lý ảnh đại diện
+            $image = $_FILES['image']['name'] ?? null;
+            if (!empty($_FILES['image']['tmp_name'])) {
+                move_uploaded_file($_FILES['image']['tmp_name'], '../public/uploads/' . $image);
+            } else {
+                $image = '67f2ae40e1934.jpg'; // ảnh mặc định
+            }
+    
             $data = [
                 'family_name' => $_POST['family_name'],
                 'given_name' => $_POST['given_name'],
-                'email' => $_POST['email'],
+                'email' => $email,
                 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
                 'phone_number' => $_POST['phone_number'],
                 'birthday' => $_POST['birthday'],
                 'nationality' => $_POST['nationality'],
                 'membership' => $_POST['membership'],
-                'image' => $_FILES['image']['name'] ?? null,
+                'image' => $image,
                 'role' => $_POST['role'],
                 'active' => isset($_POST['active']) ? 1 : 0
             ];
-
-            // Xử lý upload ảnh
-            if (!empty($_FILES['image']['tmp_name'])) {
-                move_uploaded_file($_FILES['image']['tmp_name'], '../public/uploads/' . $_FILES['image']['name']);
-            }
-
+    
             if ($id) {
                 $this->userModel->updateUser($id, $data);
             } else {
                 $this->userModel->addUser($data);
             }
-
+    
             header('Location: ' . base_url('users'));
         }
-    }
+    }    
 
     public function toggleStatus() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start(); 
             $id = isset($_POST['id']) ? trim($_POST['id']) : null;
             $status = isset($_POST['status_action']) ? trim($_POST['status_action']) : null;
 

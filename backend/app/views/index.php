@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'components/meta_header.php'; ?> 
-    <title>Quản lý FAQ</title>
+    <title>Home Page</title>
 </head>
 
 <body>

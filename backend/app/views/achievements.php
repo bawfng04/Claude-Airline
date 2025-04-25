@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'components/meta_header.php'; ?>
-    <title>Quản lý Achievements</title>
+    <title>Achievements Management</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
-                <h3 class="mb-4">Quản lý Achievements</h3>
+                <h3 class="mb-4">Achievements Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
                     <table class="table" id="manageTable">

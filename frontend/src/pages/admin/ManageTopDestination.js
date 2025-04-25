@@ -454,6 +454,7 @@ const ManageTopDestination = () => {
                   name="destination_image_file" // Đổi name để không trùng state
                   accept="image/png, image/jpeg, image/gif, image/webp" // Giới hạn loại file
                   onChange={handleFileChange}
+                  className="input-text"
                 />
                 <small>Leave blank to keep the current image.</small>
               </div>
@@ -467,6 +468,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_name}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -477,6 +479,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_country}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -489,6 +492,7 @@ const ManageTopDestination = () => {
                   step="0.01"
                   min="0"
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -498,6 +502,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_description}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -508,6 +513,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_begin}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -518,6 +524,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_end}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -528,6 +535,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_offer}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -538,6 +546,7 @@ const ManageTopDestination = () => {
                   value={editingDestination.destination_category}
                   onChange={handleInputChange}
                   required
+                  className="input-text"
                 />
               </div>
 
@@ -586,6 +595,7 @@ const ManageTopDestination = () => {
                   accept="image/png, image/jpeg, image/gif, image/webp"
                   onChange={handleAddFileChange}
                   required // Bắt buộc chọn ảnh khi thêm mới
+                  className="input-text"
                 />
               </div>
 
@@ -598,6 +608,7 @@ const ManageTopDestination = () => {
                   value={newDestination.destination_name}
                   onChange={handleAddInputChange}
                   required
+                  className="input-text"
                   placeholder="Paris"
                 />
               </div>
@@ -610,6 +621,7 @@ const ManageTopDestination = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="France"
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -622,6 +634,7 @@ const ManageTopDestination = () => {
                   step="0.01"
                   min="0"
                   required
+                  className="input-text"
                   placeholder="499.99"
                 />
               </div>
@@ -633,6 +646,7 @@ const ManageTopDestination = () => {
                   onChange={handleAddInputChange}
                   required
                   placeholder="Explore the city of lights..."
+                  className="input-text"
                 />
               </div>
               <div className="form-group">
@@ -642,6 +656,7 @@ const ManageTopDestination = () => {
                   name="destination_begin"
                   value={newDestination.destination_begin}
                   onChange={handleAddInputChange}
+                  className="input-text"
                   required
                 />
               </div>
@@ -652,6 +667,7 @@ const ManageTopDestination = () => {
                   name="destination_end"
                   value={newDestination.destination_end}
                   onChange={handleAddInputChange}
+                  className="input-text"
                   required
                 />
               </div>
@@ -663,6 +679,7 @@ const ManageTopDestination = () => {
                   value={newDestination.destination_offer}
                   onChange={handleAddInputChange}
                   required
+                  className="input-text"
                   placeholder="20% off for early bookings!"
                 />
               </div>
@@ -673,6 +690,7 @@ const ManageTopDestination = () => {
                   name="destination_category"
                   value={newDestination.destination_category}
                   onChange={handleAddInputChange}
+                  className="input-text"
                   required
                   placeholder="Europe"
                 />
