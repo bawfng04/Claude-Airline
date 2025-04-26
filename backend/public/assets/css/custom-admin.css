@@ -1,0 +1,92 @@
+.action-column button {
+    margin-right: 5px;
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.card-body {
+    background-color: #f2f7ff;
+}
+
+.modal-body .form-group {
+    margin-bottom: 1rem;
+}
+
+/* --- Common Image Previews --- */
+.image-preview-container img {
+    max-width: 100px; /* General size for table view */
+    max-height: 70px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    padding: 2px;
+    object-fit: cover;
+}
+
+.modal-image-preview img {
+    max-width: 150px; /* General size for modal view */
+    max-height: 120px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 2px;
+    object-fit: cover;
+}
+
+/* --- Specific Image Previews (Testimonials) --- */
+/* If you want only testimonial images to be round */
+#testimonialsTable .image-preview-container img,
+#addEditModal.testimonial-modal .modal-image-preview img { /* Add 'testimonial-modal' class to the modal if needed */
+    border-radius: 50%;
+}
+/* Or simpler, if all previews in testimonial.php should be round: */
+/* (Assuming these styles are only loaded/relevant on that page context) */
+/* You might need to adjust selectors based on your final structure */
+/* For Testimonial Page Table */
+#testimonialsTable .image-preview-container img {
+    max-width: 60px;
+    max-height: 60px;
+    border-radius: 50%;
+}
+/* For Testimonial Page Modal */
+#addEditModal #imagePreviewContainer.modal-image-preview img { /* Check if this selector works */
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
+
+
+/* --- Text Wrapping Cells --- */
+.description-cell {
+    max-width: 300px; /* Adjust default max-width as needed */
+    white-space: normal;
+    word-break: break-word;
+}
+
+.testimonial-cell {
+    max-width: 350px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.caption-cell {
+    max-width: 250px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* --- Testimonial Star Rating --- */
+.star-rating .fa-star {
+    color: #e4e5e9; /* Empty star color */
+    margin-right: 2px;
+}
+
+.star-rating .fa-star.filled {
+    color: #ffc107; /* Filled star color */
+}
+
+/* --- Top Destination Date Picker --- */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: block;
+    background: transparent; /* Might need adjustment based on desired look */
+}

@@ -19,31 +19,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/meta_header.php'; ?>
     <title>Contact Location Management</title>
-    <!-- Include necessary CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
-    <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
-    <style>
-        /* Optional: Add custom styles if needed */
-        .action-column button {
-            margin-right: 5px;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .modal-body .form-group {
-            margin-bottom: 1rem;
-        }
-        .card-body{
-            background-color:  #f2f7ff;
-        }
-    </style>
 </head>
 
 <body>

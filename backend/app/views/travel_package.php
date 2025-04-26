@@ -9,51 +9,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/meta_header.php'; ?>
     <title>Travel Packages Management</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
-    <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
-    <style>
-        .action-column button {
-            margin-right: 5px;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .card-body{
-            background-color:  #f2f7ff;
-        }
-        .modal-body .form-group {
-            margin-bottom: 1rem;
-        }
-        .image-preview-container img {
-            max-width: 100px;
-            max-height: 70px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-        }
-         .modal-image-preview img {
-            max-width: 150px;
-            max-height: 100px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-        }
-        .description-cell {
-            max-width: 300px;
-            white-space: normal;
-            word-break: break-word;
-        }
-    </style>
 </head>
 
 <body>
