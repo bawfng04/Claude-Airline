@@ -1,9 +1,9 @@
-    <header class="mb-5">
+<header class="mb-5">
         <div class="header-top">
             <div class="container">
                 <div class="logo">
-                    <a href="home">
-                        <img src="./assets/compiled/svg/logo.svg" alt="Logo">
+                    <a href="/backend/public/home"> <!-- Absolute path -->
+                        <img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"> <!-- Consider absolute path for assets too -->
                     </a>
                 </div>
                 <div class="header-top-right">
@@ -11,7 +11,7 @@
                     <div class="dropdown">
                         <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center dropend dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar avatar-md2">
-                                <img src="./assets/compiled/jpg/1.jpg" alt="Avatar">
+                                <img src="/backend/public/assets/compiled/jpg/1.jpg" alt="Avatar"> <!-- Consider absolute path for assets too -->
                             </div>
                             <div class="text">
                                 <h6 class="user-dropdown-name">John Ducky</h6>
@@ -20,7 +20,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li> <!-- Assuming logout is handled differently -->
                         </ul>
                     </div>
 
@@ -35,12 +35,12 @@
             <div class="container">
                 <ul>
                     <li class="menu-item">
-                        <a href="users" class="menu-link">
+                        <a href="/backend/public/users" class="menu-link"> <!-- Absolute path -->
                             <span><i class="bi bi-person-circle"></i> Users</span>
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="faq" class="menu-link">
+                        <a href="/backend/public/faq" class="menu-link"> <!-- Absolute path -->
                             <span><i class="bi bi-patch-question-fill"></i> FAQ</span>
                         </a>
                     </li>
@@ -52,32 +52,32 @@
                             <div class="submenu-group-wrapper">
                                 <ul class="submenu-group">
                                     <li class="submenu-item  ">
-                                        <a href="leadershipteam" class="submenu-link">
+                                        <a href="/backend/public/leadershipteam" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-people-fill"></i> Leadership Team</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="airlineexperience" class="submenu-link">
+                                        <a href="/backend/public/airlineexperience" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-activity"></i> Experiences</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="achievements" class="submenu-link">
+                                        <a href="/backend/public/achievements" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-trophy-fill"></i> Achievements</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="aboutus" class="submenu-link">
+                                        <a href="/backend/public/aboutus" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-info-circle-fill"></i> About Us</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="corevalue" class="submenu-link">
+                                        <a href="/backend/public/corevalue" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-chat-left-heart-fill"></i> Core Value</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="airlinefleet" class="submenu-link">
+                                        <a href="/backend/public/airlinefleet" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-airplane-fill"></i> Airline Fleet</span>
                                         </a>
                                     </li>
@@ -93,27 +93,27 @@
                             <div class="submenu-group-wrapper">
                                 <ul class="submenu-group">
                                     <li class="submenu-item  ">
-                                        <a href="topdestination/manage" class="submenu-link">
+                                        <a href="/backend/public/topdestination/manage" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-airplane-engines-fill"></i> Top Destinations</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="travelpackage/manage" class="submenu-link">
+                                        <a href="/backend/public/travelpackage/manage" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-suitcase-fill"></i> Travel Packages</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="services/manage" class="submenu-link">
+                                        <a href="/backend/public/services/manage" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-gear-fill"></i> Services</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="Testimonial/manage" class="submenu-link">
+                                        <a href="/backend/public/Testimonial/manage" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-chat-fill"></i> Testimonials</span>
                                         </a>
                                     </li>
                                     <li class="submenu-item  ">
-                                        <a href="imagecarousel/manage" class="submenu-link">
+                                        <a href="/backend/public/imagecarousel/manage" class="submenu-link"> <!-- Absolute path -->
                                             <span><i class="bi bi-camera-fill"></i> Image Carousel</span>
                                         </a>
                                     </li>
@@ -122,11 +122,11 @@
                         </div>
                     </li>
                     <li class="menu-item">
-                        <a href="contactlocation/manage" class="menu-link">
+                        <a href="/backend/public/contactlocation/manage" class="menu-link"> <!-- Absolute path -->
                             <span><i class="bi bi-pin-map-fill"></i> Contact Locations</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
-    </header> 
+    </header>

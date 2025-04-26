@@ -1,45 +1,15 @@
+<?php
+if (!defined('BASEURL') && !defined('BASE_URL')) {
+    header('HTTP/1.0 403 Forbidden');
+    echo "Direct access to this file is not allowed.";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php include 'components/meta_header.php'; ?>
     <title>Top Destinations Management</title>
-    <style>
-        .action-column button {
-            margin-right: 5px;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .modal-body .form-group {
-            margin-bottom: 1rem;
-        }
-        .image-preview-container img {
-            max-width: 100px; /* Table preview size */
-            max-height: 70px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-        }
-         .modal-image-preview img {
-            max-width: 150px; /* Modal preview size */
-            max-height: 100px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-        }
-        .description-cell {
-            max-width: 250px; /* Adjust as needed */
-            white-space: normal;
-            word-break: break-word;
-        }
-        /* Ensure date inputs show calendar icon */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            display: block;
-            background: transparent; /* Optional: hide default icon if using custom */
-        }
-    </style>
 </head>
 
 <body>
@@ -180,7 +150,7 @@
     </div>
 
     <?php include 'components/script.php'; ?>
-    
+
     <script>
         $(document).ready(function () {
             // Adjust these URLs based on your actual backend public path and API structure

@@ -19,69 +19,23 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/meta_header.php'; ?>
     <title>Contact Location Management</title>
-    <!-- Include necessary CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
-    <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
-    <style>
-        /* Optional: Add custom styles if needed */
-        .action-column button {
-            margin-right: 5px;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .modal-body .form-group {
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- You can include your standard header here if it's in a separate file -->
-                <!-- Simplified header for this example -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <!-- Add user dropdown or other header elements if needed -->
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                            <!-- Add navigation items if needed -->
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-geo-alt-fill"></i> Quản lý Địa điểm</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">
-                    <h3>Quản lý Địa điểm Liên hệ</h3>
+                    <h3>Contact Location Management</h3>
                 </div>
                 <div class="page-content">
                     <section class="row">
                         <div class="col-12">
-                            <button class="btn btn-primary mb-3" id="addLocationBtn">Thêm mới Địa điểm</button>
+                            <button class="btn btn-primary mb-3" id="addLocationBtn">Add a new location</button>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -89,14 +43,14 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Tên</th>
-                                                    <th>Loại</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th>Điện thoại</th>
-                                                    <th>Giờ làm việc</th>
+                                                    <td>Location name</td>
+                                                    <th>Location type</th>
+                                                    <th>Address</th>
+                                                    <th>Phone number</th>
+                                                    <th>Working hours</th>
                                                     <th>Email</th>
-                                                    <th>Mã nhúng</th>
-                                                    <th>Hành động</th>
+                                                    <th>Embed code</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -121,7 +75,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addEditModalLabel">Thêm/Sửa Địa điểm</h5>
+                    <h5 class="modal-title" id="addEditModalLabel">Add/Modify location</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addEditForm">
@@ -190,13 +144,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
     </div>
 
     <!-- Include necessary JS -->
-    <script src="/backend/public/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> --> <!-- Might conflict with Bootstrap 5.3, include specific components if needed -->
-
+    <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {
@@ -248,8 +196,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         searchable: false,
                         render: function (data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}">Sửa</button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Xóa</button>
+                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}">Modify</button>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Delete</button>
                             `;
                         }
                     }

@@ -7,90 +7,15 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/meta_header.php'; ?>
     <title>Testimonials Management</title>
-    <!-- Include necessary CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <!-- FontAwesome for stars (or use Bootstrap Icons if preferred) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
-    <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
-    <style>
-        .action-column button {
-            margin-right: 5px;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .modal-body .form-group {
-            margin-bottom: 1rem;
-        }
-        .image-preview-container img {
-            max-width: 60px; /* Table preview size */
-            max-height: 60px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-            border-radius: 50%; /* Make user images round */
-        }
-         .modal-image-preview img {
-            max-width: 100px; /* Modal preview size */
-            max-height: 100px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            padding: 2px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .testimonial-cell {
-            max-width: 350px; /* Adjust as needed */
-            white-space: normal;
-            word-break: break-word;
-        }
-        .star-rating .fa-star {
-            color: #e4e5e9; /* Empty star color */
-            margin-right: 2px;
-        }
-        .star-rating .fa-star.filled {
-            color: #ffc107; /* Filled star color */
-        }
-    </style>
 </head>
 
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- Standard header include -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-chat-quote-fill"></i> Testimonials</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include_once 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">
