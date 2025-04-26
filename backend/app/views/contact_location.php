@@ -53,12 +53,12 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
             <div class="container">
                 <div class="page-heading">
-                    <h3>Quản lý Địa điểm Liên hệ</h3>
+                    <h3>Contact Location Management</h3>
                 </div>
                 <div class="page-content">
                     <section class="row">
                         <div class="col-12">
-                            <button class="btn btn-primary mb-3" id="addLocationBtn">Thêm mới Địa điểm</button>
+                            <button class="btn btn-primary mb-3" id="addLocationBtn">Add a new location</button>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -66,14 +66,14 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Tên</th>
-                                                    <th>Loại</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th>Điện thoại</th>
-                                                    <th>Giờ làm việc</th>
+                                                    <td>Location name</td>
+                                                    <th>Location type</th>
+                                                    <th>Address</th>
+                                                    <th>Phone number</th>
+                                                    <th>Working hours</th>
                                                     <th>Email</th>
-                                                    <th>Mã nhúng</th>
-                                                    <th>Hành động</th>
+                                                    <th>Embed code</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -98,7 +98,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addEditModalLabel">Thêm/Sửa Địa điểm</h5>
+                    <h5 class="modal-title" id="addEditModalLabel">Add/Modify location</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addEditForm">
@@ -219,8 +219,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         searchable: false,
                         render: function (data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}">Sửa</button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Xóa</button>
+                                <button class="btn btn-sm btn-warning edit-btn" data-id="${data}">Modify</button>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Delete</button>
                             `;
                         }
                     }
