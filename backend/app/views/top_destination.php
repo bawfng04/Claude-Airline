@@ -1,24 +1,8 @@
-<?php
-if (!defined('BASEURL') && !defined('BASE_URL')) {
-    header('HTTP/1.0 403 Forbidden');
-    echo "Direct access to this file is not allowed.";
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'components/meta_header.php'; ?>
     <title>Top Destinations Management</title>
-    <!-- Include necessary CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="/backend/public/assets/compiled/css/app-dark.css">
-    <link rel="shortcut icon" href="/backend/public/assets/compiled/svg/favicon.svg" type="image/x-icon">
     <style>
         .action-column button {
             margin-right: 5px;
@@ -61,30 +45,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- Standard header include -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-pin-map-fill"></i> Top Destinations</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">
@@ -218,14 +179,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         </div>
     </div>
 
-    <!-- Include necessary JS -->
-    <script src="/backend/public/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> -->
-
+    <?php include 'components/script.php'; ?>
+    
     <script>
         $(document).ready(function () {
             // Adjust these URLs based on your actual backend public path and API structure

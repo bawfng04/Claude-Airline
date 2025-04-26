@@ -85,6 +85,47 @@
                             </div>
                         </div>
                     </li>
+                    <li class="menu-item  has-sub">
+                        <a href="#" class='menu-link'>
+                            <span><i class="bi bi-house-door-fill"></i> Homepage</span>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-group-wrapper">
+                                <ul class="submenu-group">
+                                    <li class="submenu-item  ">
+                                        <a href="topdestination/manage" class="submenu-link">
+                                            <span><i class="bi bi-airplane-engines-fill"></i> Top Destinations</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item  ">
+                                        <a href="travelpackage/manage" class="submenu-link">
+                                            <span><i class="bi bi-suitcase-fill"></i> Travel Packages</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item  ">
+                                        <a href="services/manage" class="submenu-link">
+                                            <span><i class="bi bi-gear-fill"></i> Services</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item  ">
+                                        <a href="Testimonial/manage" class="submenu-link">
+                                            <span><i class="bi bi-chat-fill"></i> Testimonials</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item  ">
+                                        <a href="imagecarousel/manage" class="submenu-link">
+                                            <span><i class="bi bi-camera-fill"></i> Image Carousel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="contactlocation/manage" class="menu-link">
+                            <span><i class="bi bi-pin-map-fill"></i> Contact Locations</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
