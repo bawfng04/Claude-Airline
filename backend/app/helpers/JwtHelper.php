@@ -11,4 +11,26 @@ class JwtHelper {
         $signatureEncoded = $this->base64url_encode($signature);
         return "$headerEncoded.$payloadEncoded.$signatureEncoded";
     }
+
+    public function decodeTokenPayload($token) {
+        $parts = explode('.', $token);
+
+        if (count($parts) !== 3) {
+            return null;
+        }
+
+        $payload = base64_decode(strtr($parts[1], '-_', '+/'));
+
+        if ($payload === false) {
+            return null;
+        }
+
+        $data = json_decode($payload, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        return $data;
+    }
 }
