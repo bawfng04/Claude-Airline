@@ -40,6 +40,9 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
             object-fit: cover;
             border-radius: 50%; /* Make user images round */
         }
+        .card-body{
+            background-color:  #f2f7ff;
+        }
          .modal-image-preview img {
             max-width: 100px; /* Modal preview size */
             max-height: 100px;

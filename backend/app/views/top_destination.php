@@ -13,8 +13,11 @@
         .modal-body .form-group {
             margin-bottom: 1rem;
         }
+        .card-body{
+            background-color:  #f2f7ff;
+        }
         .image-preview-container img {
-            max-width: 100px; /* Table preview size */
+            max-width: 100px;
             max-height: 70px;
             margin-top: 5px;
             border: 1px solid #ddd;
@@ -22,7 +25,7 @@
             object-fit: cover;
         }
          .modal-image-preview img {
-            max-width: 150px; /* Modal preview size */
+            max-width: 150px;
             max-height: 100px;
             margin-top: 10px;
             border: 1px solid #ddd;
@@ -30,14 +33,13 @@
             object-fit: cover;
         }
         .description-cell {
-            max-width: 250px; /* Adjust as needed */
+            max-width: 250px;
             white-space: normal;
             word-break: break-word;
         }
-        /* Ensure date inputs show calendar icon */
         input[type="date"]::-webkit-calendar-picker-indicator {
             display: block;
-            background: transparent; /* Optional: hide default icon if using custom */
+            background: transparent;
         }
     </style>
 </head>
@@ -180,7 +182,7 @@
     </div>
 
     <?php include 'components/script.php'; ?>
-    
+
     <script>
         $(document).ready(function () {
             // Adjust these URLs based on your actual backend public path and API structure

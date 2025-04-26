@@ -40,6 +40,9 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         .modal-body .form-group {
             margin-bottom: 1rem;
         }
+        .card-body{
+            background-color:  #f2f7ff;
+        }
     </style>
 </head>
 

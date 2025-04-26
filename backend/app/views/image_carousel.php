@@ -26,6 +26,9 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         .table-responsive {
             margin-top: 20px;
         }
+        .card-body{
+            background-color:  #f2f7ff;
+        }
         .modal-body .form-group {
             margin-bottom: 1rem;
         }
