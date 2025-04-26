@@ -49,33 +49,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- You can include your standard header here if it's in a separate file -->
-                <!-- Simplified header for this example -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <!-- Add user dropdown or other header elements if needed -->
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                            <!-- Add navigation items if needed -->
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-geo-alt-fill"></i> Quản lý Địa điểm</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">
@@ -193,13 +167,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
     </div>
 
     <!-- Include necessary JS -->
-    <script src="/backend/public/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> --> <!-- Might conflict with Bootstrap 5.3, include specific components if needed -->
-
+    <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {

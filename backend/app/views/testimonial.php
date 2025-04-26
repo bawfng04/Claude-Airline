@@ -70,30 +70,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- Standard header include -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-chat-quote-fill"></i> Testimonials</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include_once 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">

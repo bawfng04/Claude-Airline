@@ -59,30 +59,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <!-- Standard header include -->
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo">
-                            <a href="#"><img src="/backend/public/assets/compiled/svg/logo.svg" alt="Logo"></a>
-                        </div>
-                        <div class="header-top-right">
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                             <li class="menu-item">
-                                <a href="#" class='menu-link'><span><i class="bi bi-gear-fill"></i> Services Management</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+            <?php include 'components/header.php'; ?>
 
             <div class="container">
                 <div class="page-heading">
@@ -180,12 +157,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
     </div>
 
     <!-- Include necessary JS -->
-    <script src="/backend/public/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> -->
+    <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {
