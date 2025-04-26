@@ -43,7 +43,7 @@ const Login = () => {
         const response = await Authen.login(email, password, rememberMe);
         
         if (response.data.role === "ADMIN") {
-          window.location.href = process.env.REACT_APP_BASE_URL;
+          window.location.href = `${process.env.REACT_APP_BASE_URL}?token=${response.data.token}`;
         }
 
         localStorage.setItem("accessToken", response.data.token);

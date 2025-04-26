@@ -37,19 +37,29 @@ function verifyAndDecodeJWT($jwt, $secret) {
 function authMiddleware() {
     $headers = getallheaders();
     $authHeader = $headers['Authorization'] ?? '';
+
+    $jwt = null;
+
+    // Ưu tiên Authorization header
     if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
         $jwt = $matches[1];
+    } 
+    // Nếu không có header thì kiểm tra Cookie
+    elseif (isset($_COOKIE['token'])) {
+        $jwt = $_COOKIE['token'];
+    }
+
+    if ($jwt) {
         $secret = getenv('JWT_SECRET'); 
         $payload = verifyAndDecodeJWT($jwt, $secret);
         if ($payload) {
-            // Gán user ID vào biến toàn cục để dùng ở chỗ khác
             $GLOBALS['user_id'] = $payload['id'];
             $GLOBALS['user_email'] = $payload['email'];
             return true;
         }
     }
 
-    // Nếu đến đây là không hợp lệ
+    // Nếu đến đây là thất bại
     http_response_code(401);
     echo json_encode([
         'status' => 'error',
