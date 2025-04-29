@@ -97,12 +97,12 @@
                         <div class="mb-3">
                             <label for="nationality" class="form-label">Quốc tịch</label>
                                 <select class="form-control" name="nationality" id="nationality" required>
-                                <option value="">-- Chọn quốc tịch --</option>
-                                <option value="vietnam">Việt Nam</option>
-                                <option value="usa">Hoa Kỳ</option>
-                                <option value="japan">Nhật Bản</option>
-                                <option value="korea">Hàn Quốc</option>
-                                <option value="france">Pháp</option>
+                                <option value="">-- Choose Nationality --</option>
+                                <option value="vietnam">Vietnamese</option>
+                                <option value="usa">American</option>
+                                <option value="japan">Japanese</option>
+                                <option value="korea">Korean</option>
+                                <option value="france">French</option>
                                 <!-- Thêm các quốc tịch khác nếu cần -->
                             </select>
                         </div>

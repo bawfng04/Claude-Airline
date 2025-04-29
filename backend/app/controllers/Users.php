@@ -54,12 +54,8 @@ class Users extends Controller {
                 'role' => $_POST['role'],
                 'active' => isset($_POST['active']) ? 1 : 0
             ];
-
-            if ($id) {
-                $this->userModel->updateUser($id, $data);
-            } else {
-                $this->userModel->addUser($data);
-            }
+                
+            $this->userModel->addUser($data);
 
             header('Location: ' . base_url('users'));
         }
@@ -154,6 +150,8 @@ class Users extends Controller {
                         return;
                     }
                     $data['image'] = $fileName;
+                }else {
+                    $data['image'] = '67f2ae40e1934.jpg';
                 }
 
                 // Thêm người dùng vào cơ sở dữ liệu
@@ -316,12 +314,11 @@ class Users extends Controller {
                     ], 404);
                     return;
                 }
-
+                
                 // Trả về thông tin người dùng
                 jsonResponse([
                     'status' => 'success',
                     'data' => [
-                        'id' => $user['ID'],
                         'family_name' => $user['FAMILY_NAME'],
                         'given_name' => $user['GIVEN_NAME'],
                         'email' => $user['EMAIL'],
@@ -332,6 +329,90 @@ class Users extends Controller {
                         'image' => $user['image'],
                     ]
                 ]);
+            } catch (Exception $e) {
+                jsonResponse([
+                    'status' => 'error',
+                    'message' => $e->getMessage()
+                ], 500);
+            }
+        } else {
+            jsonResponse([
+                'status' => 'error',
+                'message' => 'Phương thức không được hỗ trợ!'
+            ], 405);
+        }
+    }
+
+    public function editProfile() {
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            try {
+                require_once __DIR__ . '/../middlewares/authMiddleware.php';
+                $authPayload = authMiddleware();
+
+                $userId = $GLOBALS['user_id'];
+
+                if (!$userId) {
+                    jsonResponse([
+                        'status' => 'error',
+                        'message' => 'Không tìm thấy người dùng!'
+                    ], 401);
+                    return;
+                }
+
+                // Lấy thông tin người dùng hiện tại từ cơ sở dữ liệu
+                $currentUser = $this->userModel->getUserById($userId);
+
+                if (!$currentUser) {
+                    jsonResponse([
+                        'status' => 'error',
+                        'message' => 'Người dùng không tồn tại!'
+                    ], 404);
+                    return;
+                }
+
+                // Lấy dữ liệu từ request
+                $rawInput = file_get_contents("php://input");
+                $data = json_decode($rawInput, true);
+
+                if (!is_array($data)) {
+                    jsonResponse([
+                        'status' => 'error',
+                        'message' => 'Dữ liệu gửi lên không hợp lệ!'
+                    ], 400);
+                    return;
+                }
+
+                // Gán giá trị từ dữ liệu mới hoặc giữ nguyên giá trị cũ
+                $data = [
+                    'family_name' => $data['family_name'] ?? $currentUser['FAMILY_NAME'],
+                    'given_name' => $data['given_name'] ?? $currentUser['GIVEN_NAME'],
+                    'phone_number' => $data['phone_number'] ?? $currentUser['PHONE_NUMBER'],
+                    'birthday' => $data['birthday'] ?? $currentUser['BIRTHDAY'],
+                    'nationality' => $data['nationality'] ?? $currentUser['NATIONALITY'],
+                    'membership' => $data['membership'] ?? $currentUser['MEMBERSHIP'],
+                ];
+
+                // Kiểm tra dữ liệu đầu vào
+                if (empty($data['family_name']) || empty($data['given_name']) || empty($data['birthday']) || empty($data['nationality'])) {
+                    jsonResponse([
+                        'status' => 'error',
+                        'message' => 'Vui lòng điền đầy đủ thông tin!'
+                    ], 400);
+                    return;
+                }
+
+                // Cập nhật thông tin người dùng
+                if ($this->userModel->updateUser($userId, $data)) {
+                    jsonResponse([
+                        'status' => 'success',
+                        'message' => 'Cập nhật thông tin thành công!'
+                    ]);
+                } else {
+                    jsonResponse([
+                        'status' => 'error',
+                        'message' => 'Không thể cập nhật thông tin!'
+                    ], 500);
+                }
             } catch (Exception $e) {
                 jsonResponse([
                     'status' => 'error',
