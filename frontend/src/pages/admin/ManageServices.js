@@ -5,7 +5,7 @@ import {
   DELETE_SERVICE_API,
   UPDATE_SERVICE_API,
   API_URL, // Import API_URL để ghép đường dẫn ảnh
-} from "../../bang_config/apis";
+} from "../../api/apis"; // Đường dẫn đến file chứa các API
 import "./AdminHomepage.css"; // Sử dụng CSS chung
 
 const ManageServices = () => {

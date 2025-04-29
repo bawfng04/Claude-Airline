@@ -6,7 +6,7 @@ import {
   DELETE_TRAVEL_PACKAGE_API,
   UPDATE_TRAVEL_PACKAGE_API,
   API_URL,
-} from "../../bang_config/apis";
+} from "../../api/apis";
 
 const ManageTravelPackage = () => {
   const [travelPackages, setTravelPackages] = useState([]);

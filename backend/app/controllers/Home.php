@@ -27,7 +27,7 @@ class Home extends Controller {
                     header('Location: ' . base_url(''));
                     exit();
                 }
-            
+
             // Nếu token lỗi thì về login
             header('Location: http://localhost:3000');
             exit();

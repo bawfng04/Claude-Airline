@@ -5,7 +5,7 @@ import {
   DELETE_TOP_DESTINATION_API,
   UPDATE_TOP_DESTINATION_API,
   API_URL,
-} from "../../bang_config/apis";
+} from "../../api/apis";
 import "./AdminHomepage.css";
 
 const ManageTopDestination = () => {

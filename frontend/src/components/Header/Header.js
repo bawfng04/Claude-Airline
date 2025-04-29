@@ -13,7 +13,7 @@ const Header = () => {
   const [activeLink, setActiveLink] = useState("");
   const [settingsPopup, setSettingsPopup] = useState(false);
   const rawToken = localStorage.getItem("accessToken");
-  
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     rawToken && isTokenValid(rawToken) ? 1 : 0
   );
@@ -35,7 +35,7 @@ const Header = () => {
   };
 
   // Detect current page for active link styling
-  useEffect(() => {    
+  useEffect(() => {
     const path = window.location.pathname;
     if (path === "/" || path === "/home") setActiveLink("home");
     else if (path.includes("/about")) setActiveLink("about");
@@ -75,6 +75,10 @@ const Header = () => {
   const handleLogoClick = () => {
     window.location.href = "/home";
   };
+  const handleAdminClick = () => {
+    window.location.href = "/admin";
+  };
+
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -176,7 +180,7 @@ const Header = () => {
                 Example
               </a>
             </li> */}
-            <li className="header-nav-item">
+            {/* <li className="header-nav-item">
               <a
                 href="/admin"
                 className={`header-nav-link ${
@@ -186,7 +190,7 @@ const Header = () => {
               >
                 Admin
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
 
@@ -232,7 +236,11 @@ const Header = () => {
                 <div className="settings">
                   <button className="settings-buttons" onClick={handleDetail}>
                     Detail
-                  </button>
+                    </button>
+                    {/* <button className="settings-buttons" onClick={handleAdminClick}>
+                      Admin
+                    </button> */}
+
                   <button className="settings-buttons" onClick={handleLogout}>
                     Logout
                   </button>

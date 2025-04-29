@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GET_CAROUSEL_API, API_URL } from "../../../bang_config/apis";
+import { GET_CAROUSEL_API, API_URL } from "../../../api/apis";
 
 // Custom arrow components
 function SampleNextArrow(props) {

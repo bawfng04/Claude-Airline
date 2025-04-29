@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import f1 from "../../../assets/f1.jpg";
 import uefa from "../../../assets/uefa.jpg";
 import christmas from "../../../assets/christmas.webp";
-import { GET_TRAVEL_PACKAGES_API, API_URL } from "../../../bang_config/apis";
+import { GET_TRAVEL_PACKAGES_API, API_URL } from "../../../api/apis";
 
 const TravelPackage = () => {
 

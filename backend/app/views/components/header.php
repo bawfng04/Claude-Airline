@@ -128,7 +128,7 @@
                 </ul>
             </div>
         </nav>
-    </header> 
+    </header>
 
 <script>
 // Gọi API khi component mount
@@ -140,7 +140,7 @@ async function fetchUserInfo() {
         });
         const result = await response.json();
         const BASE_URL = "<?php echo getenv('BASE_URL'); ?>";
-        
+
         if (result.status === 'success') {
             document.getElementById('userName').textContent = result.data.email || 'Unknown';
             document.getElementById('userAvatar').src = `${BASE_URL}uploads/${result.data.image}` || './assets/default-avatar.jpg';
