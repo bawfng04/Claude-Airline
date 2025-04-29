@@ -4,7 +4,7 @@ import {
   CREATE_CONTACT_LOCATION_API,
   DELETE_CONTACT_LOCATION_API,
   UPDATE_CONTACT_LOCATION_API,
-} from "../../bang_config/apis";
+} from "../../api/apis"; // Adjust the import path as necessary
 import "./AdminHomepage.css";
 
 const ManageContactLocation = () => {

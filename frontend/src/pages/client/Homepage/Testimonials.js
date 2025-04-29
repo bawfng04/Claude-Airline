@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
-import { API_URL, GET_TESTIMONIALS_API } from "../../../bang_config/apis";
+import { API_URL, GET_TESTIMONIALS_API } from "../../../api/apis";
 
 const initTestimonials = [
   {

@@ -3,7 +3,7 @@ import inflight from "../../../assets/inflight-entertaining.jpg";
 import comfortable from "../../../assets/comfortable-sitting.jpg";
 import meal from "../../../assets/meal.webp";
 import ServiceUnit from "./ServiceUnit";
-import {API_URL, GET_SERVICES_API} from "../../../bang_config/apis";
+import { API_URL, GET_SERVICES_API } from "../../../api/apis";
 
 const ServicesSection = () => {
   const [fetchedServices, setFetchedServices] = useState([]);

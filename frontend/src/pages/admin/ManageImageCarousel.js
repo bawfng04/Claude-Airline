@@ -5,7 +5,7 @@ import {
   DELETE_CAROUSEL_API,
   UPDATE_CAROUSEL_API,
   API_URL,
-} from "../../bang_config/apis";
+} from "../../api/apis";
 import "./AdminHomepage.css";
 
 const ManageImageCarousel = () => {

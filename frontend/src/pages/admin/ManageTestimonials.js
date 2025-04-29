@@ -5,7 +5,7 @@ import {
   DELETE_TESTIMONIAL_API,
   UPDATE_TESTIMONIAL_API,
   API_URL,
-} from "../../bang_config/apis";
+} from "../../api/apis";
 import "./AdminHomepage.css"; // Sử dụng CSS chung
 import { FaStar } from "react-icons/fa"; // Import sao để hiển thị rating
 

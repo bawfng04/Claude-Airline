@@ -16,7 +16,7 @@ import {
   FaLinkedinIn,
   FaChevronRight,
 } from "react-icons/fa";
-import { GET_CONTACT_LOCATIONS_API } from "../../../bang_config/apis";
+import { GET_CONTACT_LOCATIONS_API } from "../../../api/apis";
 import LocationMap from "./LocationMap";
 
 
