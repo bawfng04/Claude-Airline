@@ -31,25 +31,6 @@ class UserModel extends Database {
         return $this->execute();
     }
 
-    // Cập nhật thông tin người dùng
-    public function updateUser($id, $data) {
-        $this->query("UPDATE USERS SET FAMILY_NAME = :family_name, GIVEN_NAME = :given_name, EMAIL = :email, PHONE_NUMBER = :phone_number, 
-                      BIRTHDAY = :birthday, NATIONALITY = :nationality, MEMBERSHIP = :membership, image = :image, ROLE = :role, ACTIVE = :active 
-                      WHERE ID = :id");
-        $this->bind(':id', $id);
-        $this->bind(':family_name', $data['family_name']);
-        $this->bind(':given_name', $data['given_name']);
-        $this->bind(':email', $data['email']);
-        $this->bind(':phone_number', $data['phone_number']);
-        $this->bind(':birthday', $data['birthday']);
-        $this->bind(':nationality', $data['nationality']);
-        $this->bind(':membership', $data['membership']);
-        $this->bind(':image', $data['image']);
-        $this->bind(':role', $data['role']);
-        $this->bind(':active', $data['active']);
-        return $this->execute();
-    }
-
     public function updateUserStatus($id, $isActive) {
         $this->query("UPDATE USERS SET ACTIVE = :active WHERE ID = :id");
         $this->bind(':active', $isActive);
@@ -61,5 +42,25 @@ class UserModel extends Database {
         $this->query("SELECT * FROM USERS WHERE EMAIL = :email");
         $this->bind(':email', $email);
         return $this->single();
+    }
+
+    public function updateUser($id, $data) {
+        $this->query("UPDATE USERS SET 
+                    family_name = :family_name,
+                    given_name = :given_name,
+                    phone_number = :phone_number,
+                    birthday = :birthday,
+                    nationality = :nationality,
+                    membership = :membership
+                WHERE ID = :id");
+         $this->bind(':family_name', $data['family_name']);
+         $this->bind(':given_name', $data['given_name']);
+         $this->bind(':phone_number', $data['phone_number']);
+         $this->bind(':birthday', $data['birthday']);
+         $this->bind(':nationality', $data['nationality']);
+         $this->bind(':membership', $data['membership']);
+         $this->bind(':id', $id);
+
+        return $this->execute();
     }
 }

@@ -4,5 +4,5 @@ firebase-debug.log
 apphosting.yaml
 
 /backend/public/uploads/*
-
+!/backend/public/uploads/defaultImage
 /backend/app/.env

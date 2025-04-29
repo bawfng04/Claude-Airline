@@ -133,11 +133,11 @@ const EditProfile = () => {
 
       // Assuming this API exists in your userApi.js file
       // You'll need to implement this function
-      await User.updateUserInfo(token, updateData);
-
-      alert("Profile updated successfully!");
-      // Redirect back to user detail page
-      window.location.href = "/user-detail";
+      const reponse = await User.editProfile(token, updateData);
+      if (reponse.status === 200) {
+        alert("Profile updated successfully!");
+        window.location.href = "/user-detail";
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       alert(`Failed to update profile: ${error.message || "Unknown error"}`);
@@ -208,7 +208,7 @@ const EditProfile = () => {
                 <div className="profile-section">
                   <h3 className="section-title">Personal Information</h3>
                   <div className="edit-info-grid">
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaUser className="field-icon" />
                         Family Name
@@ -223,7 +223,7 @@ const EditProfile = () => {
                       {errors.familyName && <span className="error-message">{errors.familyName}</span>}
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaUser className="field-icon" />
                         Given Name
@@ -238,7 +238,7 @@ const EditProfile = () => {
                       {errors.givenName && <span className="error-message">{errors.givenName}</span>}
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaBirthdayCake className="field-icon" />
                         Date of Birth
@@ -253,7 +253,7 @@ const EditProfile = () => {
                       {errors.dateOfBirth && <span className="error-message">{errors.dateOfBirth}</span>}
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaGlobe className="field-icon" />
                         Nationality
@@ -277,7 +277,7 @@ const EditProfile = () => {
                 <div className="profile-section">
                   <h3 className="section-title">Contact Information</h3>
                   <div className="edit-info-grid">
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaEnvelope className="field-icon" />
                         Email
@@ -293,7 +293,7 @@ const EditProfile = () => {
                       <small>Email address cannot be changed</small>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group-edit">
                       <label>
                         <FaPhone className="field-icon" />
                         Phone Number
@@ -308,7 +308,7 @@ const EditProfile = () => {
                       {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
                     </div>
 
-                    <div className="form-group full-width">
+                    <div className="form-group-edit full-width">
                       <label>
                         <FaIdCard className="field-icon" />
                         Membership Card

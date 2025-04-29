@@ -23,6 +23,7 @@ const UserDetail = () => {
     phoneNumber: "",
     dateOfBirth: "",
     nationality: "",
+    image: ""
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,7 @@ const UserDetail = () => {
         const token = localStorage.getItem("accessToken");
         
         const response = await User.getUserInfo(token);
-
+        
         const userDetails = {
           email: response.data.email,
           familyName: response.data.family_name,
@@ -43,6 +44,7 @@ const UserDetail = () => {
           phoneNumber: response.data.phone_number,
           dateOfBirth: response.data.birthday,
           nationality: response.data.nationality,
+          image: response.data.image
         };
         setUserData(userDetails);
       } catch (error) {
@@ -112,7 +114,11 @@ const UserDetail = () => {
           <div className="detail-card">
             <div className="profile-header">
               <div className="profile-avatar">
-                <FaUserCircle />
+              <img
+                src={`${process.env.REACT_APP_BASE_URL}uploads/${userData.image}`} // Đường dẫn ảnh hoặc ảnh mặc định
+                alt="User Avatar"
+                className="avatar-image"
+              />
               </div>
               <div className="profile-name">
                 <h2>
