@@ -2,7 +2,7 @@
         <div class="header-top">
             <div class="container">
                 <div class="logo">
-                    <a href="public/home"> <!-- Absolute path -->
+                    <a href="home"> <!-- Absolute path -->
                         <img src="assets/compiled/svg/logo.svg" alt="Logo"> <!-- Consider absolute path for assets too -->
                     </a>
                 </div>
@@ -11,16 +11,15 @@
                     <div class="dropdown">
                         <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center dropend dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar avatar-md2">
-                                <img src="assets/compiled/jpg/1.jpg" alt="Avatar"> <!-- Consider absolute path for assets too -->
+                                <img src="./assets/compiled/jpg/1.jpg" id="userAvatar" alt="Avatar">
                             </div>
                             <div class="text">
-                                <h6 class="user-dropdown-name">John Ducky</h6>
+                                <h6 class="user-dropdown-name" id="userName">Admin</h6>
                                 <p class="user-dropdown-status text-sm text-muted">Admin</p>
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li> <!-- Assuming logout is handled differently -->
+                            <li><a class="dropdown-item" href="home/logout">Logout</a></li>
                         </ul>
                     </div>
 
@@ -130,3 +129,27 @@
             </div>
         </nav>
     </header>
+
+<script>
+// Gọi API khi component mount
+async function fetchUserInfo() {
+    try {
+        const response = await fetch('users/getUserInfo', {
+            method: 'GET',
+            credentials: 'include' // quan trọng để gửi cookie
+        });
+        const result = await response.json();
+        const BASE_URL = "<?php echo getenv('BASE_URL'); ?>";
+
+        if (result.status === 'success') {
+            document.getElementById('userName').textContent = result.data.email || 'Unknown';
+            document.getElementById('userAvatar').src = `${BASE_URL}uploads/${result.data.image}` || './assets/default-avatar.jpg';
+        }
+    } catch (error) {
+        console.error('Lỗi lấy user info:', error);
+    }
+}
+// Gọi luôn
+fetchUserInfo();
+</script>
+

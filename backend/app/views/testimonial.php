@@ -122,19 +122,13 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         </div>
     </div>
 
-    <!-- Include necessary JS -->
-    <script src="/backend/public/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/backend/public/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/backend/public/assets/static/js/pages/horizontal-layout.js"></script>
-    <!-- <script src="/backend/public/assets/compiled/js/app.js"></script> -->
+    <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {
             // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = '/backend/public/Testimonial'; // Controller base
-            const API_URL = '/backend/public'; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>Testimonial"; // Controller base
+            const API_URL = "<?php echo getenv('BASE_URL');?>"; // Base for image paths
             let testimonialsTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));

@@ -70,7 +70,7 @@ const Footer = () => {
               <a href="/about">About Us</a>
             </li>
             <li>
-              <a href="/planes">Our Fleet</a>
+              <a href="/our-fleet">Our Fleet</a>
             </li>
             <li>
               <a href="/services">Services</a>

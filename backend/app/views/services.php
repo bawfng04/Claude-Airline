@@ -118,8 +118,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
     <script>
         $(document).ready(function () {
             // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = '/backend/public/Services'; // Controller base
-            const API_URL = '/backend/public'; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>Services"; // Controller base
+            const API_URL = "<?php echo getenv('BASE_URL');?>"; // Base for image paths
             let servicesTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
