@@ -7,11 +7,36 @@ const PromotionCountdown = () => {
   endDate.setDate(endDate.getDate() + 7);
 
   const [timeLeft, setTimeLeft] = useState({
-    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+
+  const [currentTime, setCurrentTime] = useState(
+    {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    }
+  )
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime({
+        days: now.getDate(),
+        hours: now.getHours(),
+        minutes: now.getMinutes(),
+        seconds: now.getSeconds(),
+      });
+    };
+
+    // Update time every second
+    const timer = setInterval(updateTime, 1000);
+
+    return () => clearInterval(timer);
+  })
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -55,28 +80,32 @@ const PromotionCountdown = () => {
         <div className="countdown-timer">
           <div className="timer-unit">
             <div className="timer-value">
-              {String(timeLeft.days).padStart(2, "0")}
+              {/* {String(timeLeft.days).padStart(2, "0")} */}
+              {String(currentTime.days).padStart(2, "0")}
             </div>
             <div className="timer-label">Days</div>
           </div>
           <div className="timer-separator">:</div>
           <div className="timer-unit">
             <div className="timer-value">
-              {String(timeLeft.hours).padStart(2, "0")}
+              {/* {String(timeLeft.hours).padStart(2, "0")} */}
+            {String(currentTime.hours).padStart(2, "0")}
             </div>
             <div className="timer-label">Hours</div>
           </div>
           <div className="timer-separator">:</div>
           <div className="timer-unit">
             <div className="timer-value">
-              {String(timeLeft.minutes).padStart(2, "0")}
+              {/* {String(timeLeft.minutes).padStart(2, "0")} */}
+            {String(currentTime.minutes).padStart(2, "0")}
             </div>
             <div className="timer-label">Minutes</div>
           </div>
           <div className="timer-separator">:</div>
           <div className="timer-unit">
             <div className="timer-value">
-              {String(timeLeft.seconds).padStart(2, "0")}
+              {/* {String(timeLeft.seconds).padStart(2, "0")} */}
+            {String(currentTime.seconds).padStart(2, "0")}
             </div>
             <div className="timer-label">Seconds</div>
           </div>
