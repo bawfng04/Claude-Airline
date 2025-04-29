@@ -237,9 +237,9 @@ const Header = () => {
                   <button className="settings-buttons" onClick={handleDetail}>
                     Detail
                     </button>
-                    <button className="settings-buttons" onClick={handleAdminClick}>
+                    {/* <button className="settings-buttons" onClick={handleAdminClick}>
                       Admin
-                    </button>
+                    </button> */}
 
                   <button className="settings-buttons" onClick={handleLogout}>
                     Logout

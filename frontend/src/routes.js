@@ -21,6 +21,7 @@ import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
 import ManageServices from "./pages/admin/ManageServices";
 import ManageTestimonials from "./pages/admin/ManageTestimonials";
 import ManageImageCarousel from "./pages/admin/ManageImageCarousel";
+import EditProfile from "./pages/client/UserDetail/EditProfile";
 
 const routes = (
   <>
@@ -35,6 +36,7 @@ const routes = (
     <Route path="/about" element={<AboutUs />} />
     <Route path="/our-fleet" element={<Planes />} />
     <Route path="/user-detail" element={<UserDetail />} />
+    <Route path="/profile/edit" element={<EditProfile />} />
     {/* admin */}
     <Route path="/admin" element={<Admin />} />
     <Route path="/manage-top-destination" element={<ManageTopDestination />} />
