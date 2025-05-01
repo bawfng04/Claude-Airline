@@ -95,10 +95,7 @@ class Users extends Controller {
 
                 // Nếu có lỗi khi parse JSON
                 if (!is_array($data)) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Dữ liệu gửi lên không hợp lệ!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Dữ liệu gửi lên không hợp lệ!');
                     return;
                 }
 
@@ -119,19 +116,13 @@ class Users extends Controller {
 
                 // Kiểm tra dữ liệu đầu vào
                 if (empty($data['family_name']) || empty($data['given_name']) || empty($data['email']) || empty($data['password']) || empty($data['birthday']) || empty($data['nationality'])) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => $data
-                    ], 400);
+                    $this->jsonResponse(400, 'error');
                     return;
                 }
 
                 // Kiểm tra email đã tồn tại chưa
                 if ($this->userModel->getUserByEmail($data['email'])) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Email đã được sử dụng!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Email đã được sử dụng!');
                     return;
                 }
 
@@ -143,40 +134,25 @@ class Users extends Controller {
                     $fileName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
                     $uploadDir = '../public/uploads/';
                     if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
-                        jsonResponse([
-                            'status' => 'error',
-                            'message' => 'Không thể tải lên hình ảnh!'
-                        ], 500);
+                        $this->jsonResponse(500, 'Không thể tải lên hình ảnh!');
                         return;
                     }
                     $data['image'] = $fileName;
                 }else {
-                    $data['image'] = '67f2ae40e1934.jpg';
+                    $data['image'] = 'defaultImage.jpg';
                 }
 
                 // Thêm người dùng vào cơ sở dữ liệu
                 if ($this->userModel->addUser($data)) {
-                    jsonResponse([
-                        'status' => 'success',
-                        'message' => 'Đăng ký thành công!'
-                    ]);
+                    $this->jsonResponse(200, 'Đăng ký thành công!');
                 } else {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Không thể đăng ký người dùng!'
-                    ], 500);
+                    $this->jsonResponse(500, 'Không thể đăng ký người dùng!');
                 }
             } catch (Exception $e) {
-                jsonResponse([
-                    'status' => 'error',
-                    'message' => $e->getMessage()
-                ], 500);
+                $this->jsonResponse(500, $e->getMessage());
             }
         } else {
-            jsonResponse([
-                'status' => 'error',
-                'message' => 'Phương thức không được hỗ trợ!'
-            ], 405);
+            $this->jsonResponse(405, 'Phương thức không được hỗ trợ!');
         }
     }
 
@@ -188,10 +164,7 @@ class Users extends Controller {
                 $data = json_decode($rawInput, true);
 
                 if (!is_array($data)) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Dữ liệu gửi lên không hợp lệ!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Dữ liệu gửi lên không hợp lệ!');
                     return;
                 }
 
@@ -201,10 +174,7 @@ class Users extends Controller {
                 $remember = $data['remember'] ?? false;
 
                 if (empty($email) || empty($password)) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Vui lòng nhập email và mật khẩu!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Vui lòng nhập email và mật khẩu!');
                     return;
                 }
 
@@ -212,28 +182,19 @@ class Users extends Controller {
                 $user = $this->userModel->getUserByEmail($email);
 
                 if (!$user) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Email không tồn tại!'
-                    ], 404);
+                    $this->jsonResponse(404, 'Email không tồn tại!');
                     return;
                 }
 
                 // Kiểm tra mật khẩu
                 if (!password_verify($password, $user['PASSWORD'])) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Mật khẩu không chính xác!'
-                    ], 401);
+                    $this->jsonResponse(401, 'Mật khẩu không chính xác!');
                     return;
                 }
 
                 // Kiểm tra trạng thái tài khoản
                 if (!$user['ACTIVE']) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Tài khoản của bạn đã bị vô hiệu hóa!'
-                    ], 403);
+                    $this->jsonResponse(403, 'Tài khoản của bạn đã bị vô hiệu hóa!');
                     return;
                 }
 
@@ -263,26 +224,18 @@ class Users extends Controller {
                 // ==========================
                 // Trả kết quả
                 // ==========================
-                jsonResponse([
-                    'status' => 'success',
-                    'message' => 'Đăng nhập thành công!',
-                    'data' => [
+                $this->jsonResponse(200, 'Đăng nhập thành công!',
+                    [
                         'role' => $user['ROLE'],
                         'token' => $jwt,
                         'token_expiration' => $exp
                     ]
-                ]);
+                );
             } catch (Exception $e) {
-                jsonResponse([
-                    'status' => 'error',
-                    'message' => $e->getMessage()
-                ], 500);
+                $this->jsonResponse(500, $e->getMessage());
             }
         } else {
-            jsonResponse([
-                'status' => 'error',
-                'message' => 'Phương thức không được hỗ trợ!'
-            ], 405);
+            $this->jsonResponse(405, 'Phương thức không được hỗ trợ!');
         }
     }
 
@@ -297,10 +250,7 @@ class Users extends Controller {
                 $userId = $GLOBALS['user_id'];
 
                 if (!$userId) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Không tìm thấy user_id trong token!'
-                    ], 401);
+                    $this->jsonResponse(401, 'Không tìm thấy người dùng!');
                     return;
                 }
 
@@ -308,17 +258,13 @@ class Users extends Controller {
                 $user = $this->userModel->getUserById($userId);
 
                 if (!$user) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Người dùng không tồn tại!'
-                    ], 404);
+                    $this->jsonResponse(404, 'Người dùng không tồn tại!');
                     return;
                 }
                 
                 // Trả về thông tin người dùng
-                jsonResponse([
-                    'status' => 'success',
-                    'data' => [
+                $this->jsonResponse(200, 'Success',
+                    [
                         'family_name' => $user['FAMILY_NAME'],
                         'given_name' => $user['GIVEN_NAME'],
                         'email' => $user['EMAIL'],
@@ -328,18 +274,12 @@ class Users extends Controller {
                         'membership' => $user['MEMBERSHIP'],
                         'image' => $user['image'],
                     ]
-                ]);
+                );
             } catch (Exception $e) {
-                jsonResponse([
-                    'status' => 'error',
-                    'message' => $e->getMessage()
-                ], 500);
+                $this->jsonResponse(500, $e->getMessage());
             }
         } else {
-            jsonResponse([
-                'status' => 'error',
-                'message' => 'Phương thức không được hỗ trợ!'
-            ], 405);
+            $this->jsonResponse(405, 'Phương thức không được hỗ trợ!');
         }
     }
 
@@ -352,10 +292,7 @@ class Users extends Controller {
                 $userId = $GLOBALS['user_id'];
 
                 if (!$userId) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Không tìm thấy người dùng!'
-                    ], 401);
+                    $this->jsonResponse(401, 'Không tìm thấy người dùng!');
                     return;
                 }
 
@@ -363,10 +300,7 @@ class Users extends Controller {
                 $currentUser = $this->userModel->getUserById($userId);
 
                 if (!$currentUser) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Người dùng không tồn tại!'
-                    ], 404);
+                    $this->jsonResponse(404, 'Người dùng không tồn tại!');
                     return;
                 }
 
@@ -375,10 +309,7 @@ class Users extends Controller {
                 $data = json_decode($rawInput, true);
 
                 if (!is_array($data)) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Dữ liệu gửi lên không hợp lệ!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Dữ liệu gửi lên không hợp lệ!');
                     return;
                 }
 
@@ -394,36 +325,21 @@ class Users extends Controller {
 
                 // Kiểm tra dữ liệu đầu vào
                 if (empty($data['family_name']) || empty($data['given_name']) || empty($data['birthday']) || empty($data['nationality'])) {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Vui lòng điền đầy đủ thông tin!'
-                    ], 400);
+                    $this->jsonResponse(400, 'Vui lòng điền đầy đủ thông tin!');
                     return;
                 }
 
                 // Cập nhật thông tin người dùng
                 if ($this->userModel->updateUser($userId, $data)) {
-                    jsonResponse([
-                        'status' => 'success',
-                        'message' => 'Cập nhật thông tin thành công!'
-                    ]);
+                    $this->jsonResponse(200, 'Cập nhật thông tin thành công!');
                 } else {
-                    jsonResponse([
-                        'status' => 'error',
-                        'message' => 'Không thể cập nhật thông tin!'
-                    ], 500);
+                    $this->jsonResponse(500, 'Không thể cập nhật thông tin!');
                 }
             } catch (Exception $e) {
-                jsonResponse([
-                    'status' => 'error',
-                    'message' => $e->getMessage()
-                ], 500);
+                $this->jsonResponse(500, $e->getMessage());
             }
         } else {
-            jsonResponse([
-                'status' => 'error',
-                'message' => 'Phương thức không được hỗ trợ!'
-            ], 405);
+            $this->jsonResponse(405, 'Phương thức không được hỗ trợ!');
         }
     }
 }

@@ -58,15 +58,9 @@ class CoreValue extends Controller {
     public function getCoreValues() {
         try {
             $coreValues = $this->coreValueModel->getAllCoreValues();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $coreValues
-            ]);
+            $this->jsonResponse(200, 'success', $coreValues);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

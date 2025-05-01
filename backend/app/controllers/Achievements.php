@@ -43,15 +43,9 @@ class Achievements extends Controller {
     public function getAchievements() {
         try {
             $achievements = $this->achievementModel->getAllAchievements();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $achievements
-            ]);
+            $this->jsonResponse(200, 'success', $achievements);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }
