@@ -32,7 +32,7 @@ const UserDetail = () => {
       setIsLoading(true);
       try {
         const token = localStorage.getItem("accessToken");
-        
+
         const response = await User.getUserInfo(token);
 
         const userDetails = {

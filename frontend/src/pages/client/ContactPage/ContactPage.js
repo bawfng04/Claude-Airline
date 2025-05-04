@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 import { GET_CONTACT_LOCATIONS_API } from "../../../api/apis";
 import LocationMap from "./LocationMap";
+import { Helmet } from "react-helmet";
 
 
 
@@ -68,7 +69,20 @@ const ContactPage = () => {
   };
 
   return (
+
     <div>
+            <Helmet>
+              <title>Claude Airlines - Contact Us</title>
+              <meta
+                name="description"
+                content="Contact Claude Airlines for any inquiries, support, or feedback. We're here to assist you."
+              />
+              <meta
+                name="keywords"
+                content="contact, support, customer service, inquiries, feedback"
+              />
+              <link rel="canonical" href="https://claude-airplanes.web.app/contact" />
+            </Helmet>
       <div className="dem"></div>
 
       <div className="contact-page-wrapper">
