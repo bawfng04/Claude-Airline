@@ -5,6 +5,7 @@ import CoreValues from './CoreValues'
 import AchievementsPage from './Achievements'
 import LeadershipTeam from './LeadershipTeam'
 import Experience from './Experience'
+import { Helmet } from "react-helmet";
 
 const AboutUs = () => {
   const [ourInformation, setOurInformation] = useState([]);
@@ -28,6 +29,19 @@ const AboutUs = () => {
   }, []);
 
   return (
+    <>
+                  <Helmet>
+                    <title>Claude Airlines - About Us</title>
+                    <meta
+                      name="description"
+                      content="Learn more about Claude Airlines, our mission, values, and the team behind our exceptional service."
+                    />
+                    <meta
+                      name="keywords"
+                      content="Claude Airlines, about us, airline history, mission, values, team"
+                    />
+                    <link rel="canonical" href="https://claude-airplanes.web.app/about" />
+                  </Helmet>
     <div className="font-segoe-ui text-[#343a40] overflow-x-hidden">
       <div className="relative h-[70vh] bg-homepage-airplane bg-cover bg-center flex items-center justify-center text-center text-[white] lg:h-[60vh] sm:h-[50vh]">
         <div className="absolute top-[0] left-[0] w-full h-full bg-[rgba(0,_0,_0,_0.5)]"></div>
@@ -52,7 +66,7 @@ const AboutUs = () => {
           About Us
         </span>
       </div>
-      
+
       <div>
         <section className="px-8 py-20 max-w-[1200px] mx-[auto] my-[0] even:bg-light-color md:px-6 md:py-12">
           <div className="text-center max-w-[800px] mx-[auto] my-[0] animate-[fadeInUp_0.8s_ease-out_forwards]">
@@ -70,8 +84,8 @@ const AboutUs = () => {
         <section className="px-8 py-20 max-w-[1200px] mx-[auto] my-[0] even:bg-light-color md:px-6 md:py-12">
           <div className="flex flex-wrap gap-8 justify-center">
             {ourInformation.slice(1)?.map((info, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="flex-[1] min-w-[300px] animate-[fadeInUp_0.8s_ease-out_forwards]"
               >
                 <div className="bg-[white] p-10 rounded-[15px] [box-shadow:0_10px_25px_rgba(0,_0,_0,_0.1)] h-full [transition:all_0.3s_ease] relative overflow-hidden before:content-[''] before:absolute before:top-[0] before:left-[0] before:w-full before:h-full before:bg-[linear-gradient(_to_bottom,_rgba(139,_0,_0,_0)_0%,_rgba(139,_0,_0,_0.1)_100%_)] before:opacity-0 before:[transition:opacity_0.4s_ease] before:pointer-events-none hover:-translate-y-[10px] hover:[box-shadow:0_15px_30px_rgba(0,_0,_0,_0.15)] hover:before:opacity-100">
@@ -118,8 +132,10 @@ const AboutUs = () => {
           </div>
         </section>
       </div>
-    </div>
+      </div>
+      </>
   );
+
 };
 
 export default AboutUs;

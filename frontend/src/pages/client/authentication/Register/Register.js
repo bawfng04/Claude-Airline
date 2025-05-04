@@ -36,25 +36,25 @@ const Register = () => {
     if (!email) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email))
       errors.email = "Email address is invalid";
-  
+
     if (!phoneNumber) errors.phoneNumber = "Phone number is required";
     else if (!/^\d+$/.test(phoneNumber) )
       errors.phoneNumber = "Phone number must be numeric";
     else if (phoneNumber.length !== 10)
       errors.phoneNumber = "Phone number must be 10 digits";
-  
+
     if (!password) errors.password = "Password is required";
     else if (password.length < 8)
       errors.password = "Password must be at least 8 characters";
-  
+
     if (password !== confirmPassword)
       errors.confirmPassword = "Passwords do not match";
-  
+
     if (!familyName) errors.familyName = "Family name is required";
     if (!givenName) errors.givenName = "Given name is required";
     if (!dateOfBirth) errors.dateOfBirth = "Date of birth is required";
     if (!nationality) errors.nationality = "Nationality is required";
-  
+
     setFormErrors(errors);
 
     return Object.keys(errors).length === 0;
@@ -95,6 +95,8 @@ const Register = () => {
         setTimeout(() => {
           navigate("/login");
         }, 5000);
+        console.log("Registration successful:", response.data);
+
       } catch (error) {
         console.error("Error during registration:", error);
         if (error.status === 400) {
@@ -165,7 +167,7 @@ const Register = () => {
                     placeholder="Family Name"
                     value={familyName}
                     onChange={(e) => setFamilyName(e.target.value)}
-                    
+
                   />
                 </div>
                 {formErrors.familyName && (
@@ -188,7 +190,7 @@ const Register = () => {
                     placeholder="Given Name"
                     value={givenName}
                     onChange={(e) => setGivenName(e.target.value)}
-                    
+
                   />
                 </div>
                 {formErrors.givenName && (
@@ -212,7 +214,7 @@ const Register = () => {
                     type="date"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    
+
                   />
                 </div>
                 {formErrors.dateOfBirth && (
@@ -234,7 +236,7 @@ const Register = () => {
                     className={`register-input ${
                       formErrors.nationality ? "input-error" : ""
                     }`}
-                    
+
                   >
                     <option value="">Select your nationality</option>
                     <option value="US">United States</option>
@@ -338,7 +340,7 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={handlePasswordChange}
-                  
+
                 />
               </div>
               {formErrors.password && (
@@ -377,7 +379,7 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  
+
                 />
               </div>
               {formErrors.confirmPassword && (

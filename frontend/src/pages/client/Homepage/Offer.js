@@ -45,7 +45,7 @@ function Offer() {
         </form>
       </div>
       <div className="offer-image-section">
-        <img src={offer} alt="In-flight offer" className="offer-image" />
+        <img src={offer} alt="In-flight offer for Claude Airplanes" className="offer-image" />
       </div>
     </div>
   );

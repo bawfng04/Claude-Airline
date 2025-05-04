@@ -49,7 +49,7 @@ const ImageCarousel = () => {
           const processedImages = result.data.map((image) => ({
             id: image.id,
             src: `${API_URL}${image.carousel_image}`,
-            alt: image.carousel_alt,
+            alt: image.carousel_alt || "Airplane carousel image description",
             caption: image.carousel_caption,
           }));
           setCarouselImages(processedImages);
