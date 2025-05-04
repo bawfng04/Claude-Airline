@@ -1,4 +1,4 @@
-## Cách chạy (vi)
+<!-- ## Cách chạy (vi)
 Clone project:
 `git clone https://github.com/bawfng04/ClaudeAirlines`
 
@@ -12,7 +12,12 @@ Chạy backend:
 2. Chạy XAMPP, lên `http://localhost/phpmyadmin` tạo cái database tương ứng như cái `.env` mới tạo.
 
 Notes: Nhớ là set cái root trong XAMPP tới cái thư mục chứa project mới clone về.
+ -->
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://claude-airplanes.web.app)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)]()
+[![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)]()
 
 # Claude Airlines – Flight Booking System
 
@@ -35,6 +40,33 @@ Deploy: `https://claude-airplanes.web.app`
 - **Firebase Hosting for frontend deployment**
 
 ---
+
+## Some images
+
+<!-- ### Screenshots
+![screenshot01](images/image2.png)
+![screenshot02](images/image3.png)
+![screenshot03](images/image4.png)
+![screenshot04](images/image5.png)
+![screenshot05](images/image6.png)
+![screenshot06](images/image7.png)
+![screenshot07](images/image8.png)
+![screenshot08](images/image9.png)
+![screenshot09](images/image10.png)
+![screenshot10](images/image11.png)
+![screenshot11](images/image12.png)
+![screenshot12](images/image13.png) -->
+
+### Screenshots
+
+| ![screenshot01](images/image2.png) | ![screenshot02](images/image3.png) | ![screenshot03](images/image4.png) |
+|:---:|:---:|:---:|
+| ![screenshot04](images/image5.png) | ![screenshot05](images/image6.png) | ![screenshot06](images/image7.png) |
+| ![screenshot07](images/image8.png) | ![screenshot08](images/image9.png) | ![screenshot09](images/image10.png) |
+| ![screenshot10](images/image11.png) | ![screenshot11](images/image12.png) | ![screenshot12](images/image13.png) |
+
+### Database diagram:
+![DatabaseDiagram](images/Diagram.png)
 
 ## Technologies Used
 
