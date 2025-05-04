@@ -36,6 +36,33 @@ Deploy: `https://claude-airplanes.web.app`
 
 ---
 
+## Some images
+
+<!-- ### Screenshots
+![screenshot01](images/image2.png)
+![screenshot02](images/image3.png)
+![screenshot03](images/image4.png)
+![screenshot04](images/image5.png)
+![screenshot05](images/image6.png)
+![screenshot06](images/image7.png)
+![screenshot07](images/image8.png)
+![screenshot08](images/image9.png)
+![screenshot09](images/image10.png)
+![screenshot10](images/image11.png)
+![screenshot11](images/image12.png)
+![screenshot12](images/image13.png) -->
+
+### Screenshots
+
+| ![screenshot01](images/image2.png) | ![screenshot02](images/image3.png) | ![screenshot03](images/image4.png) |
+|:---:|:---:|:---:|
+| ![screenshot04](images/image5.png) | ![screenshot05](images/image6.png) | ![screenshot06](images/image7.png) |
+| ![screenshot07](images/image8.png) | ![screenshot08](images/image9.png) | ![screenshot09](images/image10.png) |
+| ![screenshot10](images/image11.png) | ![screenshot11](images/image12.png) | ![screenshot12](images/image13.png) |
+
+### Database diagram:
+![DatabaseDiagram](images/Diagram.png)
+
 ## Technologies Used
 
 ### Frontend
