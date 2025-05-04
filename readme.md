@@ -14,40 +14,76 @@ Chạy backend:
 Notes: Nhớ là set cái root trong XAMPP tới cái thư mục chứa project mới clone về.
 
 
-# Flight Booking System
+# Claude Airlines – Flight Booking System
 
-A modern web application for flight booking and management built with React.js and PHP. This project provides a user-friendly interface for booking flights, managing user profiles, and handling flight-related operations.
+Claude Airlines is a modern web application for flight booking and management, built with React.js (frontend) and PHP/MySQL (backend). The project provides a seamless experience for users to search, book, and manage flights, as well as for admins to manage flight data.
 
-## How to start
+Deploy: `https://claude-airplanes.web.app`
 
-Clone project:
-`git clone https://github.com/bawfng04/ClaudeAirlines`
+---
 
-Install dependencies and start frontend:
-1. `cd frontend`
-2. `npm i`
-3. `npm start`
+## Features
 
-Install dependencies and start the server
-1. Create the `.env` file similar to `.env.example` file and fill in the required values.
-2. Start the XAMPP, go to `http://localhost/phpmyadmin` and create the database.
+- **User-friendly flight search and booking**
+- **Modern, responsive UI**
+- **User authentication and profile management**
+- **Admin dashboard for managing flights, bookings, and users**
+- **Newsletter subscription**
+- **SEO optimized with React Helmet**
+- **RESTful API backend**
+- **MVC architecture for backend**
+- **Firebase Hosting for frontend deployment**
 
-(Remember to set the root path in XAMPP to the project's folder)
+---
 
-## Components
+## Technologies Used
 
 ### Frontend
+
 - React.js
 - Tailwind CSS
-- Day.js
+- React Helmet (for SEO)
+- React Icons
 - Firebase Hosting
 
 ### Backend
-- PHP
+
+- PHP (MVC structure)
 - MySQL
-- MVC Architecture
 - RESTful API
-- Composer
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/bawfng04/ClaudeAirlines
+cd ClaudeAirlines
+```
+
+### 2. Setup the Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+### 3. Setup the Backend
+
+- Copy `.env.example` to `.env` and fill in your database credentials.
+- Start XAMPP (or any local server with PHP & MySQL).
+- Go to `http://localhost/phpmyadmin` and create a database matching your `.env` config.
+- Set the document root in XAMPP to the backend's public directory if needed.
+
+### 4. Access the Application
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost/backend/public](http://localhost/backend/public) (adjust path as needed)
+
+---
 
 ## Project Structure
 
@@ -55,17 +91,27 @@ Install dependencies and start the server
 ├── frontend/                # React.js frontend application
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
-│   │   ├── pages/         # Page components
-│   │   ├── assets/        # Static assets
-│   │   └── ...
-│   └── public/            # Public assets
+│   │   ├── pages/          # Page components
+│   │   ├── assets/         # Static assets (images, logos, etc.)
+│   └── public/             # Public assets (index.html, favicon, etc.)
 │
-├── backend/               # PHP backend application
+├── backend/                 # PHP backend application
 │   ├── app/
-│   │   ├── controllers/  # MVC Controllers
-│   │   ├── models/       # Database models
-│   │   └── core/         # Core functionality
-│   ├── config/           # Configuration files
-│   └── public/           # Public entry point
+│   │   ├── controllers/    # MVC Controllers
+│   │   ├── models/         # Database models
+│   │   └── core/           # Core functionality
+│   ├── config/             # Configuration files
+│   └── public/             # Public entry point
 ```
+
+---
+
+## SEO & Best Practices
+
+- Uses React Helmet for dynamic meta tags and SEO optimization.
+- Includes `sitemap.xml` and `robots.txt` in the frontend `public/` directory.
+- All images use descriptive `alt` attributes.
+- Clean, semantic HTML structure.
+
+---
 
