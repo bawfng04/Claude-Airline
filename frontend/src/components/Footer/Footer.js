@@ -5,7 +5,7 @@ import {
   FaTwitter,
   FaInstagram,
   FaLinkedin,
-  FaPlane,
+  // FaPlane,
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
@@ -21,11 +21,13 @@ const Footer = () => {
         {/* About Section */}
         <div className="footer-section footer-about">
           <div className="footer-logo-container">
-            <img src={airplaneLogo} alt="Logo" className="footer-logo" />
+            <img src={airplaneLogo} alt="ClaudeAirplaneLogo" className="footer-logo" />
             <h3 className="footer-title">Claude Airlines</h3>
           </div>
           <p className="footer-description">
-            Claude Airlines is dedicated to providing world-class air travel experiences with modern aircraft, exceptional service, and a commitment to safety and sustainability.
+            Claude Airlines is dedicated to providing world-class air travel
+            experiences with modern aircraft, exceptional service, and a
+            commitment to safety and sustainability.
           </p>
           <div className="footer-social">
             <a
@@ -89,19 +91,19 @@ const Footer = () => {
           <h4 className="footer-heading">Our Services</h4>
           <ul className="footer-list">
             <li>
-              <a href="#">Flight Booking</a>
+              <a href="https://www.w3schools.com">Flight Booking</a>
             </li>
             <li>
-              <a href="#">Cargo Services</a>
+              <a href="https://www.w3schools.com">Cargo Services</a>
             </li>
             <li>
-              <a href="#">Charter Flights</a>
+              <a href="https://www.w3schools.com">Charter Flights</a>
             </li>
             <li>
-              <a href="#">In-flight Entertainment</a>
+              <a href="https://www.w3schools.com">In-flight Entertainment</a>
             </li>
             <li>
-              <a href="#">Loyalty Program</a>
+              <a href="https://www.w3schools.com">Loyalty Program</a>
             </li>
           </ul>
         </div>
@@ -144,11 +146,11 @@ const Footer = () => {
           &copy; {year} Claude Airlines. All rights reserved.
         </div>
         <div className="footer-legal">
-          <a href="#">Privacy Policy</a>
+          <a href="https://www.w3schools.com">Privacy Policy</a>
           <span className="footer-divider">|</span>
-          <a href="#">Terms of Service</a>
+          <a href="https://www.w3schools.com">Terms of Service</a>
           <span className="footer-divider">|</span>
-          <a href="#">Cookie Policy</a>
+          <a href="https://www.w3schools.com">Cookie Policy</a>
         </div>
       </div>
     </footer>

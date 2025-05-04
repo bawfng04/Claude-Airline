@@ -6,7 +6,7 @@ import phone from "../../../assets/phone.png";
 import email from "../../../assets/email.png";
 import location from "../../../assets/location.png";
 import faq from "../../../assets/faq.png";
-import { FaTrophy, FaUsers } from "react-icons/fa";
+import {  FaUsers } from "react-icons/fa";
 import {
   FaMapMarkerAlt,
   FaClock,

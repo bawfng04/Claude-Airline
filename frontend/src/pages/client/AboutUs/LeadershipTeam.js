@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import about from '../../../api/apiAboutUs';
 
 const LeadershipTeam = () => {
@@ -8,8 +8,8 @@ const LeadershipTeam = () => {
         const fetchLeadershipTeam = async () => {
             try {
                 const response = await about.getLeadershipTeam();
-                setLeadershipTeam(response.data);   
-            }   
+                setLeadershipTeam(response.data);
+            }
             catch (error) {
                 console.error("Error fetching leadership team data:", error);
             }
@@ -24,8 +24,8 @@ const LeadershipTeam = () => {
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-8 sm:grid-cols-[1fr]">
                 {leadershipTeam.map((member, index) => (
-                    <div 
-                        key={index} 
+                    <div
+                        key={index}
                         className={`bg-[white] rounded-[15px] overflow-hidden [box-shadow:0_10px_20px_rgba(0,_0,_0,_0.05)] text-center [transition:all_0.3s_ease] animate-[fadeInUp_0.8s_ease-out_forwards] [animation-delay:${index * 0.2}s] hover:-translate-y-[10px] hover:[box-shadow:0_15px_30px_rgba(0,_0,_0,_0.1)] hover:scale-110`}
                     >
                         <div className="w-[120px] h-[120px] rounded-[50%] overflow-hidden mt-8 mx-[auto] mb-4 border-[3px] border-[solid] border-primary-color [transition:all_0.3s_ease] scale-110">

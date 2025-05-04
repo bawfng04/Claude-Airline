@@ -75,9 +75,10 @@ const Header = () => {
   const handleLogoClick = () => {
     window.location.href = "/home";
   };
-  const handleAdminClick = () => {
-    window.location.href = "/admin";
-  };
+
+  // const handleAdminClick = () => {
+  //   window.location.href = "/admin";
+  // };
 
 
   const toggleMobileMenu = () => {
