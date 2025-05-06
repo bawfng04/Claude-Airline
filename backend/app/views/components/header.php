@@ -84,6 +84,29 @@
                             </div>
                         </div>
                     </li>
+
+                    <li class="menu-item has-sub">
+                        <a href="#" class='menu-link'>
+                            <span><i class="bi bi-journal-richtext"></i> Travel Vlog</span>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-group-wrapper">
+                                <ul class="submenu-group">
+                                    <li class="submenu-item">
+                                        <a href="vlogpost" class="submenu-link">
+                                            <span><i class="bi bi-list-task"></i> Vlog posts</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a href="vlogcomment" class="submenu-link">
+                                            <span><i class="bi bi-chat-left-text-fill"></i> User comments</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
                     <li class="menu-item  has-sub">
                         <a href="#" class='menu-link'>
                             <span><i class="bi bi-house-door-fill"></i> Homepage</span>

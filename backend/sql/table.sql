@@ -36,7 +36,7 @@ CREATE TABLE CONTACT_LOCATIONS (
     phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
     email VARCHAR(255) NOT NULL, -- Địa chỉ email
-    location_embed_code TEXT NOT NULL, -- Sđịa điểm (Google Maps)
+    location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
 );
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
@@ -173,3 +173,31 @@ CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
     carousel_alt TEXT NOT NULL,
     carousel_caption TEXT NOT NULL
 )
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    author VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 0.00;
+);
+
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+
