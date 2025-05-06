@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { FaClock, FaTag, FaPlane } from "react-icons/fa";
+import {  FaTag, FaPlane } from "react-icons/fa";
 
 const PromotionCountdown = () => {
   // Set end date for the promotion (1 week from current date for this example)
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 7);
 
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  // const [timeLeft, setTimeLeft] = useState({
+  //   hours: 0,
+  //   minutes: 0,
+  //   seconds: 0,
+  // });
 
   const [currentTime, setCurrentTime] = useState(
     {
@@ -40,19 +40,20 @@ const PromotionCountdown = () => {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = endDate - new Date();
+      // const difference = endDate - new Date();
 
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      } else {
-        // Promotion has ended
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
+      // if (difference > 0) {
+
+      //   setTimeLeft({
+      //     days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      //     hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      //     minutes: Math.floor((difference / 1000 / 60) % 60),
+      //     seconds: Math.floor((difference / 1000) % 60),
+      //   });
+      // } else {
+      //   Promotion has ended
+      //   setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      // }
     };
 
     // Calculate initially
