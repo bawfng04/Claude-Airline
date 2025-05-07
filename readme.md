@@ -141,7 +141,6 @@ This hybrid approach leverages the strengths of SPA for a rich, interactive user
 *   **Git & GitHub:** Version control and repository hosting.
 *   **npm / Node.js:** For frontend dependency management and build processes.
 *   **phpMyAdmin:** For database administration.
-*   **VS Code:** Code editor.
 
 ---
 
@@ -182,24 +181,25 @@ npm start
 The frontend will be accessible at http://localhost:3000.
 
 ### 3. Setup the Backend
-Start XAMPP: Ensure Apache and MySQL services are running.
-Create Database:
-Navigate to http://localhost/phpmyadmin.
-Create a new database (e.g., claude_airlines or as specified in your .env later).
-Import the database schema and initial data:
-Go to the "Import" tab.
-Import backend/sql/table.sql to create tables.
-Import backend/sql/insert.sql to populate initial data.
-Configure Environment:
-In the backend/app/ directory, copy .env.example to .env.
-Open .env and fill in your database credentials (DB_HOST, DB_USER, DB_PASS, DB_NAME), JWT_SECRET, and BASE_URL.
-Example BASE_URL: If XAMPP's htdocs points to ClaudeAirlines/ and your backend is accessed via http://localhost/backend/public, then BASE_URL might be /backend/public/. If XAMPP's document root is set directly to ClaudeAirlines/backend/public/, then BASE_URL might be /.
-Configure XAMPP Document Root (Optional but Recommended):
-For cleaner URLs, configure an Apache Virtual Host or set XAMPP's main document root to point to the ClaudeAirlines/backend/public/ directory. This allows accessing the API directly via http://localhost/.
-Alternatively, access via http://localhost/path/to/ClaudeAirlines/backend/public/.
-Frontend API Configuration:
-In the frontend/ directory, copy .env.example to .env.
-Update REACT_APP_BASE_URL to point to your backend API (e.g., http://localhost/backend/public or http://localhost/api if you used virtual hosts).
+- **Start XAMPP:**
+  - Ensure Apache and MySQL services are running.
+- **Create Database:**
+  - Navigate to `http://localhost/phpmyadmin`.
+  - Create a new database (e.g., `claude_airlines` or as specified in your `.env` later).
+  - Import the database schema and initial data:
+    - Go to the "Import" tab.
+    - Import `backend/sql/table.sql` to create tables.
+    - Import `backend/sql/insert.sql` to populate initial data.
+- **Configure Environment:**
+  - In the `backend/app/` directory, copy `.env.example` to `.env`.
+  - Open `.env` and fill in your database credentials (`DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`), `JWT_SECRET`, and `BASE_URL`.
+    - *Example `BASE_URL`*: If XAMPP's `htdocs` points to `ClaudeAirlines/` and your backend is accessed via `http://localhost/backend/public`, then `BASE_URL` might be `/backend/public/`. If XAMPP's document root is set directly to `ClaudeAirlines/backend/public/`, then `BASE_URL` might be `/`.
+- **Configure XAMPP Document Root (Optional but Recommended):**
+  - For cleaner URLs, configure an Apache Virtual Host or set XAMPP's main document root to point to the `ClaudeAirlines/backend/public/` directory. This allows accessing the API directly via `http://localhost/`.
+  - Alternatively, access via `http://localhost/path/to/ClaudeAirlines/backend/public/`.
+- **Frontend API Configuration:**
+  - In the `frontend/` directory, copy `.env.example` to `.env`.
+  - Update `REACT_APP_BASE_URL` to point to your backend API (e.g., `http://localhost/backend/public` or `http://localhost/api` if you used virtual hosts).
 
 ### 4. Access the Application
 Frontend: http://localhost:3000
