@@ -246,9 +246,8 @@ ClaudeAirlines/
 ---
 
 ## 🌐 SEO & Best Practices
-Dynamic Meta Tags: Uses React Helmet for dynamic <title> and <meta> tags per page, crucial for SEO in SPAs.
-Sitemap & Robots.txt: Includes sitemap.xml and robots.txt in the frontend public/ directory to guide search engine crawlers.
-Semantic HTML: Structured with semantic HTML5 elements for better accessibility and SEO.
-Image Alt Attributes: All significant images use descriptive alt attributes.
-Responsive Design: Ensures usability across various screen sizes.
-Code Quality: Clean, organized, and commented code where necessary.
+- **Dynamic Meta Tags:** Uses React Helmet for dynamic `<title>` and `<meta>` tags per page, crucial for SEO in SPAs.
+- **Sitemap & Robots.txt:** Includes `sitemap.xml` and `robots.txt` in the `frontend/public/` directory to guide search engine crawlers.
+- **Semantic HTML:** Structured with semantic HTML5 elements for better accessibility and SEO.
+- **Image Alt Attributes:** All significant images use descriptive `alt` attributes.
+- **Responsive Design:** Ensures usability across various screen sizes.
