@@ -41,6 +41,7 @@ const Header = () => {
     else if (path.includes("/about")) setActiveLink("about");
     else if (path.includes("/contact")) setActiveLink("contact");
     else if (path.includes("/faq")) setActiveLink("faq");
+    else if (path.startsWith("/vlog")) setActiveLink("vlog"); // <-- ADD THIS CHECK
     else if (path.includes("/example")) setActiveLink("example");
     else if (path.includes("/admin")) setActiveLink("admin");
     else if (path.includes("/login")) setActiveLink("login");
@@ -75,9 +76,10 @@ const Header = () => {
   const handleLogoClick = () => {
     window.location.href = "/home";
   };
-  const handleAdminClick = () => {
-    window.location.href = "/admin";
-  };
+
+  // const handleAdminClick = () => {
+  //   window.location.href = "/admin";
+  // };
 
 
   const toggleMobileMenu = () => {
@@ -145,6 +147,17 @@ const Header = () => {
                 onClick={closeMenus}
               >
                 About
+              </a>
+            </li>
+            <li className="header-nav-item">
+              <a
+                href="/vlog"  
+                className={`header-nav-link ${
+                  activeLink === "vlog" ? "active" : "" // Use 'vlog' as the key
+                }`}
+                onClick={closeMenus}
+              >
+                My Vlog
               </a>
             </li>
             <li className="header-nav-item">

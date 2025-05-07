@@ -36,7 +36,7 @@ CREATE TABLE CONTACT_LOCATIONS (
     phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
     email VARCHAR(255) NOT NULL, -- Địa chỉ email
-    location_embed_code TEXT NOT NULL, -- Sđịa điểm (Google Maps)
+    location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
 );
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
@@ -173,3 +173,75 @@ CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
     carousel_alt TEXT NOT NULL,
     carousel_caption TEXT NOT NULL
 )
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    author VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 0.00;
+);
+
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+
+
+
+
+DROP TABLE IF EXISTS `vlog_comments`;
+DROP TABLE IF EXISTS `vlog_posts`;
+
+-- `vlog_posts`
+CREATE TABLE `vlog_posts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT 'Author (FK to USERS.ID)',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `introduction` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `featured_image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('published','draft') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'draft',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`),
+  KEY `vlog_post_author_fk` (`user_id`),
+  -- Removed the trailing comma from the end of this line
+  CONSTRAINT `vlog_post_author_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores vlog post entries';
+
+
+-- vlog_comments`
+CREATE TABLE `vlog_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT 'Commenter (FK to USERS.ID), NULL for guests',
+  `guest_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rating` tinyint(3) unsigned DEFAULT NULL,
+  `is_approved` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=pending, 1=approved',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`),
+  KEY `comment_user_fk` (`user_id`),
+  CONSTRAINT `vlog_comments_post_fk` FOREIGN KEY (`post_id`) REFERENCES `vlog_posts` (`id`) ON DELETE CASCADE,
+  -- Removed the trailing comma from the end of this line too
+  CONSTRAINT `vlog_comments_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores comments for vlog posts';
+

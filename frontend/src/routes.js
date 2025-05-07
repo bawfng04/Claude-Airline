@@ -1,4 +1,6 @@
 import { Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 //components
 // import ExampleComponent from "./pages/client/ExampleComponent/ExampleComponent";
@@ -12,6 +14,10 @@ import FAQPage from "./pages/client/FAQ/FAQPage";
 import AboutUs from "./pages/client/AboutUs/AboutUs";
 import Planes from "./pages/client/allPlanes/planes";
 import UserDetail from "./pages/client/UserDetail/UserDetail";
+
+import VlogListPage from "./pages/client/Vlog/VlogListPage";
+import VlogPostPage from "./pages/client/Vlog/VlogPostPage";
+
 
 // admin
 import Admin from "./pages/admin/Admin";
@@ -37,6 +43,11 @@ const routes = (
     <Route path="/our-fleet" element={<Planes />} />
     <Route path="/user-detail" element={<UserDetail />} />
     <Route path="/profile/edit" element={<EditProfile />} />
+
+    <Route path="/vlog" element={<VlogListPage />} key="vlog-list" />
+    <Route path="/vlog/:slug" element={<VlogPostPage />} key="vlog-post" />
+
+
     {/* admin */}
     <Route path="/admin" element={<Admin />} />
     <Route path="/manage-top-destination" element={<ManageTopDestination />} />
@@ -58,6 +69,8 @@ const routes = (
     />
     <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />
+
+
   </>
 );
 

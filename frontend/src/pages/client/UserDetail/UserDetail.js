@@ -10,7 +10,7 @@ import {
   FaGlobe,
   FaEdit,
   FaArrowLeft,
-  FaUserCircle,
+  // FaUserCircle,
 } from "react-icons/fa";
 import User from "../../../api/userApi"
 
@@ -33,9 +33,9 @@ const UserDetail = () => {
       setIsLoading(true);
       try {
         const token = localStorage.getItem("accessToken");
-        
+
         const response = await User.getUserInfo(token);
-        
+
         const userDetails = {
           email: response.data.email,
           familyName: response.data.family_name,

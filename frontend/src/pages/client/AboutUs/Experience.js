@@ -24,7 +24,7 @@ const Experience = () => {
             <h2 className="text-center text-[2.5rem] mb-12 relative inline-block left-2/4 -translate-x-1/2 text-primary-color after:content-[''] after:absolute after:-bottom-[10px] after:left-2/4 after:-translate-x-1/2 after:w-[80px] after:h-[3px] after:[transition:width_0.3s_ease] hover:after:w-[120px] md:text-[2rem] md:flex-col">
             The Airline Experience
             </h2>
-            {experiences.map((experience, index) => (
+            {experiences?.map((experience, index) => (
                 <Link
                     to={`/${encodeURIComponent(experience.title.toLowerCase().replace(/\s+/g, '-'))}`}
                     key={index}
