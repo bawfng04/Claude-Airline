@@ -100,7 +100,7 @@ The platform allows users to effortlessly search for flights, compare prices, bo
 *Sequence Diagram*
 ![Sequence Diagram](images/SequenceDiagram.png)
 
-*Database Entity Relationship Diagram UML*
+*Database Entity Relationship UML Diagram*
 ![Database UML](images/DiagramUML.png)
 
 ---
