@@ -203,3 +203,34 @@ VALUES
     ('Tokyo Office', 'Branch Office', 'Tokyo, Korea', '+841030102332444', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.4330971849653!2d139.8085117152003!3d35.71014153618419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ed6f44659b9%3A0x30e534e2114c0e71!2sTokyo%20Skytree!5e0!3m2!1sen!2sjp!4v1650123456789!5m2!1sen!2sjp'),
     ('Sydney Office', 'Branch Office', 'Sydney, USA', '+84103010234', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3313.3736662710805!2d151.21303131571477!3d-33.856928180659004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae665e892fdd%3A0x3133f8d75a1ac251!2sSydney%20Opera%20House!5e0!3m2!1sen!2sau!4v1650123456789!5m2!1sen!2sau'),
     ('Dubai Office', 'Main Office', 'Dubai, Korea', '+8410301023324', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1785970160156!2d55.27251251500987!3d25.197209838364504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682829c723b9%3A0x7bf247a82876c200!2sBurj%20Khalifa!5e0!3m2!1sen!2sae!4v1650123456789!5m2!1sen!2sae');
+
+
+INSERT IGNORE INTO `USERS` (`ID`, `FAMILY_NAME`, `GIVEN_NAME`, `EMAIL`, `PASSWORD`, `BIRTHDAY`, `NATIONALITY`, `ROLE`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT`) VALUES
+(1, 'Admin', 'User', 'admin@claudeair.test', '$2y$10$placeholderhashfortestingonly1', '1990-01-01', 'Testland', 'ADMIN', 1, NOW(), NOW()),
+(2, 'Test', 'User', 'user@claudeair.test', '$2y$10$placeholderhashfortestingonly2', '1995-05-10', 'Testland', 'USER', 1, NOW(), NOW()),
+(3, 'Vlogger', 'Pro', 'pro.vlogger@claudeair.test', '$2y$10$placeholderhashfortestingonly3', '1988-11-20', 'Travelonia', 'ADMIN', 1, NOW(), NOW()),
+(4, 'Commenter', 'Frequent', 'freq.commenter@email.test', '$2y$10$placeholderhashfortestingonly4', '2000-03-15', 'Blogland', 'USER', 1, NOW(), NOW());
+
+
+INSERT INTO `vlog_posts` (`user_id`, `title`, `slug`, `introduction`, `content`, `featured_image_url`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Exploring the Wonders of Ha Long Bay', 'exploring-the-wonders-of-ha-long-bay', 'Discover the magic of Ha Long Bay, a UNESCO World Heritage site famed for its emerald waters and thousands of limestone karsts.', '<p>Ha Long Bay, a UNESCO World Heritage site...</p>', 'https://placehold.co/800x400/5DADE2/FFFFFF?text=Ha+Long+Bay', 'published', NOW() - INTERVAL 7 DAY, NOW() - INTERVAL 7 DAY),
+(1, 'A Culinary Journey Through Ho Chi Minh City', 'culinary-journey-ho-chi-minh-city', 'Dive into the vibrant street food scene and hidden culinary gems of Vietnam\'s bustling southern metropolis.', '<h2>A Food Lover\'s Paradise!</h2>...', 'https://placehold.co/800x400/F5B041/FFFFFF?text=HCMC+Food', 'published', NOW() - INTERVAL 5 DAY, NOW() - INTERVAL 4 DAY),
+(3, 'My Trip Planning Guide (Draft)', 'trip-planning-guide-draft', 'A sneak peek into my essential steps for planning your next big adventure without the stress.', '<p>Planning a big trip can feel overwhelming...</p>', NULL, 'draft', NOW() - INTERVAL 1 DAY, NOW() - INTERVAL 1 DAY), -- Written by User 3
+(1, 'Relaxing on Phu Quoc Island', 'relaxing-on-phu-quoc-island', 'White sand beaches, clear turquoise waters, and stunning sunsets await on Vietnam\'s paradise island.', '<p>Phu Quoc offers pristine beaches...</p>', 'https://placehold.co/800x400/58D68D/FFFFFF?text=Phu+Quoc', 'published', NOW() - INTERVAL 10 DAY, NOW() - INTERVAL 10 DAY),
+(3, 'Trekking Adventures in Sapa', 'trekking-adventures-sapa', 'Explore the breathtaking terraced rice fields and vibrant cultures of the ethnic minority villages in Northern Vietnam.', '<h2>Into the Clouds</h2>...', 'https://placehold.co/800x400/AF7AC5/FFFFFF?text=Sapa+Trek', 'published', NOW() - INTERVAL 15 DAY, NOW() - INTERVAL 14 DAY), -- Written by User 3
+(1, 'Ancient Charms of Hoi An', 'ancient-charms-hoi-an', 'Step back in time in the lantern-lit streets of Hoi An, a perfectly preserved ancient trading port.', '<p>Hoi An\'s Ancient Town...</p>', 'https://placehold.co/800x400/F4D03F/FFFFFF?text=Hoi+An', 'published', NOW() - INTERVAL 20 DAY, NOW() - INTERVAL 20 DAY),
+(1, 'Mekong Delta Discovery: Waterways and Orchards', 'mekong-delta-discovery', 'Explore the intricate network of rivers, canals, and lush fruit orchards in the "rice bowl" of Vietnam.', '<p>A day trip or overnight stay in the Mekong Delta...</p>', 'https://placehold.co/800x400/48C9B0/FFFFFF?text=Mekong+Delta', 'published', NOW() - INTERVAL 25 DAY, NOW() - INTERVAL 25 DAY);
+
+INSERT INTO `vlog_comments` (`post_id`, `user_id`, `guest_name`, `comment`, `rating`, `is_approved`, `created_at`) VALUES
+(1, 2, NULL, 'Ha Long Bay looks amazing! I want to go.', 5, 1, NOW() - INTERVAL 6 DAY),
+(2, 2, NULL, 'Great recommendations! Pho is my favorite.', 4, 1, NOW() - INTERVAL 3 DAY),
+(1, NULL, 'Visitor Ann', 'Was the cruise expensive?', NULL, 0, NOW() - INTERVAL 2 DAY),
+(2, 1, NULL, 'Don\'t forget Com Tam!', 5, 1, NOW() - INTERVAL 1 DAY),
+(4, 2, NULL, 'Phu Quoc seems like the perfect place to unwind.', 5, 1, NOW() - INTERVAL 9 DAY),
+(5, NULL, 'Trekker Tom', 'How difficult was the Sapa trek for beginners?', NULL, 1, NOW() - INTERVAL 13 DAY),
+(6, 1, NULL, 'Hoi An tailors are the best!', 5, 1, NOW() - INTERVAL 19 DAY),
+(7, 2, NULL, 'The Mekong Delta boat trip was so peaceful.', 4, 1, NOW() - INTERVAL 24 DAY),
+(5, 4, NULL, 'Sapa looks stunning! Added to my list.', 5, 0, NOW() - INTERVAL 1 DAY), -- Comment by User 4, Pending
+(6, NULL, 'Culture Vulture', 'I loved the lanterns in Hoi An!', 5, 1, NOW() - INTERVAL 18 DAY),
+(7, 4, NULL, 'Did you see the coconut candy making process?', 3, 1, NOW() - INTERVAL 23 DAY); -- Comment by User 4
+
