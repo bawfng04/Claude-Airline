@@ -94,11 +94,14 @@ The platform allows users to effortlessly search for flights, compare prices, bo
 
 ### Architecture Design
 
-![Backend Component Diagram](images/BackendComponentDiagram.png)
 *Backend Component Diagram*
+![Backend Component Diagram](images/BackendComponentDiagram.png)
 
-![Database UML](images/DiagramUML.png)
+*Sequence Diagram*
+![Sequence Diagram](images/SequenceDiagram.png)
+
 *Database Entity Relationship Diagram UML*
+![Database UML](images/DiagramUML.png)
 
 ---
 
