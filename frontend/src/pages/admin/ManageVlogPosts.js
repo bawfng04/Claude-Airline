@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../api/apis'; // Your API constants
-import { FaEdit, FaTrashAlt, FaPlus, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt, FaPlus, FaSpinner, FaExclamationTriangle, FaStar, FaComments } from 'react-icons/fa'; // Added FaStar, FaComments
 
 // *** IMPORTANT: Replace with your actual admin token retrieval logic ***
 const getAdminAuthToken = () => {
@@ -137,6 +137,8 @@ const ManageVlogPosts = () => {
                                                 <th>Title</th>
                                                 <th>Author</th>
                                                 <th>Status</th>
+                                                <th>Ratings</th> {/* ADDED */}
+                                                <th>Comments (Approved)</th> {/* Placeholder, needs separate count if desired */}                                                
                                                 <th>Date Created</th>
                                                 <th>Last Updated</th>
                                                 <th>Actions</th>
@@ -144,7 +146,7 @@ const ManageVlogPosts = () => {
                                         </thead>
                                         <tbody>
                                             {posts.length === 0 ? (
-                                                <tr><td colSpan="6" className="text-center text-muted">No posts found.</td></tr>
+                                                <tr><td colSpan="8" className="text-center text-muted">No posts found.</td></tr>
                                             ) : (
                                                 posts.map(post => (
                                                     <tr key={post.id}>
@@ -157,6 +159,14 @@ const ManageVlogPosts = () => {
                                                                 <span className="badge bg-light-secondary">Draft</span>
                                                             )}
                                                         </td>
+                                                        {/* Display Ratings Info */}
+                                                        <td>
+                                                            {post.average_rating && post.average_rating > 0 ? (
+                                                                <><FaStar className="text-warning me-1"/>{parseFloat(post.average_rating).toFixed(1)} ({post.no_of_ratings || 0})</>
+                                                            ) : ( <span className="text-muted">N/A</span> )}
+                                                        </td>
+                                                        {/* Placeholder for approved comment count - would need API to provide this aggregated data */}
+                                                        <td className="text-center"><FaComments className="text-info me-1" /> TBD</td>
                                                         <td>{new Date(post.created_at).toLocaleDateString()}</td>
                                                         <td>{new Date(post.updated_at).toLocaleDateString()}</td>
                                                         <td className='text-nowrap'>
