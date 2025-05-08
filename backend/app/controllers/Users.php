@@ -38,7 +38,7 @@ class Users extends Controller {
             if (!empty($_FILES['image']['tmp_name'])) {
                 move_uploaded_file($_FILES['image']['tmp_name'], '../public/uploads/' . $image);
             } else {
-                $image = '67f2ae40e1934.jpg'; // ảnh mặc định
+                $image = 'defaultImage.jpg'; // ảnh mặc định
             }
 
             $data = [

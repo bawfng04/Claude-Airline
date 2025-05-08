@@ -16,6 +16,7 @@ class AirlineExperience extends Controller {
     // Lưu thông tin (Thêm mới hoặc Cập nhật)
     public function save() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = $_POST['id'] ?? null;
             $title = $_POST['title'];
             $descriptions = $_POST['descriptions'] ?? [];
@@ -31,9 +32,17 @@ class AirlineExperience extends Controller {
             }
 
             if ($id) {
-                $this->airlineExperienceModel->updateExperience($id, $title, $image, $descriptions);
+                if ($this->airlineExperienceModel->updateExperience($id, $title, $image, $descriptions)) {
+                    $_SESSION['success'] = 'Cập nhật dữ liệu thành công!';
+                } else {
+                    $_SESSION['error'] = 'Cập nhật dữ liệu thất bại!';
+                }
             } else {
-                $this->airlineExperienceModel->addExperience($title, $image, $descriptions);
+                if ($this->airlineExperienceModel->addExperience($title, $image, $descriptions)) {
+                    $_SESSION['success'] = 'Thêm dữ liệu thành công!';
+                } else {
+                    $_SESSION['error'] = 'Thêm dữ liệu thất bại!';
+                }
             }
 
             header('Location: ' . base_url('airlineexperience'));
@@ -43,8 +52,16 @@ class AirlineExperience extends Controller {
     // Xóa bản ghi
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = $_POST['id'];
-
+            
+            // Kiểm tra ID
+            if (empty($id) || !is_numeric($id)) {
+                $_SESSION['error'] = 'ID không hợp lệ!';
+                header('Location: ' . base_url('achievements'));
+                exit();
+            }
+            
             // Lấy thông tin để xóa ảnh
             $experience = $this->airlineExperienceModel->getExperienceById($id);
             if ($experience && !empty($experience['image'])) {
@@ -53,8 +70,13 @@ class AirlineExperience extends Controller {
                     unlink($imagePath); // Xóa ảnh khỏi thư mục uploads
                 }
             }
-
-            $this->airlineExperienceModel->deleteExperience($id);
+            
+            
+            if ($this->airlineExperienceModel->deleteExperience($id)) {
+                $_SESSION['success'] = 'Xóa dữ liệu thành công!';
+            } else {
+                $_SESSION['error'] = 'Xóa dữ liệu thất bại!';
+            }
             header('Location: ' . base_url('airlineexperience'));
         }
     }
