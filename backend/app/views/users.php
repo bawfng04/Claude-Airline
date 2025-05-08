@@ -14,6 +14,29 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
+            <?php if (!empty($_SESSION['js_error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['js_error']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['js_error']); ?>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['success']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['error']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
                 <h3 class="mb-4">Users Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
@@ -165,22 +188,6 @@
     </div>
 
     <?php include 'components/script.php'; ?>
-    <?php if (!empty($_SESSION['js_error'])): ?>
-    <script>
-        alert("<?= $_SESSION['js_error'] ?>");
-    </script>
-    <?php unset($_SESSION['js_error']); endif; ?>
-    <?php if (!empty($_SESSION['success'])): ?>
-    <script>
-        alert("<?= $_SESSION['success'] ?>");
-    </script>
-    <?php unset($_SESSION['success']); endif; ?>
-    <?php if (!empty($_SESSION['error'])): ?>
-    <script>
-        alert("<?= $_SESSION['error'] ?>");
-    </script>
-    <?php unset($_SESSION['error']); endif; ?>
-
 
     <script>
         $(document).ready(function () {

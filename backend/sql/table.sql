@@ -173,39 +173,6 @@ CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
     carousel_caption TEXT NOT NULL
 )
 
-CREATE TABLE posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    author VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 0.00;
-);
-
-CREATE TABLE comments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT NOT NULL,
-    user_id INT NOT NULL,
-    content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
-);
-
-CREATE TABLE ratings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT NOT NULL,
-    user_id INT NOT NULL,
-    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
-);
-
-
-
-
-DROP TABLE IF EXISTS `vlog_comments`;
-DROP TABLE IF EXISTS `vlog_posts`;
-
 -- `vlog_posts`
 CREATE TABLE `vlog_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
