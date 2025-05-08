@@ -26,6 +26,18 @@ CREATE TABLE CONTACT_LOCATIONS (
     location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
 );
 
+CREATE TABLE CONTACT_MESSAGES (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('unread', 'read', 'replied') DEFAULT 'unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
 CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
@@ -231,4 +243,5 @@ CREATE TABLE `vlog_comments` (
   -- Removed the trailing comma from the end of this line too
   CONSTRAINT `vlog_comments_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores comments for vlog posts';
+
 

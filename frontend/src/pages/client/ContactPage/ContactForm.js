@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CREATE_CONTACT_MESSAGE_API } from "../../../api/apis";
 
 const ContactForm = ({ onFormSubmit }) => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,10 @@ const ContactForm = ({ onFormSubmit }) => {
     message: "",
   });
 
+
+
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -44,24 +48,50 @@ const ContactForm = ({ onFormSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     if (validateForm()) {
-      console.log("Form submitted with data:", formData);
+      setIsSubmitting(true);
+      try {
+        const response = await fetch(CREATE_CONTACT_MESSAGE_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-      });
+        const result = await response.json();
 
-      // Call the callback function
-      if (onFormSubmit) {
-        onFormSubmit();
+        if (response.ok) {
+          console.log("Form submitted successfully:", result);
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            subject: "",
+            message: "",
+          });
+          if (onFormSubmit) {
+            onFormSubmit();
+          }
+        } else {
+          console.error("Form submission error:", result);
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            api: result.message || "Failed to send message. Please try again.",
+          }));
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          api: "An unexpected error occurred. Please check your connection and try again.",
+        }));
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -152,8 +182,27 @@ const ContactForm = ({ onFormSubmit }) => {
         )}
       </div>
 
-      <button type="submit" className="form-submit-button">
+      {/* <button type="submit" className="form-submit-button">
         Send Message
+      </button> */}
+      {errors.api && (
+        <span
+          className="error-message"
+          style={{
+            display: "block",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {errors.api}
+        </span>
+      )}
+      <button
+        type="submit"
+        className="form-submit-button"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Sending..." : "Send Message"}
       </button>
     </form>
   );
