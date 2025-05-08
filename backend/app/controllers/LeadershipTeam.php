@@ -62,15 +62,9 @@ class LeadershipTeam extends Controller {
     public function getTeams() {
         try {
             $members = $this->leadershipTeamModel->getAllMembers();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $members
-            ]);
+            $this->jsonResponse(200, 'success', $members);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

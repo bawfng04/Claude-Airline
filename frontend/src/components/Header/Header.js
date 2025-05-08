@@ -31,7 +31,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
-    window.location.reload();
+    window.location.href = "/";
   };
 
   // Detect current page for active link styling

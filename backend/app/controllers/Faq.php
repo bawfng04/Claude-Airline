@@ -82,15 +82,9 @@ class Faq extends Controller {
     public function getFaqs() {
         try {
             $faqs = $this->faqModel->getAllFaqs();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $faqs
-            ]);
+            $this->jsonResponse(200, 'success', $faqs);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

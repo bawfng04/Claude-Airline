@@ -29,11 +29,6 @@ import ManageTestimonials from "./pages/admin/ManageTestimonials";
 import ManageImageCarousel from "./pages/admin/ManageImageCarousel";
 import EditProfile from "./pages/client/UserDetail/EditProfile";
 
-import ManageVlogPosts from "./pages/admin/ManageVlogPosts";
-import VlogPostEditor from "./pages/admin/VlogPostEditor";
-import ManageVlogComments from "./pages/admin/ManageVlogComments"; // Import the new component
-
-
 const routes = (
   <>
     <Route path="/" element={<Homepage />} />
@@ -75,10 +70,6 @@ const routes = (
     <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />
 
-    <Route path="/admin/manage-vlog-posts" element={<ManageVlogPosts />} key="admin-manage-vlog" />
-    <Route path="/admin/vlog-posts/new" element={<VlogPostEditor mode="create" />} key="admin-vlog-new" />
-    <Route path="/admin/vlog-posts/edit/:postId" element={<VlogPostEditor mode="edit" />} key="admin-vlog-edit" />
-    <Route path="/admin/manage-vlog-comments" element={<ManageVlogComments />} key="admin-manage-vlog-comments" />
 
   </>
 );

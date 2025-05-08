@@ -14,19 +14,6 @@ CREATE TABLE faq (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
 );
 
-
-CREATE TABLE CLAUDE_AIRLINES (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
-    phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
-    email VARCHAR(255) NOT NULL, -- Địa chỉ email
-    destination VARCHAR(255) NOT NULL, -- Địa chỉ
-    descr TEXT NOT NULL, -- Mô tả
-    facebook VARCHAR(255) NOT NULL, -- Facebook
-    twitter VARCHAR(255) NOT NULL, -- Twitter
-    instagram VARCHAR(255) NOT NULL, -- Instagram
-    linkedIn VARCHAR(255) NOT NULL -- LinkedIn
-);
-
 -- CONTACT_LOCATIONS
 CREATE TABLE CONTACT_LOCATIONS (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính

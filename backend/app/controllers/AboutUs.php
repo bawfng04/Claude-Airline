@@ -42,15 +42,9 @@ class AboutUs extends Controller {
     public function getAboutUs() {
         try {
             $aboutUs = $this->aboutUsModel->getAllAboutUs();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $aboutUs
-            ]);
+            $this->jsonResponse(200, 'success', $aboutUs);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

@@ -65,15 +65,9 @@ class AirlineFleet extends Controller {
     public function getFleets() {
         try {
             $aircrafts = $this->airlineFleetModel->getAllAircrafts();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $aircrafts
-            ]);
+            $this->jsonResponse(200, 'success', $aircrafts);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }
