@@ -181,14 +181,6 @@ VALUES
 ('image3.jpg', 'New York', 'USA', 899.99, 'Discover the vibrant culture and iconic landmarks of New York City.', '2024-02-05', '2024-02-15', 'Book now and get a free city tour!', 'North America');
 
 --Contact Locations
-INSERT INTO CONTACT_LOCATIONS (des_type, address_string, phone_number, working_hours)
-VALUES
-    ('Main Office', '123 Aviation Blvd, Los Angeles, CA 90045', '+84 90 123 4567', 'Mon-Fri 9am-5pm'),
-    ('Regional Office', '456 Park Avenue, New York, NY 10022', '+84 90 987 6543', 'Mon-Fri 10am-6pm'),
-    ('Branch Office', '789 Michigan Ave, Chicago, IL 60611', '+84 90 555 5555', 'Mon-Fri 8am-4pm');
-
-
---
 INSERT INTO contact_locations (location_name, des_type, address_string, phone_number, working_hours, email, location_embed_code)
 VALUES
     ('Los Angeles Office', 'Branch Office', 'Los Angeles', '+8410301023', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13219.891667483433!2d-118.39967993022464!3d33.94611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2b6ab5dc0d481%3A0x6075ef0a08ec2a7d!2sLos%20Angeles%20International%20Airport%20(LAX)!5e0!3m2!1sen!2sus!4v1650123456789!5m2!1sen!2sus'),
