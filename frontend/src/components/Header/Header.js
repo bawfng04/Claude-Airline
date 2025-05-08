@@ -31,7 +31,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
-    window.location.reload();
+    window.location.href = "/";
   };
 
   // Detect current page for active link styling
@@ -41,7 +41,7 @@ const Header = () => {
     else if (path.includes("/about")) setActiveLink("about");
     else if (path.includes("/contact")) setActiveLink("contact");
     else if (path.includes("/faq")) setActiveLink("faq");
-    else if (path.startsWith("/vlog")) setActiveLink("vlog"); // <-- ADD THIS CHECK
+    else if (path.startsWith("/vlog")) setActiveLink("vlog");
     else if (path.includes("/example")) setActiveLink("example");
     else if (path.includes("/admin")) setActiveLink("admin");
     else if (path.includes("/login")) setActiveLink("login");
@@ -140,6 +140,17 @@ const Header = () => {
             </li>
             <li className="header-nav-item">
               <a
+                href="/contact"
+                className={`header-nav-link ${
+                  activeLink === "contact" ? "active" : ""
+                }`}
+                onClick={closeMenus}
+              >
+                Contact
+              </a>
+            </li>
+            <li className="header-nav-item">
+              <a
                 href="/about"
                 className={`header-nav-link ${
                   activeLink === "about" ? "active" : ""
@@ -151,24 +162,13 @@ const Header = () => {
             </li>
             <li className="header-nav-item">
               <a
-                href="/vlog"  
+                href="/vlog"
                 className={`header-nav-link ${
-                  activeLink === "vlog" ? "active" : "" // Use 'vlog' as the key
+                  activeLink === "vlog" ? "active" : ""
                 }`}
                 onClick={closeMenus}
               >
                 My Vlog
-              </a>
-            </li>
-            <li className="header-nav-item">
-              <a
-                href="/contact"
-                className={`header-nav-link ${
-                  activeLink === "contact" ? "active" : ""
-                }`}
-                onClick={closeMenus}
-              >
-                Contact
               </a>
             </li>
             <li className="header-nav-item">
@@ -249,8 +249,8 @@ const Header = () => {
                 <div className="settings">
                   <button className="settings-buttons" onClick={handleDetail}>
                     Detail
-                    </button>
-                    {/* <button className="settings-buttons" onClick={handleAdminClick}>
+                  </button>
+                  {/* <button className="settings-buttons" onClick={handleAdminClick}>
                       Admin
                     </button> */}
 

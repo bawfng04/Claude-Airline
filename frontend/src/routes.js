@@ -17,22 +17,7 @@ import UserDetail from "./pages/client/UserDetail/UserDetail";
 
 import VlogListPage from "./pages/client/Vlog/VlogListPage";
 import VlogPostPage from "./pages/client/Vlog/VlogPostPage";
-
-
-// admin
-import Admin from "./pages/admin/Admin";
-import ManageTopDestination from "./pages/admin/ManageTopDestination";
-import ManageContactLocation from "./pages/admin/ManageContactLocation";
-import ManageTravelPackage from "./pages/admin/ManageTravelPackage";
-import ManageServices from "./pages/admin/ManageServices";
-import ManageTestimonials from "./pages/admin/ManageTestimonials";
-import ManageImageCarousel from "./pages/admin/ManageImageCarousel";
 import EditProfile from "./pages/client/UserDetail/EditProfile";
-
-import ManageVlogPosts from "./pages/admin/ManageVlogPosts";
-import VlogPostEditor from "./pages/admin/VlogPostEditor";
-import ManageVlogComments from "./pages/admin/ManageVlogComments"; // Import the new component
-
 
 const routes = (
   <>
@@ -51,34 +36,8 @@ const routes = (
 
     <Route path="/vlog" element={<VlogListPage />} key="vlog-list" />
     <Route path="/vlog/:slug" element={<VlogPostPage />} key="vlog-post" />
-
-
-    {/* admin */}
-    <Route path="/admin" element={<Admin />} />
-    <Route path="/manage-top-destination" element={<ManageTopDestination />} />
-    <Route
-      path="/manage-contact-location"
-      element={<ManageContactLocation />}
-    />
-    <Route
-      path="/manage-travel-package"
-      element={<ManageTravelPackage />}
-    />
-    <Route
-      path="/manage-testimonials"
-    element={<ManageTestimonials/>}
-    />
-    <Route
-      path="/manage-image-carousel"
-      element={<ManageImageCarousel />}
-    />
-    <Route path="/manage-services" element={<ManageServices />} />
     <Route path="*" element={<NotFound />} />
 
-    <Route path="/admin/manage-vlog-posts" element={<ManageVlogPosts />} key="admin-manage-vlog" />
-    <Route path="/admin/vlog-posts/new" element={<VlogPostEditor mode="create" />} key="admin-vlog-new" />
-    <Route path="/admin/vlog-posts/edit/:postId" element={<VlogPostEditor mode="edit" />} key="admin-vlog-edit" />
-    <Route path="/admin/manage-vlog-comments" element={<ManageVlogComments />} key="admin-manage-vlog-comments" />
 
   </>
 );

@@ -19,6 +19,7 @@ class Faq extends Controller {
     // Lưu dữ liệu (Thêm/Sửa)
     public function save() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = isset($_POST['id']) ? trim($_POST['id']) : null;
             $question = trim($_POST['question']);
             $answer = trim($_POST['answer']);
@@ -60,6 +61,7 @@ class Faq extends Controller {
     // Xóa câu hỏi
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = isset($_POST['id']) ? trim($_POST['id']) : null;
 
             if (!is_numeric($id)) {
@@ -82,15 +84,9 @@ class Faq extends Controller {
     public function getFaqs() {
         try {
             $faqs = $this->faqModel->getAllFaqs();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $faqs
-            ]);
+            $this->jsonResponse(200, 'success', $faqs);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

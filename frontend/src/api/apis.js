@@ -31,3 +31,5 @@ export const GET_CAROUSEL_API = `${API_URL}/imagecarousel/index`;
 export const CREATE_CAROUSEL_API = `${API_URL}/imagecarousel/create`;
 export const UPDATE_CAROUSEL_API = `${API_URL}/imagecarousel/update`;
 export const DELETE_CAROUSEL_API = `${API_URL}/imagecarousel/delete`;
+
+export const CREATE_CONTACT_MESSAGE_API = `${API_URL}/ContactMessage/create`;

@@ -23,7 +23,7 @@ const LeadershipTeam = () => {
             Our Leadership Team
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-8 sm:grid-cols-[1fr]">
-                {leadershipTeam.map((member, index) => (
+                {leadershipTeam?.map((member, index) => (
                     <div
                         key={index}
                         className={`bg-[white] rounded-[15px] overflow-hidden [box-shadow:0_10px_20px_rgba(0,_0,_0,_0.05)] text-center [transition:all_0.3s_ease] animate-[fadeInUp_0.8s_ease-out_forwards] [animation-delay:${index * 0.2}s] hover:-translate-y-[10px] hover:[box-shadow:0_15px_30px_rgba(0,_0,_0,_0.1)] hover:scale-110`}

@@ -23,7 +23,7 @@ const AchievementsPage = () => {
             Our Achievements
           </h2>
           <div className="relative max-w-[800px] mx-[auto] my-[0] before:content-[''] before:absolute before:left-2/4 before:-translate-x-1/2 before:w-[4px] before:h-full before:opacity-30 before:bg-primary-color md:before:left-[30px]">
-            {achievements.map((achievement, index) => (
+            {achievements?.map((achievement, index) => (
                 <div 
                     key={index}
                     className={`flex mb-10 relative animate-[fadeInUp_0.8s_ease-out_forwards] even:flex-row-reverse [animation-delay:${index * 0.2}s] md:!flex-row group`}

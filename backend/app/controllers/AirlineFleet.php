@@ -16,10 +16,18 @@ class AirlineFleet extends Controller {
     // Lưu thông tin (Thêm mới hoặc Cập nhật)
     public function save() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = $_POST['id'] ?? null;
-            $aircraft_model = $_POST['aircraft_model'];
-            $description = $_POST['description'];
+            $aircraft_model = trim($_POST['aircraft_model']);
+            $description = trim($_POST['description']);
             $image = null;
+
+            // Kiểm tra dữ liệu đầu vào
+            if (empty($aircraft_model) || empty($description)) {
+                $_SESSION['error'] = 'Vui lòng nhập đầy đủ thông tin!';
+                header('Location: ' . base_url('airlinefleet'));
+                exit();
+            }
 
             // Xử lý upload hình ảnh
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -29,51 +37,69 @@ class AirlineFleet extends Controller {
                 if (move_uploaded_file($fileTmpPath, $uploadDir . $fileName)) {
                     $image = $fileName;
                 } else {
-                    die("Không thể tải lên hình ảnh.");
+                    $_SESSION['error'] = 'Không thể tải lên hình ảnh.';
+                    header('Location: ' . base_url('airlinefleet'));
+                    exit();
                 }
             }
 
             if ($id) {
-                $this->airlineFleetModel->updateAircraft($id, $aircraft_model, $description, $image);
+                if ($this->airlineFleetModel->updateAircraft($id, $aircraft_model, $description, $image)) {
+                    $_SESSION['success'] = 'Cập nhật máy bay thành công!';
+                } else {
+                    $_SESSION['error'] = 'Cập nhật máy bay thất bại!';
+                }
             } else {
-                $this->airlineFleetModel->addAircraft($aircraft_model, $description, $image);
+                if ($this->airlineFleetModel->addAircraft($aircraft_model, $description, $image)) {
+                    $_SESSION['success'] = 'Thêm máy bay mới thành công!';
+                } else {
+                    $_SESSION['error'] = 'Thêm máy bay mới thất bại!';
+                }
             }
 
             header('Location: ' . base_url('airlinefleet'));
+            exit();
         }
     }
 
     // Xóa máy bay
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
             $id = $_POST['id'];
+
+            // Kiểm tra ID
+            if (empty($id) || !is_numeric($id)) {
+                $_SESSION['error'] = 'ID không hợp lệ!';
+                header('Location: ' . base_url('airlinefleet'));
+                exit();
+            }
 
             // Lấy thông tin để xóa hình ảnh
             $aircraft = $this->airlineFleetModel->getAircraftById($id);
             if ($aircraft && !empty($aircraft['image'])) {
                 $imagePath = '../public/uploads/' . $aircraft['image'];
                 if (file_exists($imagePath)) {
-                    unlink($imagePath); // Xóa hình ảnh khỏi thư mục uploads
+                    unlink($imagePath);
                 }
             }
 
-            $this->airlineFleetModel->deleteAircraft($id);
+            if ($this->airlineFleetModel->deleteAircraft($id)) {
+                $_SESSION['success'] = 'Xóa máy bay thành công!';
+            } else {
+                $_SESSION['error'] = 'Xóa máy bay thất bại!';
+            }
+
             header('Location: ' . base_url('airlinefleet'));
+            exit();
         }
     }
-
     public function getFleets() {
         try {
             $aircrafts = $this->airlineFleetModel->getAllAircrafts();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $aircrafts
-            ]);
+            $this->jsonResponse(200, 'success', $aircrafts);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }

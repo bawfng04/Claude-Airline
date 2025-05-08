@@ -2,8 +2,8 @@
         <div class="header-top">
             <div class="container">
                 <div class="logo">
-                    <a href="home"> <!-- Absolute path -->
-                        <img src="assets/compiled/svg/logo.svg" alt="Logo"> <!-- Consider absolute path for assets too -->
+                    <a href="home">
+                        <img src="assets/compiled/svg/logo.svg" alt="Logo">
                     </a>
                 </div>
                 <div class="header-top-right">
@@ -23,7 +23,6 @@
                         </ul>
                     </div>
 
-                    <!-- Burger button responsive -->
                     <a href="#" class="burger-btn d-block d-xl-none">
                         <i class="bi bi-justify fs-3"></i>
                     </a>
@@ -143,10 +142,26 @@
                             </div>
                         </div>
                     </li>
-                    <li class="menu-item">
-                        <a href="contactlocation/manage" class="menu-link"> <!-- Absolute path -->
-                            <span><i class="bi bi-pin-map-fill"></i> Contact Locations</span>
+                    <li class="menu-item has-sub">
+                        <a href="#" class='menu-link'>
+                            <span><i class="bi bi-person-rolodex"></i> Contact</span>
                         </a>
+                        <div class="submenu">
+                            <div class="submenu-group-wrapper">
+                                <ul class="submenu-group">
+                                    <li class="submenu-item">
+                                        <a href="contactlocation/manage" class="submenu-link">
+                                            <span><i class="bi bi-pin-map-fill"></i> Contact Locations</span>
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a href="contactmessage/manage" class="submenu-link">
+                                            <span><i class="bi bi-envelope-paper-fill"></i> Contact Messages</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>

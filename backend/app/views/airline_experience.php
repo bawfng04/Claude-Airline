@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head>  
+    <?php session_start(); ?>
     <?php include 'components/meta_header.php'; ?>
     <title>Quản lý Airline Experience</title>
 </head>
@@ -12,6 +13,21 @@
             <?php include 'components/header.php'; ?>
 
             <div class="container mt-5">
+                <?php if (!empty($_SESSION['success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['success']; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php unset($_SESSION['success']); ?>
+                <?php endif; ?>
+
+                <?php if (!empty($_SESSION['error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['error']; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?> 
                 <h3 class="mb-4">Airline Experience Management</h3>
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEditModal">Thêm mới</button>
                 <div class="table-responsive">
@@ -145,8 +161,7 @@
                         try {
                             const data = typeof response === 'string' ? JSON.parse(response) : response;
 
-                            if (data.status === 'success') {
-                                // Điền thông tin vào modal
+                            if (data.status === 200) {
                                 $('#recordId').val(id);
                                 $('#title').val(data.data.title);
 

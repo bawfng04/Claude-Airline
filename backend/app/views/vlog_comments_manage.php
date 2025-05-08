@@ -1,30 +1,24 @@
 <?php
-// backend/app/views/vlog_comments_manage.php
-
-// Helper function for comment action buttons
 $baseUrl = defined('BASE_URL') ? BASE_URL : '';
 if (!function_exists('getVlogCommentActionButtons')) {
     function getVlogCommentActionButtons($comment) {
         global $baseUrl;
-        $conditionalButton = ''; // To hold either approve or disapprove button
+        $conditionalButton = '';
 
         if (!$comment['is_approved']) {
-            // Form for POST request to approve action
             $approveActionUrl = $baseUrl . '/vlogComment/approve';
             $conditionalButton = '<form method="POST" action="'. $approveActionUrl .'" style="display: inline-block; margin: 0 1px;" onsubmit="return confirm(\'Approve this comment?\');">
-                                <input type="hidden" name="id" value="'.$comment['id'].'">
-                                <button type="submit" class="btn btn-sm btn-success px-2 py-1" title="Approve"><i class="bi bi-check-lg"></i></button>
-                            </form>';
+                                    <input type="hidden" name="id" value="'.$comment['id'].'">
+                                    <button type="submit" class="btn btn-sm btn-success px-2 py-1" title="Approve"><i class="bi bi-check-lg"></i></button>
+                                </form>';
         } else {
-            // --- Disapprove Button (for approved comments) ---
             $disapproveActionUrl = $baseUrl . '/vlogComment/disapprove';
             $conditionalButton = '<form method="POST" action="'. $disapproveActionUrl .'" style="display: inline-block; margin: 0 1px;" onsubmit="return confirm(\'Disapprove this comment? This will set it back to pending.\');">
-                                <input type="hidden" name="id" value="'.$comment['id'].'">
-                                <button type="submit" class="btn btn-sm btn-warning px-2 py-1" title="Disapprove"><i class="bi bi-x-lg"></i></button>
-                            </form>';
+                                    <input type="hidden" name="id" value="'.$comment['id'].'">
+                                    <button type="submit" class="btn btn-sm btn-warning px-2 py-1" title="Disapprove"><i class="bi bi-x-lg"></i></button>
+                                </form>';
         }
 
-        // Delete button triggers modal
         $deleteBtn = '<button type="button" class="btn btn-sm btn-danger px-2 py-1" style="display: inline-block; margin: 0 1px;" title="Delete" onclick=\'prepareDeleteCommentModal(this)\' data-id="'. $comment['id'] .'" data-comment="'. htmlspecialchars($comment['comment'], ENT_QUOTES) .'" data-bs-toggle="modal" data-bs-target="#deleteCommentModal"><i class="bi bi-trash-fill"></i></button>';
         
         return '<div class="d-inline-flex">' . $conditionalButton . $deleteBtn . '</div>';
@@ -40,13 +34,13 @@ if (!function_exists('getVlogCommentActionButtons')) {
     <link rel="stylesheet" href="<?php echo $baseUrl; ?>/assets/compiled/css/table-datatable-jquery.css">
     <style>
         #manageTable th, #manageTable td { vertical-align: middle; }
-        /* Column Width Adjustments (Indices updated for new order) */
-        #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 18%; } /* Author */
-        #manageTable th:nth-child(2), #manageTable td:nth-child(2) { width: 30%; max-width: 400px; } /* Comment */
-        #manageTable th:nth-child(3), #manageTable td:nth-child(3) { width: 22%; max-width: 200px; } /* Post */
-        #manageTable th:nth-child(4), #manageTable td:nth-child(4) { width: 10%; } /* Rating */
-        #manageTable th:nth-child(5), #manageTable td:nth-child(5) { width: 8%; } /* Status */
-        #manageTable th:nth-child(6), #manageTable td:nth-child(6) { width: 12%; } /* Actions - slightly wider */
+        #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 16%; }
+        #manageTable th:nth-child(2), #manageTable td:nth-child(2) { width: 34%; max-width: 350px; }
+        #manageTable th:nth-child(3), #manageTable td:nth-child(3) { width: 23%; max-width: 180px; }
+        #manageTable th:nth-child(4), #manageTable td:nth-child(4) { width: 6%; }
+        #manageTable th:nth-child(5), #manageTable td:nth-child(5) { width: 6%; }
+        #manageTable th:nth-child(6), #manageTable td:nth-child(6) { width: 6%; }
+        #manageTable th:nth-child(7), #manageTable td:nth-child(7) { width: 8%; }
 
         #manageTable td { white-space: normal !important; word-break: break-word; }
         .comment-snippet { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.85rem; color: #6c757d; line-height: 1.4; }
@@ -55,7 +49,7 @@ if (!function_exists('getVlogCommentActionButtons')) {
         .dataTables_wrapper .dt-length-filter-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .dataTables_wrapper .dt-length-filter-container .dataTables_filter { margin-left: auto; }
         #manageTable th.text-center, #manageTable td.text-center { text-align: center; }
-        #manageTable td:nth-child(1) i { margin-right: 0.3rem; } /* Icon margin for Author */
+        #manageTable td:nth-child(1) i { margin-right: 0.3rem; }
     </style>
 </head>
 <body>
@@ -71,7 +65,7 @@ if (!function_exists('getVlogCommentActionButtons')) {
                     <section class="section">
                         <div class="card">
                             <div class="card-body">
-                                   <?php // Flash Messages
+                                <?php
                                     if(isset($_SESSION['flash_success'])){ echo '<div class="alert alert-light-success color-success alert-dismissible fade show" role="alert">'.$_SESSION['flash_success'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'; unset($_SESSION['flash_success']); }
                                     if(isset($_SESSION['flash_error'])){ echo '<div class="alert alert-light-danger color-danger alert-dismissible fade show" role="alert">'.$_SESSION['flash_error'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'; unset($_SESSION['flash_error']); }
                                 ?>
@@ -83,13 +77,14 @@ if (!function_exists('getVlogCommentActionButtons')) {
                                                 <th class="text-center">Comment</th>
                                                 <th class="text-center">Post</th>
                                                 <th class="text-center">Rating</th>
+                                                <th class="text-center">Likes</th> 
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if (empty($data['vlogComments'])): ?>
-                                                <tr><td colspan="6" class="text-center">No vlog comments found.</td></tr>
+                                                <tr><td colspan="7" class="text-center">No vlog comments found.</td></tr>
                                             <?php else: ?>
                                                 <?php foreach ($data['vlogComments'] as $comment): ?>
                                                     <tr>
@@ -103,6 +98,7 @@ if (!function_exists('getVlogCommentActionButtons')) {
                                                         <td> <div class="comment-snippet" title="<?php echo htmlspecialchars($comment['comment']); ?>"><?php echo htmlspecialchars(substr($comment['comment'], 0, 100)) . (strlen($comment['comment']) > 100 ? '...' : ''); ?></div> </td>
                                                         <td><a href="<?php echo $baseUrl . '/vlog/' . htmlspecialchars($comment['post_slug'] ?? '#'); ?>" target="_blank" title="<?php echo htmlspecialchars($comment['post_title'] ?? 'View Post'); ?>"><?php echo htmlspecialchars(substr($comment['post_title'] ?? 'N/A', 0, 30)) . (strlen($comment['post_title'] ?? '') > 30 ? '...' : ''); ?></a></td>
                                                         <td class="text-center"><?php echo $comment['rating'] ? '<i class="bi bi-star-fill text-warning"></i> ' . $comment['rating'] : '-'; ?></td>
+                                                        <td class="text-center"><?php echo htmlspecialchars($comment['likes'] ?? 0); ?></td> 
                                                         <td class="text-center"> <?php if ($comment['is_approved']): ?> <span class="badge bg-success">Approved</span> <?php else: ?> <span class="badge bg-warning">Pending</span> <?php endif; ?> </td>
                                                         <td class="text-center text-nowrap"><?php echo getVlogCommentActionButtons($comment); ?></td>
                                                     </tr>
@@ -150,9 +146,9 @@ if (!function_exists('getVlogCommentActionButtons')) {
     <script>
         $(document).ready(function () {
             $('#manageTable').DataTable({
-                "order": [[ 4, "asc" ]], 
+                "order": [[ 5, "asc" ], [0, "desc"]],
                 "columnDefs": [
-                    { "orderable": false, "targets": [1, 2, 5] } 
+                    { "orderable": false, "targets": [1, 2, 6] }
                 ],
                 "language": {
                     "search": "_INPUT_",

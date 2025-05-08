@@ -14,19 +14,6 @@ CREATE TABLE faq (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
 );
 
-
-CREATE TABLE CLAUDE_AIRLINES (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
-    phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
-    email VARCHAR(255) NOT NULL, -- Địa chỉ email
-    destination VARCHAR(255) NOT NULL, -- Địa chỉ
-    descr TEXT NOT NULL, -- Mô tả
-    facebook VARCHAR(255) NOT NULL, -- Facebook
-    twitter VARCHAR(255) NOT NULL, -- Twitter
-    instagram VARCHAR(255) NOT NULL, -- Instagram
-    linkedIn VARCHAR(255) NOT NULL -- LinkedIn
-);
-
 -- CONTACT_LOCATIONS
 CREATE TABLE CONTACT_LOCATIONS (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
@@ -37,6 +24,18 @@ CREATE TABLE CONTACT_LOCATIONS (
     working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
     email VARCHAR(255) NOT NULL, -- Địa chỉ email
     location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
+);
+
+CREATE TABLE CONTACT_MESSAGES (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('unread', 'read', 'replied') DEFAULT 'unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
@@ -174,10 +173,7 @@ CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
     carousel_caption TEXT NOT NULL
 )
 
-
-DROP TABLE IF EXISTS `vlog_comments`;
-DROP TABLE IF EXISTS `vlog_posts`;
-
+-- `vlog_posts`
 CREATE TABLE `vlog_posts` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `user_id` int(11) NOT NULL COMMENT 'Author (FK to USERS.ID)',
@@ -214,3 +210,5 @@ CREATE TABLE `vlog_comments` (
     CONSTRAINT `vlog_comments_post_fk` FOREIGN KEY (`post_id`) REFERENCES `vlog_posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `vlog_comments_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores comments for vlog posts';
+
+

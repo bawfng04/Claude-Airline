@@ -193,7 +193,7 @@ class VlogComment extends Controller {
             // Optional: Check if post exists?
             // $post = $this->postModel->getPostById($postId); if (!$post) { ... }
 
-            if ($this->commentModel->addComment($postId, $userId, $data['comment'], $rating, $guestName, $guestEmail)) {
+            if ($this->commentModel->addComment($postId, $userId, $data['comment'], $rating, $guestName)) {
                 $this->jsonResponse(201, 'Comment submitted for approval.');
             } else { throw new Exception('Failed to save comment.'); }
         } catch (Exception $e) {
@@ -208,5 +208,77 @@ class VlogComment extends Controller {
     //     // Replace with your actual admin check logic
     //     return (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin');
     // }
+    /**
+     * API: Admin lists all comments
+     * GET /vlogComment/adminList
+     */
+    public function adminList() {
+        // TODO: Admin auth check
+        // if (!$this->isAdmin()) { return $this->jsonResponse(403, 'Unauthorized'); }
+        try {
+            $comments = $this->commentModel->getAllCommentsForAdmin(); // This now includes 'likes'
+            $this->jsonResponse(200, 'Admin comments fetched', $comments ?: []);
+        } catch (Exception $e) {
+            $this->jsonResponse(500, 'Error fetching admin comments', ['error_message' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * API: Admin approves a comment
+     * POST /vlogComment/adminApprove/{commentId}
+     */
+    public function adminApprove($commentId = null) {
+        // TODO: Admin auth check
+        if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
+            return $this->jsonResponse(400, 'Invalid Comment ID.');
+        }
+        try {
+            if ($this->commentModel->approveComment($commentId)) { // This now updates post ratings
+                $this->jsonResponse(200, 'Comment approved successfully.');
+            } else {
+                $this->jsonResponse(500, 'Failed to approve comment.');
+            }
+        } catch (Exception $e) {
+            $this->jsonResponse(500, 'Error approving comment: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * API: Admin deletes a comment
+     * POST /vlogComment/adminDelete/{commentId} (or DELETE method if router supports)
+     */
+    public function adminDelete($commentId = null) {
+        // TODO: Admin auth check
+        if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
+            return $this->jsonResponse(400, 'Invalid Comment ID.');
+        }
+        try {
+            if ($this->commentModel->deleteComment($commentId)) { // This now updates post ratings
+                $this->jsonResponse(200, 'Comment deleted successfully.');
+            } else {
+                $this->jsonResponse(500, 'Failed to delete comment.');
+            }
+        } catch (Exception $e) {
+            $this->jsonResponse(500, 'Error deleting comment: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * API: User likes a comment
+     * POST /vlogComment/like/{commentId}
+     */
+    public function like($commentId = null) {
+        // TODO: Implement user authentication. Only logged-in users should be able to like.
+        // if (!isUserLoggedIn()) { return $this->jsonResponse(403, 'Login required to like comments.'); }
+
+        if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
+            return $this->jsonResponse(400, 'Invalid Comment ID.');
+        }
+        if ($this->commentModel->likeComment($commentId)) {
+            $this->jsonResponse(200, 'Comment liked successfully.');
+        } else {
+            $this->jsonResponse(500, 'Failed to like comment or already liked/error.');
+        }
+    }
 
 }

@@ -143,26 +143,22 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         </div>
     </div>
 
-    <!-- Include necessary JS -->
     <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {
-            // Adjust this URL based on your actual backend public path
             const API_BASE_URL = "<?php echo getenv('BASE_URL');?>contactLocation";
-            
+
             let table;
             let currentDeleteId = null;
 
-            // Initialize DataTable
             table = $('#locationsTable').DataTable({
                 processing: true,
-                serverSide: false, // Set to true if using server-side processing
+                serverSide: false,
                 ajax: {
                     url: `${API_BASE_URL}/index`,
                     type: 'GET',
                     dataSrc: function(json) {
-                        // Assuming your API returns { status: 200, message: 'Success', data: [...] }
                         if (json.status === 200 && json.data) {
                             return json.data;
                         } else {
@@ -187,12 +183,11 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     {
                         data: 'location_embed_code',
                         render: function(data) {
-                            // Show only a snippet or placeholder for embed code
                             return data ? data.substring(0, 30) + '...' : 'Chưa có mã nhúng';
                         }
                     },
                     {
-                        data: 'id', // Use 'id' or null if you don't need data for rendering buttons
+                        data: 'id',
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row) {
@@ -213,7 +208,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
             // Reset and open Add modal
             $('#addLocationBtn').on('click', function() {
                 $('#addEditForm')[0].reset();
-                $('#locationId').val(''); // Clear ID for adding
+                $('#locationId').val('');
                 $('#addEditModalLabel').text('Thêm Địa điểm Mới');
                 $('#addEditModal').modal('show');
             });
@@ -274,7 +269,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         if (response.status === 200 || response.status === 201) {
                             alert(response.message || (isEdit ? 'Cập nhật thành công!' : 'Thêm mới thành công!'));
                             $('#addEditModal').modal('hide');
-                            table.ajax.reload(); // Reload table data
+                            table.ajax.reload();
                         } else {
                             alert('Lỗi: ' + (response.message || 'Không thể lưu địa điểm.'));
                         }
@@ -296,14 +291,13 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 if (!currentDeleteId) return;
 
                 $.ajax({
-                    url: `${API_BASE_URL}/delete/${currentDeleteId}`, // Use path parameter if your routing supports it
-                    // url: `${API_BASE_URL}/delete?id=${currentDeleteId}`, // Or use query parameter
+                    url: `${API_BASE_URL}/delete/${currentDeleteId}`,
                     method: 'DELETE',
                     success: function(response) {
                         if (response.status === 200) {
                             alert(response.message || 'Xóa thành công!');
                             $('#deleteModal').modal('hide');
-                            table.ajax.reload(); // Reload table data
+                            table.ajax.reload();
                         } else {
                             alert('Lỗi: ' + (response.message || 'Không thể xóa địa điểm.'));
                         }
@@ -318,7 +312,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         alert('Lỗi khi xóa địa điểm: ' + errorMsg);
                     },
                     complete: function() {
-                        currentDeleteId = null; // Reset delete ID
+                        currentDeleteId = null;
                     }
                 });
             });

@@ -23,7 +23,7 @@ const CoreValuesPage = () => {
             Our Core Values
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8">
-                {coreValues.map((value, index) => (
+                {coreValues?.map((value, index) => (
                     <div
                         key={index} 
                         className="bg-[white] p-8 rounded-[15px] [box-shadow:0_10px_20px_rgba(0,_0,_0,_0.05)] text-center [transition:all_0.3s_ease] animate-[fadeInUp_0.8s_ease-out_forwards] hover:-translate-y-[10px] hover:[box-shadow:0_15px_30px_rgba(0,_0,_0,_0.1)] sm:p-6"

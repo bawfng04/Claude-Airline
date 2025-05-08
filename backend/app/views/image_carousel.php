@@ -114,36 +114,48 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         </div>
     </div>
 
-    <!-- Include necessary JS -->
     <?php include 'components/script.php'; ?>
 
     <script>
         $(document).ready(function () {
-            // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>ImageCarousel"; // Controller base
-            const API_URL = "<?php echo getenv('BASE_URL');?>"; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>ImageCarousel";
+            const API_URL = "<?php echo getenv('BASE_URL');?>";
             let carouselTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            let currentImageFilename = null; // Store filename when editing
+            let currentImageFilename = null;
 
-            // Function to handle AJAX errors
             function handleAjaxError(xhr, defaultMessage) {
                 console.error("AJAX error:", xhr.responseText);
-                let errorMsg = defaultMessage || 'A server error occurred.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                } else {
+                let errorMsg = defaultMessage || 'An unexpected server error occurred.';
+
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.data && typeof xhr.responseJSON.data === 'string') {
+                        errorMsg = xhr.responseJSON.data;
+                    } else if (xhr.responseJSON.message && typeof xhr.responseJSON.message === 'string') {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                } else if (xhr.responseText) {
                     try {
-                        const errResponse = JSON.parse(xhr.responseText);
-                        errorMsg = errResponse.message || errorMsg;
-                    } catch (e) { /* Ignore parsing error */ }
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.data && typeof response.data === 'string') {
+                            errorMsg = response.data;
+                        } else if (response.message && typeof response.message === 'string') {
+                            errorMsg = response.message;
+                        }
+                    } catch (e) {
+                        console.warn("Could not parse AJAX error responseText as JSON:", xhr.responseText, e);
+                        if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                            errorMsg = xhr.statusText;
+                        }
+                    }
+                } else if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                    errorMsg = xhr.statusText;
                 }
                 alert('Error: ' + errorMsg);
             }
 
-            // Initialize DataTable
             carouselTable = $('#carouselTable').DataTable({
                 processing: true,
                 serverSide: false, // Set to true if using server-side processing
@@ -152,7 +164,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     type: 'GET',
                     dataSrc: function(json) {
                         if (json.status === 200 && Array.isArray(json.data)) {
-                            // Prepend API_URL to image paths
                             return json.data.map(img => ({
                                 ...img,
                                 fullImagePath: img.carousel_image ? `${API_URL}${img.carousel_image}` : null
@@ -194,7 +205,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         }
                     }
                 ]
-                // Default English language
             });
 
             // --- Image Preview Logic ---
@@ -207,11 +217,11 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         preview.attr('src', e.target.result).show();
-                        currentImageText.hide(); // Hide current image text when new preview is shown
+                        currentImageText.hide();
                     }
                     reader.readAsDataURL(file);
                 } else {
-                    // If file input is cleared, show current image text if editing, otherwise hide preview
+
                     if (currentImageFilename) {
                          preview.hide();
                          currentImageText.text(`Current: ${currentImageFilename}`).show();
@@ -231,7 +241,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 $('#addEditModalLabel').text('Add New Image');
                 $('#imagePreview').hide().attr('src', '#');
                 $('#currentImageText').hide().text('');
-                $('#carousel_image_input').prop('required', true); // Image is required for adding
+                $('#carousel_image_input').prop('required', true);
                 currentImageFilename = null;
                 addEditModal.show();
             });
@@ -242,21 +252,21 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 const rowData = carouselTable.rows().data().toArray().find(img => img.id == id);
 
                 if (rowData) {
-                    $('#addEditForm')[0].reset(); // Reset form first
+                    $('#addEditForm')[0].reset();
                     $('#imageId').val(rowData.id);
                     $('#carousel_alt').val(rowData.carousel_alt);
                     $('#carousel_caption').val(rowData.carousel_caption);
                     $('#addEditModalLabel').text('Edit Image');
-                    $('#carousel_image_input').prop('required', false); // Image is not required for editing
+                    $('#carousel_image_input').prop('required', false);
 
                     const preview = $('#imagePreview');
                     const currentImageText = $('#currentImageText');
-                    currentImageFilename = rowData.carousel_image ? rowData.carousel_image.split('/').pop() : null; // Store filename
+                    currentImageFilename = rowData.carousel_image ? rowData.carousel_image.split('/').pop() : null;
 
                     if (rowData.fullImagePath) {
-                        preview.attr('src', rowData.fullImagePath).show(); // Show current image as preview initially
+                        preview.attr('src', rowData.fullImagePath).show();
                         currentImageText.hide();
-                        // currentImageText.text(`Current: ${currentImageFilename}`).show(); // Or show text initially
+
                     } else {
                         preview.hide().attr('src', '#');
                         currentImageText.text('No current image').show();
@@ -280,29 +290,25 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
                 const id = $('#imageId').val();
                 const isEdit = !!id;
-                const formData = new FormData(this); // Use FormData to include file
-
-                // If editing and no new file is selected, remove the empty file input from FormData
-                // to avoid backend issues. The backend should handle not updating the image if the field is missing.
+                const formData = new FormData(this);
                 const fileInput = $('#carousel_image_input')[0];
                 if (isEdit && (!fileInput.files || fileInput.files.length === 0)) {
                     formData.delete('carousel_image');
                 } else if (!isEdit && (!fileInput.files || fileInput.files.length === 0)) {
                      alert('Please select an image file to upload.');
-                     return; // Stop submission if adding and no file selected
+                     return;
                 }
 
 
                 const url = isEdit ? `${API_BASE_URL}/update/${id}` : `${API_BASE_URL}/create`;
-                // IMPORTANT: Use POST for both create and update when sending FormData
                 const method = 'POST';
 
                 $.ajax({
                     url: url,
                     method: method,
                     data: formData,
-                    processData: false, // Prevent jQuery from processing the data
-                    contentType: false, // Prevent jQuery from setting contentType
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.status === 200 || response.status === 201) {
                             alert(response.message || (isEdit ? 'Update successful!' : 'Creation successful!'));
