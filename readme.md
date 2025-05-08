@@ -92,7 +92,10 @@ The platform allows users to effortlessly search for flights, compare prices, bo
 | ![screenshot07](images/image8.png) | ![screenshot08](images/image9.png) | ![screenshot09](images/image10.png) |
 | ![screenshot10](images/image11.png) | ![screenshot11](images/image12.png) | ![screenshot12](images/image13.png) |
 
-### Database Design
+### Architecture Design
+
+![Backend Component Diagram](images/BackendComponentDiagram.png)
+*Backend Component Diagram*
 
 ![Database UML](images/DiagramUML.png)
 *Database Entity Relationship Diagram UML*
