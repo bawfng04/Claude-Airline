@@ -150,7 +150,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
         $(document).ready(function () {
             // Adjust this URL based on your actual backend public path
             const API_BASE_URL = "<?php echo getenv('BASE_URL');?>contactLocation";
-            
+
             let table;
             let currentDeleteId = null;
 
