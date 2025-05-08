@@ -96,6 +96,8 @@ The platform allows users to effortlessly search for flights, compare prices, bo
 ![Database ERD](images/Diagram.png)
 *Database Entity Relationship Diagram*
 
+![Database UML](images/DiagramUML.png)
+*Database Entity Relationship Diagram UML*
 ---
 
 ## 🏗️ Architecture
