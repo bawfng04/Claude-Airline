@@ -10,8 +10,6 @@ const ContactForm = ({ onFormSubmit }) => {
     message: "",
   });
 
-
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
