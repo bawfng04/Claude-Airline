@@ -93,8 +93,6 @@ The platform allows users to effortlessly search for flights, compare prices, bo
 | ![screenshot10](images/image11.png) | ![screenshot11](images/image12.png) | ![screenshot12](images/image13.png) |
 
 ### Database Design
-![Database ERD](images/Diagram.png)
-*Database Entity Relationship Diagram*
 
 ![Database UML](images/DiagramUML.png)
 *Database Entity Relationship Diagram UML*
@@ -254,3 +252,8 @@ ClaudeAirlines/
 - **Semantic HTML:** Structured with semantic HTML5 elements for better accessibility and SEO.
 - **Image Alt Attributes:** All significant images use descriptive `alt` attributes.
 - **Responsive Design:** Ensures usability across various screen sizes.
+
+
+
+![Database ERD](images/Diagram.png)
+*Database Entity Relationship Diagram*
