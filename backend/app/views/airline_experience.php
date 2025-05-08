@@ -145,8 +145,7 @@
                         try {
                             const data = typeof response === 'string' ? JSON.parse(response) : response;
 
-                            if (data.status === 'success') {
-                                // Điền thông tin vào modal
+                            if (data.status === 200) {
                                 $('#recordId').val(id);
                                 $('#title').val(data.data.title);
 

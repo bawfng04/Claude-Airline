@@ -180,11 +180,6 @@ VALUES
 ('image2.jpg', 'Tokyo', 'Japan', 699.99, 'Experience the blend of tradition and modernity in Tokyo.', '2024-01-15', '2024-01-25', 'Free guided tours included!', 'Asia'),
 ('image3.jpg', 'New York', 'USA', 899.99, 'Discover the vibrant culture and iconic landmarks of New York City.', '2024-02-05', '2024-02-15', 'Book now and get a free city tour!', 'North America');
 
--- Claude Airlines
-INSERT INTO CLAUDE_AIRLINES (phone_number, email, destination, descr, facebook, twitter, instagram, linkedIn)
-VALUES
-    ('+84 90 123 4567', 'claude-airline@gmail.com', '123 Aviation Blvd, Los Angeles, CA 90045', 'Claude Airlines is dedicated to providing world-class air travel experiences with modern aircraft, exceptional service, and a commitment to safety and sustainability.', "facebook.com",'x.com', 'instagram.com', 'linkedin.com');
-
 --Contact Locations
 INSERT INTO CONTACT_LOCATIONS (des_type, address_string, phone_number, working_hours)
 VALUES

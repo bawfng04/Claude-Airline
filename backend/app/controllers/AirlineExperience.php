@@ -64,16 +64,16 @@ class AirlineExperience extends Controller {
             $id = $_GET['id'] ?? null;
     
             if (!$id || !is_numeric($id)) {
-                jsonResponse(['status' => 'error', 'message' => 'ID không hợp lệ'], 400);
+                $this->jsonResponse(400, 'ID không hợp lệ');
                 return;
             }
     
             $experience = $this->airlineExperienceModel->getExperienceById($id);
     
             if ($experience) {
-                jsonResponse(['status' => 'success', 'data' => $experience]);
+                $this->jsonResponse(200, 'success', $experience);
             } else {
-                jsonResponse(['status' => 'error', 'message' => 'Không tìm thấy trải nghiệm'], 404);
+                $this->jsonResponse(404, 'Không tìm thấy trải nghiệm');
             }
         }
     }
@@ -81,15 +81,9 @@ class AirlineExperience extends Controller {
     public function getExperiences() {
         try {
             $experiences = $this->airlineExperienceModel->getAllExperiencesJSON();
-            jsonResponse([
-                'status' => 'success',
-                'data' => $experiences
-            ]);
+            $this->jsonResponse(200, 'success', $experiences);
         } catch (Exception $e) {
-            jsonResponse([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            $this->jsonResponse(500, $e->getMessage());
         }
     }
 }
