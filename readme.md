@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="images/logo.png" alt="Claude Airlines Logo" width="250"/>
+  <img src="images/logo.png" alt="Claude Airline Logo" width="250"/>
 </p>
 
-<h1 align="center">Claude Airlines – Flight Booking System</h1>
+<h1 align="center">Claude Airline – Flight Booking System</h1>
 
 <p align="center">
   <a href="https://claude-airplanes.web.app" target="_blank">
@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  Welcome to Claude Airlines, a comprehensive flight booking and management system designed to provide a seamless, modern, and user-friendly experience.
+  Welcome to Claude Airline, a comprehensive flight booking and management system designed to provide a seamless, modern, and user-friendly experience.
   <br />
   <em>"Fly with the future!"</em>
   <br />
@@ -45,7 +45,7 @@
 
 ## ✨ Overview
 
-Claude Airlines is a hypothetical airline project developed with the goal of delivering high-quality, modern, and user-centric air travel services. In an increasingly competitive aviation industry that demands rapid technological adaptation, Claude Airline aims to be a pioneer in service digitalization and customer experience enhancement.
+Claude Airline is a hypothetical airline project developed with the goal of delivering high-quality, modern, and user-centric air travel services. In an increasingly competitive aviation industry that demands rapid technological adaptation, Claude Airline aims to be a pioneer in service digitalization and customer experience enhancement.
 
 The platform allows users to effortlessly search for flights, compare prices, book tickets, and manage their profiles. Administrators have access to a dedicated panel for managing flight data, bookings, user accounts, and website content.
 
@@ -151,7 +151,7 @@ This hybrid approach leverages the strengths of SPA for a rich, interactive user
 
 ## 🔒 Security Highlights
 
-Security is a key consideration in Claude Airlines. The following measures have been implemented:
+Security is a key consideration in Claude Airline. The following measures have been implemented:
 *   **Input Validation:** Rigorous validation of all user inputs on both client and server sides.
 *   **Output Encoding:** To prevent Cross-Site Scripting (XSS) vulnerabilities.
 *   **Prepared Statements:** Using PDO/MySQLi with prepared statements to mitigate SQL Injection (SQLi) risks.
