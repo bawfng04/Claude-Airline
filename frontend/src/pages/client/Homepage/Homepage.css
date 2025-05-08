@@ -2455,3 +2455,12 @@
     flex-shrink: 0;
   }
 }
+
+@media (max-width: 480px) {
+
+  .destination-dates{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
