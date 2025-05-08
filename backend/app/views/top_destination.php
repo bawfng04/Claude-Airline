@@ -153,37 +153,50 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
     <script>
         $(document).ready(function () {
-            // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>TopDestination"; // Controller base
-            const API_URL ="<?php echo getenv('BASE_URL');?>"; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>TopDestination";
+            const API_URL ="<?php echo getenv('BASE_URL');?>";
             let destinationsTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             let currentImageFilename = null;
 
-            // Function to handle AJAX errors
+            //handle lỗi ajax
             function handleAjaxError(xhr, defaultMessage) {
                 console.error("AJAX error:", xhr.responseText);
-                let errorMsg = defaultMessage || 'A server error occurred.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                } else {
+                let errorMsg = defaultMessage || 'An unexpected server error occurred.';
+
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.data && typeof xhr.responseJSON.data === 'string') {
+                        errorMsg = xhr.responseJSON.data;
+                    } else if (xhr.responseJSON.message && typeof xhr.responseJSON.message === 'string') {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                } else if (xhr.responseText) {
                     try {
-                        const errResponse = JSON.parse(xhr.responseText);
-                        errorMsg = errResponse.message || errorMsg;
-                    } catch (e) { /* Ignore parsing error */ }
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.data && typeof response.data === 'string') {
+                            errorMsg = response.data;
+                        } else if (response.message && typeof response.message === 'string') {
+                            errorMsg = response.message;
+                        }
+                    } catch (e) {
+                        console.warn("Could not parse AJAX error responseText as JSON:", xhr.responseText, e);
+                        if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                            errorMsg = xhr.statusText;
+                        }
+                    }
+                } else if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                    errorMsg = xhr.statusText;
                 }
                 alert('Error: ' + errorMsg);
             }
 
-            // Function to format date as YYYY-MM-DD
             function formatDateForInput(dateString) {
                 if (!dateString) return '';
                 try {
-                    // Assuming dateString is like 'YYYY-MM-DD HH:MM:SS' or just 'YYYY-MM-DD'
                     const date = new Date(dateString.split(' ')[0]);
-                    if (isNaN(date.getTime())) return ''; // Invalid date
+                    if (isNaN(date.getTime())) return '';
                     const year = date.getFullYear();
                     const month = String(date.getMonth() + 1).padStart(2, '0');
                     const day = String(date.getDate()).padStart(2, '0');
@@ -194,7 +207,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 }
             }
 
-            // Initialize DataTable
             destinationsTable = $('#destinationsTable').DataTable({
                 processing: true,
                 serverSide: false,
@@ -203,7 +215,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     type: 'GET',
                     dataSrc: function(json) {
                         if (json.status === 200 && Array.isArray(json.data)) {
-                            // Prepend API_URL to image paths
                             return json.data.map(dest => ({
                                 ...dest,
                                 fullImagePath: dest.destination_image ? `${API_URL}${dest.destination_image}` : null
@@ -262,7 +273,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 ]
             });
 
-            // --- Image Preview Logic ---
             $('#destination_image_input').on('change', function(event) {
                 const file = event.target.files[0];
                 const preview = $('#imagePreview');
@@ -288,19 +298,18 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
             // --- Modal Handling ---
 
-            // Reset and open Add modal
             $('#addDestinationBtn').on('click', function() {
                 $('#addEditForm')[0].reset();
                 $('#destinationId').val('');
                 $('#addEditModalLabel').text('Add New Destination');
                 $('#imagePreview').hide().attr('src', '#');
                 $('#currentImageText').hide().text('');
-                $('#destination_image_input').prop('required', true); // Image required for adding
+                $('#destination_image_input').prop('required', true);
                 currentImageFilename = null;
                 addEditModal.show();
             });
 
-            // Open Edit modal and populate data
+            // Open Edit modal
             $('#destinationsTable tbody').on('click', '.edit-btn', function () {
                 const id = $(this).data('id');
                 const rowData = destinationsTable.rows().data().toArray().find(dest => dest.id == id);
@@ -312,13 +321,13 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     $('#destination_country').val(rowData.destination_country);
                     $('#destination_price').val(rowData.destination_price);
                     $('#destination_description').val(rowData.destination_description);
-                    $('#destination_begin').val(formatDateForInput(rowData.destination_begin)); // Format date for input
-                    $('#destination_end').val(formatDateForInput(rowData.destination_end));     // Format date for input
+                    $('#destination_begin').val(formatDateForInput(rowData.destination_begin));
+                    $('#destination_end').val(formatDateForInput(rowData.destination_end));
                     $('#destination_offer').val(rowData.destination_offer);
                     $('#destination_category').val(rowData.destination_category);
 
                     $('#addEditModalLabel').text('Edit Destination');
-                    $('#destination_image_input').prop('required', false); // Image not required for editing
+                    $('#destination_image_input').prop('required', false); // Image không bắt buộc khi chỉnh sửa
 
                     const preview = $('#imagePreview');
                     const currentImageText = $('#currentImageText');
@@ -353,7 +362,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 const formData = new FormData(this);
                 const fileInput = $('#destination_image_input')[0];
 
-                // Basic Validations (add more as needed)
                 if (!formData.get('destination_name') || !formData.get('destination_country') || !formData.get('destination_price') || !formData.get('destination_description') || !formData.get('destination_begin') || !formData.get('destination_end') || !formData.get('destination_category')) {
                     alert('Please fill in all required fields.');
                     return;
@@ -363,8 +371,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     return;
                 }
 
-
-                // Handle file input based on add/edit
                 if (isEdit && (!fileInput.files || fileInput.files.length === 0)) {
                     formData.delete('destination_image');
                 } else if (!isEdit && (!fileInput.files || fileInput.files.length === 0)) {
@@ -373,7 +379,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 }
 
                 const url = isEdit ? `${API_BASE_URL}/update/${id}` : `${API_BASE_URL}/create`;
-                const method = 'POST'; // Use POST for FormData
+                const method = 'POST';
 
                 $.ajax({
                     url: url,
@@ -399,30 +405,21 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
             // --- Delete Confirmation ---
             $('#confirmDeleteBtn').on('click', function() {
                 if (!currentDeleteId) return;
-
-                // Note: Your React code used query param, adjust if backend expects path param
                 const deleteUrl = `${API_BASE_URL}/delete?id=${currentDeleteId}`;
-                // const deleteUrl = `${API_BASE_URL}/delete/${currentDeleteId}`; // Alternative if using path param
-
                 $.ajax({
                     url: deleteUrl,
                     method: 'DELETE',
                     success: function(response) {
-                         // Check for explicit success status or rely on HTTP status code (200 OK or 204 No Content)
-                         // Assuming backend sends JSON like { status: 200, message: '...' }
                          if (response.status === 200) {
                             alert(response.message || 'Deletion successful!');
                             deleteModal.hide();
                             destinationsTable.ajax.reload();
                         } else {
-                            // Handle cases where backend might send 204 No Content without a body
-                            // Or if it sends an error JSON
                             alert('Error: ' + (response.message || 'Could not delete destination.'));
                         }
                     },
                     error: function(xhr) {
-                         // Handle non-2xx responses
-                         if (xhr.status === 204) { // Handle No Content specifically if needed
+                         if (xhr.status === 204) {
                              alert('Deletion successful!');
                              deleteModal.hide();
                              destinationsTable.ajax.reload();
@@ -438,7 +435,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
         });
     </script>
-
 </body>
 
 </html>

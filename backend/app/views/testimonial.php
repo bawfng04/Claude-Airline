@@ -126,32 +126,45 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
     <script>
         $(document).ready(function () {
-            // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>Testimonial"; // Controller base
-            const API_URL = "<?php echo getenv('BASE_URL');?>"; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>Testimonial";
+            const API_URL = "<?php echo getenv('BASE_URL');?>";
             let testimonialsTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             let currentImageFilename = null;
 
-            // Function to handle AJAX errors
             function handleAjaxError(xhr, defaultMessage) {
                 console.error("AJAX error:", xhr.responseText);
-                let errorMsg = defaultMessage || 'A server error occurred.';
-                // Try to parse JSON response for a message
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                } else {
+                let errorMsg = defaultMessage || 'An unexpected server error occurred.';
+
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.data && typeof xhr.responseJSON.data === 'string') {
+                        errorMsg = xhr.responseJSON.data;
+                    } else if (xhr.responseJSON.message && typeof xhr.responseJSON.message === 'string') {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                } else if (xhr.responseText) {
                     try {
-                        const errResponse = JSON.parse(xhr.responseText);
-                        errorMsg = errResponse.message || errorMsg;
-                    } catch (e) { /* Ignore parsing error */ }
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.data && typeof response.data === 'string') {
+                            errorMsg = response.data;
+                        } else if (response.message && typeof response.message === 'string') {
+                            errorMsg = response.message;
+                        }
+                    } catch (e) {
+                        console.warn("Could not parse AJAX error responseText as JSON:", xhr.responseText, e);
+                        if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                            errorMsg = xhr.statusText;
+                        }
+                    }
+                } else if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                    errorMsg = xhr.statusText;
                 }
                 alert('Error: ' + errorMsg);
             }
 
-             // Function to render stars
+             // render stars
             function renderStars(rating) {
                 let starsHtml = '<span class="star-rating">';
                 const filledStars = parseInt(rating) || 0;
@@ -162,8 +175,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 return starsHtml;
             }
 
-
-            // Initialize DataTable
             testimonialsTable = $('#testimonialsTable').DataTable({
                 processing: true,
                 serverSide: false,
@@ -172,7 +183,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     type: 'GET',
                     dataSrc: function(json) {
                         if (json.status === 200 && Array.isArray(json.data)) {
-                            // Prepend API_URL to image paths and ensure stars is integer
                             return json.data.map(t => ({
                                 ...t,
                                 fullImagePath: t.user_image ? `${API_URL}${t.user_image}` : null,
@@ -257,13 +267,13 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 $('#addEditModalLabel').text('Add New Testimonial');
                 $('#imagePreview').hide().attr('src', '#');
                 $('#currentImageText').hide().text('');
-                $('#user_image_input').prop('required', true); // Image required for adding
-                $('#user_stars').val(0); // Default stars to 0 or another value
+                $('#user_image_input').prop('required', true);
+                $('#user_stars').val(0);
                 currentImageFilename = null;
                 addEditModal.show();
             });
 
-            // Open Edit modal and populate data
+            // Open Edit modal và populate data
             $('#testimonialsTable tbody').on('click', '.edit-btn', function () {
                 const id = $(this).data('id');
                 const rowData = testimonialsTable.rows().data().toArray().find(t => t.id == id);
@@ -312,7 +322,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 const fileInput = $('#user_image_input')[0];
                 const stars = parseInt(formData.get('user_stars'), 10);
 
-                // Basic Validations
                 if (!formData.get('user_name') || !formData.get('user_location') || !formData.get('user_testimonial')) {
                     alert('Please fill in Name, Location, and Testimonial text.');
                     return;
@@ -322,7 +331,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     return;
                 }
 
-                // Handle file input based on add/edit
                 if (isEdit && (!fileInput.files || fileInput.files.length === 0)) {
                     formData.delete('user_image');
                 } else if (!isEdit && (!fileInput.files || fileInput.files.length === 0)) {
@@ -331,7 +339,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 }
 
                 const url = isEdit ? `${API_BASE_URL}/update/${id}` : `${API_BASE_URL}/create`;
-                const method = 'POST'; // Use POST for FormData
+                const method = 'POST';
 
                 $.ajax({
                     url: url,

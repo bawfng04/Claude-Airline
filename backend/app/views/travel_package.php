@@ -117,9 +117,8 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
     <script>
         $(document).ready(function () {
-            // Adjust these URLs based on your actual backend public path and API structure
-            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>TravelPackage"; // Controller base
-            const API_URL = "<?php echo getenv('BASE_URL');?>"; // Base for image paths
+            const API_BASE_URL = "<?php echo getenv('BASE_URL');?>TravelPackage";
+            const API_URL = "<?php echo getenv('BASE_URL');?>";
             let packagesTable;
             let currentDeleteId = null;
             const addEditModal = new bootstrap.Modal(document.getElementById('addEditModal'));
@@ -129,19 +128,34 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
             // Function to handle AJAX errors
             function handleAjaxError(xhr, defaultMessage) {
                 console.error("AJAX error:", xhr.responseText);
-                let errorMsg = defaultMessage || 'A server error occurred.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
-                } else {
+                let errorMsg = defaultMessage || 'An unexpected server error occurred.';
+
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.data && typeof xhr.responseJSON.data === 'string') {
+                        errorMsg = xhr.responseJSON.data;
+                    } else if (xhr.responseJSON.message && typeof xhr.responseJSON.message === 'string') {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                } else if (xhr.responseText) {
                     try {
-                        const errResponse = JSON.parse(xhr.responseText);
-                        errorMsg = errResponse.message || errorMsg;
-                    } catch (e) { /* Ignore parsing error */ }
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.data && typeof response.data === 'string') {
+                            errorMsg = response.data;
+                        } else if (response.message && typeof response.message === 'string') {
+                            errorMsg = response.message;
+                        }
+                    } catch (e) {
+                        console.warn("Could not parse AJAX error responseText as JSON:", xhr.responseText, e);
+                        if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                            errorMsg = xhr.statusText;
+                        }
+                    }
+                } else if (xhr.statusText && xhr.statusText.toLowerCase() !== "error" && xhr.statusText.toLowerCase() !== "ok" && xhr.statusText.toLowerCase() !== "bad request") {
+                    errorMsg = xhr.statusText;
                 }
                 alert('Error: ' + errorMsg);
             }
 
-            // Initialize DataTable
             packagesTable = $('#packagesTable').DataTable({
                 processing: true,
                 serverSide: false,
@@ -150,7 +164,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     type: 'GET',
                     dataSrc: function(json) {
                         if (json.status === 200 && Array.isArray(json.data)) {
-                            // Prepend API_URL to image paths
                             return json.data.map(pkg => ({
                                 ...pkg,
                                 fullImagePath: pkg.package_image ? `${API_URL}${pkg.package_image}` : null
@@ -192,7 +205,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 ]
             });
 
-            // --- Image Preview Logic ---
             $('#package_image_input').on('change', function(event) {
                 const file = event.target.files[0];
                 const preview = $('#imagePreview');
@@ -216,7 +228,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 }
             });
 
-            // --- Modal Handling ---
 
             // Reset and open Add modal
             $('#addPackageBtn').on('click', function() {
@@ -225,12 +236,11 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 $('#addEditModalLabel').text('Add New Package');
                 $('#imagePreview').hide().attr('src', '#');
                 $('#currentImageText').hide().text('');
-                $('#package_image_input').prop('required', true); // Image required for adding
+                $('#package_image_input').prop('required', true);
                 currentImageFilename = null;
                 addEditModal.show();
             });
 
-            // Open Edit modal and populate data
             $('#packagesTable tbody').on('click', '.edit-btn', function () {
                 const id = $(this).data('id');
                 const rowData = packagesTable.rows().data().toArray().find(pkg => pkg.id == id);
@@ -241,7 +251,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                     $('#package_name').val(rowData.package_name);
                     $('#package_description').val(rowData.package_description);
                     $('#addEditModalLabel').text('Edit Package');
-                    $('#package_image_input').prop('required', false); // Image not required for editing
+                    $('#package_image_input').prop('required', false);
 
                     const preview = $('#imagePreview');
                     const currentImageText = $('#currentImageText');
@@ -276,13 +286,11 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 const formData = new FormData(this);
                 const fileInput = $('#package_image_input')[0];
 
-                // Basic Validations
                 if (!formData.get('package_name') || !formData.get('package_description')) {
                     alert('Please fill in Package Name and Description.');
                     return;
                 }
 
-                // Handle file input based on add/edit
                 if (isEdit && (!fileInput.files || fileInput.files.length === 0)) {
                     formData.delete('package_image');
                 } else if (!isEdit && (!fileInput.files || fileInput.files.length === 0)) {
@@ -291,7 +299,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                 }
 
                 const url = isEdit ? `${API_BASE_URL}/update/${id}` : `${API_BASE_URL}/create`;
-                const method = 'POST'; // Use POST for FormData
+                const method = 'POST';
 
                 $.ajax({
                     url: url,
@@ -318,7 +326,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
             $('#confirmDeleteBtn').on('click', function() {
                 if (!currentDeleteId) return;
 
-                // Using query parameter as in the React code
                 const deleteUrl = `${API_BASE_URL}/delete?id=${currentDeleteId}`;
 
                 $.ajax({
@@ -334,7 +341,6 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
                         }
                     },
                     error: function(xhr) {
-                         // Handle non-2xx responses, including potential 204 No Content
                          if (xhr.status === 204) {
                              alert('Deletion successful!');
                              deleteModal.hide();

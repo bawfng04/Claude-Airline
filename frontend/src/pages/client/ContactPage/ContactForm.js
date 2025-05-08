@@ -36,8 +36,21 @@ const ContactForm = ({ onFormSubmit }) => {
       newErrors.message = "Message is required";
     }
 
+    if(formData.phone && !/^\d+$/.test(formData.phone)) {
+      newErrors.phone = "Phone number can only contain digits";
+    }
+
+    if (formData.phone && formData.phone.length < 10) {
+      newErrors.phone = "Phone number must be at least 10 digits long";
+    }
+
+    if (formData.phone && formData.phone.length > 15) {
+      newErrors.phone = "Phone number must be at most 15 digits long";
+    }
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleChange = (e) => {
@@ -52,7 +65,10 @@ const ContactForm = ({ onFormSubmit }) => {
     e.preventDefault();
     setErrors({});
 
-    if (validateForm()) {
+    const currentValidationErrors = validateForm(); // lấy currentValidationErrors từ validateForm
+    setErrors(currentValidationErrors);
+
+    if (Object.keys(currentValidationErrors).length === 0) {
       setIsSubmitting(true);
       try {
         const response = await fetch(CREATE_CONTACT_MESSAGE_API, {
@@ -74,9 +90,11 @@ const ContactForm = ({ onFormSubmit }) => {
             subject: "",
             message: "",
           });
+          setErrors({});
           if (onFormSubmit) {
             onFormSubmit();
           }
+          // nếu có errors
         } else {
           console.error("Form submission error:", result);
           setErrors((prevErrors) => ({
@@ -93,6 +111,20 @@ const ContactForm = ({ onFormSubmit }) => {
       } finally {
         setIsSubmitting(false);
       }
+      // nếu có error trong validateForm
+      // => alert ra lỗi
+    } else {
+      const errorMessages = Object.entries(currentValidationErrors)
+        .map(
+          ([field, message]) =>
+            `${field.charAt(0).toUpperCase() + field.slice(1)}: ${message}`
+        )
+        .join("\n");
+      alert("Please correct the following errors:\n\n" + errorMessages);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        api: "Please fix the errors highlighted above before submitting.",
+      }));
     }
   };
 
@@ -185,7 +217,7 @@ const ContactForm = ({ onFormSubmit }) => {
       {/* <button type="submit" className="form-submit-button">
         Send Message
       </button> */}
-      {errors.api && (
+      {errors && (
         <span
           className="error-message"
           style={{
