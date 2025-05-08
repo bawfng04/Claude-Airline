@@ -6,4 +6,5 @@ apphosting.yaml
 /backend/public/uploads/*
 !/backend/public/uploads/defaultImage
 /backend/node_modules/
+/frontend/node_modules/
 /backend/app/.env

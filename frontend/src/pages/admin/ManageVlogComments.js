@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom'; // Use Link for post titles
 import { API_URL } from '../../api/apis'; // Your API constants
-import { FaCheck, FaTrashAlt, FaSpinner, FaExclamationTriangle, FaStar, FaUser, FaUserSecret } from 'react-icons/fa'; // Added FaUser/FaUserSecret
+import { FaCheck, FaTrashAlt, FaSpinner, FaExclamationTriangle, FaStar, FaUser, FaUserSecret, FaThumbsUp } from 'react-icons/fa'; // Added FaThumbsUp
 
 // *** IMPORTANT: Replace with your actual admin token retrieval logic ***
 const getAdminAuthToken = () => {
@@ -152,6 +152,7 @@ const ManageVlogComments = () => {
                                                 <th>Author</th>
                                                 <th>Post</th>
                                                 <th>Rating</th>
+                                                <th>Likes</th> {/* ADDED */}
                                                 <th>Status</th>
                                                 <th>Date</th>
                                                 <th>Actions</th>
@@ -178,6 +179,8 @@ const ManageVlogComments = () => {
                                                         <td><Link to={`/vlog/${comment.post_slug}`} target="_blank" title={comment.post_title}>{truncateText(comment.post_title, 25)}</Link></td>
                                                         {/* Rating */}
                                                         <td className='text-center'>{comment.rating ? <><FaStar className="text-warning me-1"/>{comment.rating}</> : '-'}</td>
+                                                        {/* Likes */}
+                                                        <td className='text-center'><FaThumbsUp className="text-muted me-1"/>{comment.likes || 0}</td> {/* ADDED */}
                                                         {/* Status Badge */}
                                                         <td className='text-center'>
                                                         {comment.is_approved ? <span className="badge bg-success">Approved</span> : <span className="badge bg-warning">Pending</span>}
