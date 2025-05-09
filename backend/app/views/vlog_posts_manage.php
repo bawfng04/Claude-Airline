@@ -4,13 +4,17 @@ $apiUrlForJs = getenv('API_URL') ?: base_url();
 
 if (!function_exists('getVlogPostActionButtons')) {
     function getVlogPostActionButtons($post) {
+        // Gallery images are no longer managed here, so we can simplify
+        // but the original structure expected gallery_images, so we ensure it's an empty array if not present
         $postDataForJson = $post;
-        $postDataForJson['gallery_images'] = $post['gallery_images'] ?? [];
+        if (!isset($postDataForJson['gallery_images']) || !is_array($postDataForJson['gallery_images'])) {
+            $postDataForJson['gallery_images'] = [];
+        }
 
         $postJson = htmlspecialchars(json_encode($postDataForJson), ENT_QUOTES, 'UTF-8');
         if (json_last_error() !== JSON_ERROR_NONE) {
             error_log("JSON Encode Error in getVlogPostActionButtons: " . json_last_error_msg());
-            $postJson = '{}';
+            $postJson = '{}'; // Fallback to empty object
         }
 
         $editButton = '<button type="button" class="btn btn-sm btn-outline-primary me-1 px-2 py-1" title="Edit" onclick=\'prepareEditModal(this)\' data-post=\''. $postJson .'\' data-bs-toggle="modal" data-bs-target="#addEditPostModal"><i class="bi bi-pencil-fill"></i></button>';
@@ -26,7 +30,6 @@ if (!function_exists('getVlogPostActionButtons')) {
     <title><?php echo htmlspecialchars($data['pageTitle'] ?? 'Vlog Posts Management'); ?></title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/compiled/css/table-datatable-jquery.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         #manageTable th, #manageTable td { vertical-align: middle; }
         #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 5%; }
@@ -49,16 +52,6 @@ if (!function_exists('getVlogPostActionButtons')) {
         .form-control::placeholder, .form-select::placeholder { color: #6c757d; opacity: 1; }
         .featured-image-label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
         .img-thumbnail-modal { max-width: 100%; height: auto; max-height: 150px; object-fit: contain; border-radius: 0.375rem; border: 1px solid #dee2e6; display: inline-block; vertical-align: middle; }
-        #galleryItemsContainer .gallery-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; cursor: grab; }
-        #galleryItemsContainer .gallery-item:active { cursor: grabbing; background-color: #e9e9e9; }
-        .gallery-item .drag-handle { cursor: grab; color: #999; font-size: 1.2rem; padding: 0 5px; position: relative; z-index: 10; }
-        .gallery-item .drag-handle:active { cursor: grabbing; }
-        .gallery-item img.gallery-preview { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; flex-shrink: 0; border: 1px solid #ccc; background-color: #eee; }
-        .gallery-item .gallery-url-input { flex-grow: 1; font-size: 0.85rem; padding: 0.375rem 0.75rem; border: 1px solid #ced4da; border-radius: 0.25rem; }
-        .gallery-item .gallery-url-input:focus { border-color: #86b7fe; outline: 0; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25); }
-        .gallery-item .gallery-actions button { padding: 0.3rem 0.6rem; font-size: 0.8rem; line-height: 1; }
-        .sortable-ghost { opacity: 0.4; background-color: #cfe2ff; border: 1px dashed #0d6efd; }
-        .gallery-item.sortable-ghost { border-radius: 5px; }
         #featuredImageDropZone { border: 2px dashed #ccc; border-radius: 0.375rem; padding: 30px 20px; text-align: center; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease; background-color: #f8f9fa; position: relative; }
         #featuredImageDropZone.dragover { border-color: #0d6efd; background-color: #e7f0ff; }
         #featuredImageDropZone p { margin-bottom: 0.5rem; color: #6c757d; pointer-events: none; }
@@ -73,7 +66,6 @@ if (!function_exists('getVlogPostActionButtons')) {
             .form-group-inline { flex-direction: column; align-items: flex-start; }
             .form-group-inline .form-label { margin-right: 0; margin-bottom: 0.25rem; }
             .form-group-inline .form-control, .form-group-inline .form-select { width: 100%; }
-            #galleryItemsContainer .gallery-item { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -130,10 +122,9 @@ if (!function_exists('getVlogPostActionButtons')) {
                 <h5 class="modal-title" id="addEditPostModalLabel">Add/Edit Vlog Post</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="addEditPostForm" method="POST" action="<?php echo base_url('vlogPost/save'); ?>" enctype="multipart/form-data" onsubmit="return prepareGalleryDataForSubmission();">
+            <form id="addEditPostForm" method="POST" action="<?php echo base_url('vlogPost/save'); ?>" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" name="id" id="postId">
-                    <input type="hidden" name="gallery_images_json" id="gallery_images_json">
 
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -177,18 +168,6 @@ if (!function_exists('getVlogPostActionButtons')) {
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label section-title-label">Image Gallery (Drag to Reorder)</label>
-                        <div class="p-3 border rounded">
-                            <div id="galleryItemsContainer" class="mb-3 gallery-sortable">
-                            </div>
-                            <button type="button" class="btn btn-success btn-sm" onclick="addGalleryItem()">
-                                Add Image URL
-                            </button>
-                            <small class="form-text text-muted d-block mt-1">Paste URLs of images hosted online. Drag items using the handle to change their order</small>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -216,7 +195,6 @@ if (!function_exists('getVlogPostActionButtons')) {
 <script src="<?php echo base_url(); ?>assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 <script>
-    let sortableGallery = null;
     const apiUrl = '<?php echo $apiUrlForJs; ?>';
 
     $(document).ready(function () {
@@ -270,30 +248,6 @@ if (!function_exists('getVlogPostActionButtons')) {
             $(this).hide();
         });
 
-        if (typeof jQuery !== 'undefined' && typeof Sortable !== 'undefined') {
-            const galleryContainerElement = document.getElementById('galleryItemsContainer');
-            if (galleryContainerElement) {
-                try {
-                    sortableGallery = new Sortable(galleryContainerElement, {
-                        animation: 150,
-                        handle: '.drag-handle',
-                        ghostClass: 'sortable-ghost',
-                    });
-                } catch (e) {
-                    // Error during Sortable initialization
-                }
-            }
-
-            try {
-                $('#galleryItemsContainer').on('click', '.btn-remove-gallery-item', function(event) {
-                    event.preventDefault();
-                    $(this).closest('.gallery-item').remove();
-                });
-            } catch (e) {
-                // Error attaching delete button handler
-            }
-        }
-
     });
 
     function preventDefaults (e) {
@@ -329,7 +283,7 @@ if (!function_exists('getVlogPostActionButtons')) {
                 $(removeImageButton).hide();
                 return;
             }
-            if (file.size > 5 * 1024 * 1024) {
+            if (file.size > 5 * 1024 * 1024) { // 5MB
                 alert("Featured image file size exceeds 5MB.");
                 $(featuredFileInput).val('');
                 $(removeImageButton).hide();
@@ -347,9 +301,10 @@ if (!function_exists('getVlogPostActionButtons')) {
             }
             reader.readAsDataURL(file);
         } else {
+            // If no file is selected (e.g., user cancels file dialog), check if there was an existing image to decide if remove button should be shown
             const existingImage = $(featuredPreviewContainer).find('img[src^="http"], img[src^="/"]');
-            if (!existingImage.length) {
-                $(removeImageButton).hide();
+            if (!existingImage.length) { // if no existing preview was there
+                 $(removeImageButton).hide();
             }
         }
     }
@@ -358,14 +313,12 @@ if (!function_exists('getVlogPostActionButtons')) {
     function prepareAddModal() {
         $('#addEditPostForm')[0].reset();
         $('#postId').val('');
-        $('#postAuthorId').val('<?php echo $_SESSION['user_id'] ?? 1; ?>');
+        $('#postAuthorId').val('<?php echo $_SESSION['user_id'] ?? 1; ?>'); // Default to logged in user or 1
         $('#addEditPostModalLabel').text('Add New Vlog Post');
         $('#featuredImagePreviewContainer').html('');
         $('#btnRemoveImage').hide();
         $('#removeImageCheck').prop('checked', false);
-        $('#postImage').val('');
-        $('#galleryItemsContainer').html('');
-        $('#gallery_images_json').val('[]');
+        $('#postImage').val(''); // Clear file input
     }
 
     function prepareEditModal(button) {
@@ -374,13 +327,13 @@ if (!function_exists('getVlogPostActionButtons')) {
             const postJsonString = $(button).attr('data-post');
             if (!postJsonString) throw new Error("data-post attribute is missing or empty.");
             postData = JSON.parse(postJsonString);
-            postData.gallery_images = Array.isArray(postData.gallery_images) ? postData.gallery_images : [];
         } catch (e) {
             alert("Error: Could not load post data properly. Check console.");
+            console.error("Error parsing post data:", e, "Raw data:", $(button).attr('data-post'));
             return;
         }
 
-        prepareAddModal();
+        prepareAddModal(); // Reset form first
 
         $('#postId').val(postData.id);
         $('#postAuthorId').val(postData.user_id || '1');
@@ -390,8 +343,8 @@ if (!function_exists('getVlogPostActionButtons')) {
         $('#postStatus').val(postData.status || 'draft');
         $('#addEditPostModalLabel').text('Edit Post: ' + (postData.title || `ID ${postData.id}`));
 
-        $('#removeImageCheck').prop('checked', false);
-        $('#featuredImagePreviewContainer').html('');
+        $('#removeImageCheck').prop('checked', false); // Ensure this is unchecked initially for edit
+        $('#featuredImagePreviewContainer').html(''); // Clear previous preview
         if (postData.featured_image) {
             const imageUrl = postData.featured_image.startsWith('/') ? apiUrl + postData.featured_image : postData.featured_image;
             $('#featuredImagePreviewContainer').html(`<img src="${imageUrl}" alt="Current Featured Image" class="img-thumbnail-modal">`);
@@ -399,69 +352,11 @@ if (!function_exists('getVlogPostActionButtons')) {
         } else {
             $('#btnRemoveImage').hide();
         }
-
-        const galleryContainer = $('#galleryItemsContainer');
-        galleryContainer.html('');
-        if (postData.gallery_images.length > 0) {
-            postData.gallery_images.forEach(imageUrl => {
-                if (typeof imageUrl === 'string' && imageUrl) {
-                    addGalleryItem(imageUrl);
-                } else if (typeof imageUrl === 'object' && imageUrl !== null && imageUrl.url) {
-                    addGalleryItem(imageUrl.url);
-                }
-            });
-        }
-        $('#gallery_images_json').val(JSON.stringify(postData.gallery_images));
     }
 
     function prepareDeleteModal(button) {
         const id = $(button).data('id'); const title = $(button).data('title');
         $('#deletePostId').val(id); $('#deletePostTitle').text(title || `ID ${id}`);
-    }
-
-    function addGalleryItem(url = '') {
-        const container = $('#galleryItemsContainer');
-        const placeholderImg = '<?php echo base_url(); ?>assets/static/images/placeholder.jpg';
-        const urlValue = (typeof url === 'string') ? url : '';
-        const previewSrc = urlValue ? (urlValue.startsWith('/') ? apiUrl + urlValue : urlValue) : placeholderImg;
-        const uniqueId = 'gallery_item_' + Date.now() + Math.random().toString(36).substring(2, 7);
-
-        const newItemHtml = `
-            <div class="gallery-item d-flex align-items-center mb-2 p-2 border rounded bg-light" id="${uniqueId}">
-                <span class="drag-handle me-2 text-muted" title="Drag to reorder" style="cursor: grab;"><i class="bi bi-grip-vertical"></i></span>
-                <img src="${previewSrc}" alt="Preview" class="gallery-preview flex-shrink-0 me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px; border: ${urlValue ? 'none' : '1px solid #eee'};" onerror="this.src='${placeholderImg}'; this.style.border='1px solid #eee';">
-                <input type="url" class="form-control form-control-sm gallery-url-input flex-grow-1" placeholder="Image URL (https://... or /uploads/...)" value="${urlValue}" required>
-                <button type="button" class="btn btn-danger btn-sm btn-remove-gallery-item ms-2 flex-shrink-0" title="Remove Image">
-                    <i class="bi bi-x"></i>
-                </button>
-            </div>`;
-        container.append(newItemHtml);
-
-        $(`#${uniqueId} .gallery-url-input`).on('input change blur keyup', function() {
-            const enteredUrl = $(this).val().trim();
-            const previewImg = $(`#${uniqueId} .gallery-preview`);
-            if (enteredUrl && (enteredUrl.startsWith('http://') || enteredUrl.startsWith('https://') || enteredUrl.startsWith('/'))) {
-                previewImg.attr('src', enteredUrl.startsWith('/') ? apiUrl + enteredUrl : enteredUrl).css('border','none');
-            } else {
-                previewImg.attr('src', placeholderImg).css('border','1px solid #eee');
-            }
-        });
-    }
-
-    function prepareGalleryDataForSubmission() {
-        const galleryData = [];
-        const items = $('#galleryItemsContainer .gallery-item');
-        items.each(function() {
-            const urlInput = $(this).find('.gallery-url-input');
-            const url = urlInput.val().trim();
-            if (url) {
-                if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
-                    galleryData.push(url);
-                }
-            }
-        });
-        $('#gallery_images_json').val(JSON.stringify(galleryData));
-        return true;
     }
 
 </script>

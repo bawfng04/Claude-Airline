@@ -19,6 +19,15 @@ import {
     FaSun, FaCloudSun, FaCloud, FaSmog, FaCloudRain, FaSnowflake, FaMapMarkerAlt, FaClock, FaThermometerHalf, FaBolt
 } from 'react-icons/fa';
 
+import barcaImage from '../../../assets/barca.jpg';
+import fujiImage from '../../../assets/chom.png';
+import hanoiImage from '../../../assets/hanoi.jpg';
+import londonImage from '../../../assets/london.jpeg';
+import parisImage from '../../../assets/paris.jpg';
+import newyorkImage from '../../../assets/newyork.jpg';
+import heroVideo from '../../../assets/videoplayback.mp4'; // Import the local video
+
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -56,8 +65,6 @@ const PostCardSkeleton = () => (
         </div>
     </div>
 );
-
-const HERO_VIDEO_ID = 'CDx2fxb5ZF4';
 
 const travelShockFacts = [
     {
@@ -353,17 +360,12 @@ const VlogListPage = () => {
     };
 
     const thematicCategories = [
-        { name: "Floral Cycles", image: 'https://images.unsplash.com/photo-1604323990536-e5452c0507c1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=hanoi-old-quarter', description: "Colorful blooms on bicycles brightening city streets." },
-        { name: "Soaring Skyscraper", image: 'https://images.unsplash.com/photo-1602646994030-464f98de5e5c?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=vietnam-street-eats', description: "Panoramic views from a modern architectural marvel." },
-        { name: "River Delta Life", image: 'https://images.unsplash.com/photo-1580534510745-5c753903769c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=ha-long-cruises', description: "Vibrant waterways, floating markets, and lush landscapes." },
-        { name: "Sun-Kissed Beaches", image: 'https://images.unsplash.com/photo-1578458329607-534298aebc4d?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=hoi-an-nights', description: "Relax on sandy shores and enjoy clear coastal waters." },
-        { name: "Literary Pavilion", image: 'https://images.unsplash.com/photo-1547158291-06774526756c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=sapa-landscapes', description: "An iconic pavilion, a historic symbol of wisdom and learning." },
-        { name: "Street Vendor Vibes", image: 'https://images.unsplash.com/photo-1616438096679-620332ede3a2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=vietnam-coffee', description: "Lively culture and diverse offerings from street sellers." },
-        { name: "Iconic Hand Bridge", image: 'https://images.unsplash.com/photo-1588411393236-d2524cca1196?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=traditional-crafts', description: "Stunning pedestrian bridge seemingly held by giant stone hands." },
-        { name: "Verdant Terraces", image: 'https://images.unsplash.com/photo-1606801954050-be6b29588460?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=da-nang-dragon', description: "Breathtaking beauty of cascading green agricultural fields." },
-        { name: "Karst Waterways", image: 'https://images.unsplash.com/photo-1531737212413-667205e1cda7?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=urban-vietnam', description: "Peaceful boat trips through stunning limestone formations." },
-        { name: "Apartment Cafes", image: 'https://images.unsplash.com/photo-1602646993776-5dd8e166e6fd?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=timeless-ao-dai', description: "Hidden coffee gems in old buildings on vibrant pedestrian streets." },
-        { name: "Highland Culture", image: 'https://images.unsplash.com/photo-1603486037214-4fec4016a9bf?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=pho-delight', description: "Rich traditions and vibrant attire of a mountain ethnic group." },
+        { name: "Barcelona Charm", image: barcaImage, link: '/vlog?theme=barcelona-charm', description: "Explore the vibrant streets and unique architecture of Barcelona." },
+        { name: "Majestic Fuji", image: fujiImage, link: '/vlog?theme=majestic-fuji', description: "Witness the breathtaking beauty of Mount Fuji and its surroundings." },
+        { name: "Hanoi's Soul", image: hanoiImage, link: '/vlog?theme=hanoi-soul', description: "Immerse yourself in the rich culture and history of Hanoi." },
+        { name: "London Calling", image: londonImage, link: '/vlog?theme=london-calling', description: "Discover the iconic landmarks and diverse culture of London." },
+        { name: "Parisian Dreams", image: parisImage, link: '/vlog?theme=parisian-dreams', description: "Experience the romance and elegance of the City of Lights." },
+        { name: "New York Heights", image: newyorkImage, link: '/vlog?theme=new-york-heights', description: "Feel the energy of the city that never sleeps, from towering skyscrapers." },
     ];
 
     const majorHubs = [
@@ -394,7 +396,7 @@ const VlogListPage = () => {
         { id: 25, name: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780, timezone: 'Asia/Seoul', weatherIcon: FaCloud, tempC: 26 }
     ];
 
-    const parallaxFactor = 1; // Adjusted factor for video parallax
+    const parallaxFactor = 1; 
     const videoParallaxOffset = scrollY * parallaxFactor;
 
     return (
@@ -463,21 +465,21 @@ const VlogListPage = () => {
                     style={{ height: `calc(100vh - ${headerPlaceholderHeight}px)` }}
                 >
                     <div className="absolute inset-0 w-full h-full z-0" style={{ transform: `translateY(${videoParallaxOffset}px)` }}>
-                        <iframe
-                            className="absolute top-1/2 left-1/2 w-full h-full min-w-[177.77vh] min-h-[56.25vw] transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                        <video
+                            src={heroVideo}
+                            className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full object-cover transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                             style={{ top: '50%', left: '50%'}}
-                            src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${HERO_VIDEO_ID}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&fs=0&rel=0&disablekb=1&vq=hd1080`}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
                             title="Hero Video Background"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen={false}
-                        ></iframe>
+                        ></video>
                     </div>
                     <div className="absolute inset-0 bg-black/50 z-10"></div>
 
                     <div
                         className="relative z-20 text-center p-4 sm:p-6 flex flex-col items-center justify-center w-full h-full max-w-5xl mx-auto"
-
                         >
                         <div className="opacity-0 translate-y-5 transition-all duration-1000 ease-out data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
                             <h1 className="text-[4.5rem] mb-8 font-bold [text-shadow:2px_2px_5px_rgba(0,0,0,0.6)] lg:text-[5rem] sm:text-[3rem] leading-tight">

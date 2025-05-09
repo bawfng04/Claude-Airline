@@ -179,36 +179,36 @@ CREATE TABLE `vlog_posts` (
     `user_id` int(11) NOT NULL COMMENT 'Author (FK to USERS.ID)',
     `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `introduction` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Short summary/hook shown on hero/list',
-    `main_content` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Main body of the post (plain text or Markdown recommended)',
-    `featured_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'URL or path for the main header image',
-    `gallery_images` json DEFAULT NULL COMMENT 'JSON array of image URLs (strings), e.g., ["url1", "url2"]',
+    `introduction` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `main_content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+    `featured_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `gallery_images` json DEFAULT NULL,
     `status` enum('published','draft') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'draft',
-    `no_of_ratings` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Cached count of ratings from approved comments',
-    `average_rating` decimal(3,1) DEFAULT NULL COMMENT 'Cached average rating (1 decimal) from approved comments',
+    `no_of_ratings` int(11) UNSIGNED NOT NULL DEFAULT 0,
+    `average_rating` decimal(3,1) DEFAULT NULL COMMENT,
     `created_at` timestamp NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
     UNIQUE KEY `slug` (`slug`),
     KEY `vlog_post_author_fk` (`user_id`),
     CONSTRAINT `vlog_post_author_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores vlog post entries with image gallery URLs';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `vlog_comments` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `post_id` int(11) NOT NULL,
-    `user_id` int(11) DEFAULT NULL COMMENT 'Commenter (FK to USERS.ID), NULL for guests',
+    `user_id` int(11) DEFAULT NULL,
     `guest_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `comment` text COLLATE utf8mb4_unicode_ci NOT NULL,
     `rating` tinyint(3) unsigned DEFAULT NULL CHECK (`rating` >= 1 and `rating` <= 5),
-    `is_approved` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=pending, 1=approved',
-    `likes` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Number of likes this comment has received',
+    `is_approved` tinyint(1) NOT NULL DEFAULT 0,
+    `likes` int(11) UNSIGNED NOT NULL DEFAULT 0,
     `created_at` timestamp NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`),
     KEY `post_id` (`post_id`),
     KEY `comment_user_fk` (`user_id`),
     CONSTRAINT `vlog_comments_post_fk` FOREIGN KEY (`post_id`) REFERENCES `vlog_posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `vlog_comments_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores comments for vlog posts';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
