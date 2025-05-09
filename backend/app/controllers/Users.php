@@ -239,44 +239,44 @@ class Users extends Controller {
         }
     }
 
+    // In backend/app/controllers/Users.php
     public function getUserInfo() {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             try {
-                // Gọi middleware xác thực JWT
                 require_once __DIR__ . '/../middlewares/authMiddleware.php';
-                $authPayload = authMiddleware(); // trả về payload nếu hợp lệ
+                authMiddleware(); 
 
-                // Lấy user_id từ token (đã xác thực)
-                $userId = $GLOBALS['user_id'];
+                $userId = $GLOBALS['user_id'] ?? null;
 
                 if (!$userId) {
-                    $this->jsonResponse(401, 'Không tìm thấy người dùng!');
+                    $this->jsonResponse(401, 'Xác thực thất bại hoặc không tìm thấy ID người dùng.');
                     return;
                 }
 
-                // Lấy thông tin người dùng từ CSDL
                 $user = $this->userModel->getUserById($userId);
 
                 if (!$user) {
-                    $this->jsonResponse(404, 'Người dùng không tồn tại!');
+                    $this->jsonResponse(404, 'Người dùng không tồn tại.');
                     return;
                 }
                 
-                // Trả về thông tin người dùng
-                $this->jsonResponse(200, 'Success',
-                    [
-                        'family_name' => $user['FAMILY_NAME'],
-                        'given_name' => $user['GIVEN_NAME'],
-                        'email' => $user['EMAIL'],
-                        'phone_number' => $user['PHONE_NUMBER'],
-                        'birthday' => $user['BIRTHDAY'],
-                        'nationality' => $user['NATIONALITY'],
-                        'membership' => $user['MEMBERSHIP'],
-                        'image' => $user['image'],
-                    ]
-                );
+                $userData = [
+                    'id'            => $user['ID'], // THIS LINE IS ESSENTIAL
+                    'family_name'   => $user['FAMILY_NAME'],
+                    'given_name'    => $user['GIVEN_NAME'],
+                    'email'         => $user['EMAIL'],
+                    'phone_number'  => $user['PHONE_NUMBER'],
+                    'birthday'      => $user['BIRTHDAY'],
+                    'nationality'   => $user['NATIONALITY'],
+                    'membership'    => $user['MEMBERSHIP'],
+                    'image'         => $user['image'],
+                ];
+                
+                $this->jsonResponse(200, 'Success', $userData);
+
             } catch (Exception $e) {
-                $this->jsonResponse(500, $e->getMessage());
+                error_log("Error in getUserInfo: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+                $this->jsonResponse(500, 'Lỗi máy chủ khi lấy thông tin người dùng.');
             }
         } else {
             $this->jsonResponse(405, 'Phương thức không được hỗ trợ!');

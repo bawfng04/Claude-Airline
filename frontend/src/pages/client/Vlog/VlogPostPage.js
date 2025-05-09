@@ -6,61 +6,86 @@ import {
     FaSpinner, FaExclamationTriangle, FaUserEdit, FaRegClock, FaRegCommentDots,
     FaStar, FaUserCircle, FaThumbsUp, FaRegThumbsUp, FaShareAlt, FaPaperPlane,
     FaUserAstronaut, FaFacebook, FaTwitter, FaLinkedin, FaPinterest,
-    FaWhatsapp, FaEnvelope, FaRedditAlien, FaEdit, FaSave, FaTimes
+    FaWhatsapp, FaEnvelope, FaRedditAlien
 } from 'react-icons/fa';
 
 const useAuth = () => {
     const [authState, setAuthState] = useState({
         isAuthenticated: false,
         user: null,
-        token: localStorage.getItem("accessToken"),
+        token: null,
         isLoading: true,
     });
 
     useEffect(() => {
-        const validateTokenAndFetchUser = async () => {
-            const token = localStorage.getItem("accessToken");
-            if (token) {
-                try {
-                    const response = await fetch(`${API_URL}/users/getUserInfo`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    if (response.ok) {
-                        const result = await response.json();
-                        if (result.status === 200 && result.data && result.data.id) {
-                            setAuthState({
-                                isAuthenticated: true,
-                                user: {
-                                    id: result.data.id,
-                                    GIVEN_NAME: result.data.given_name,
-                                    FAMILY_NAME: result.data.family_name,
-                                    avatarUrl: result.data.image ? (result.data.image.startsWith('/') ? API_URL + result.data.image : result.data.image) : null
-                                },
-                                token: token,
-                                isLoading: false,
-                            });
-                        } else {
-                            localStorage.removeItem("accessToken");
-                            setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
-                        }
-                    } else {
-                        localStorage.removeItem("accessToken");
-                        setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
-                    }
-                } catch (error) {
-                    console.error("Error validating token:", error);
-                    localStorage.removeItem("accessToken");
-                    setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
-                }
-            } else {
+        let isMounted = true;
+        const tokenFromStorage = localStorage.getItem("accessToken");
+
+        if (!tokenFromStorage) {
+            if (isMounted) {
                 setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
             }
+            return;
+        }
+        
+        if (isMounted) {
+             setAuthState(prevState => ({ ...prevState, token: tokenFromStorage, isLoading: true }));
+        }
+
+        const validateTokenAndFetchUser = async () => {
+            try {
+                const response = await fetch(`${API_URL}/users/getUserInfo`, {
+                    headers: {
+                        'Authorization': `Bearer ${tokenFromStorage}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!isMounted) return;
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.status === 200 && result.data && result.data.id) {
+                        setAuthState({
+                            isAuthenticated: true,
+                            user: {
+                                id: result.data.id,
+                                GIVEN_NAME: result.data.given_name,
+                                FAMILY_NAME: result.data.family_name,
+                                avatarUrl: result.data.image ? (result.data.image.startsWith('http') ? result.data.image : API_URL + (result.data.image.startsWith('/') ? '' : '/') + result.data.image) : null
+                            },
+                            token: tokenFromStorage,
+                            isLoading: false,
+                        });
+                    } else {
+                        localStorage.removeItem("accessToken"); 
+                        setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
+                    }
+                } else {
+                    localStorage.removeItem("accessToken"); 
+                    setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
+                }
+            } catch (error) {
+                if (isMounted) {
+                    localStorage.removeItem("accessToken"); 
+                    setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
+                }
+            }
         };
-        validateTokenAndFetchUser();
-    }, []);
+
+        if (tokenFromStorage) {
+            validateTokenAndFetchUser();
+        } else {
+             if(isMounted){
+                setAuthState({ isAuthenticated: false, user: null, token: null, isLoading: false });
+            }
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, []); 
+
     return authState;
 };
 
@@ -106,27 +131,31 @@ const AddVlogCommentForm = ({ postId, onCommentAdded, isSubmittingForm, setIsSub
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [comment, setComment] = useState('');
-    const [guestFullName, setGuestFullName] = useState('');
+    const [displayName, setDisplayName] = useState('');
     const [formError, setFormError] = useState(null);
     const [formSuccess, setFormSuccess] = useState(null);
-    const { isAuthenticated, user: loggedInUser, token: authToken, isLoading: authLoading } = useAuth();
+    const { isAuthenticated, user: loggedInUser, isLoading: authLoading } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormError(null); setFormSuccess(null);
         const trimmedComment = comment.trim();
-        
-        if (!trimmedComment) { setFormError("Comment text cannot be empty."); return; }
-        
-        let payload = { comment: trimmedComment, rating: rating > 0 ? rating : null };
+        const trimmedDisplayName = displayName.trim();
 
-        if (!isAuthenticated) {
-            const trimmedGuestName = guestFullName.trim();
-            if (!trimmedGuestName) {
-                setFormError("Please enter your full name to comment as a guest.");
-                return;
-            }
-            payload.guest_name = trimmedGuestName;
+        if (!trimmedDisplayName) {
+            setFormError("Display name is required.");
+            return;
+        }
+        if (!trimmedComment) {
+            setFormError("Comment text cannot be empty.");
+            return;
+        }
+        
+        let payload = { comment: trimmedComment, rating: rating > 0 ? rating : null, guest_name: trimmedDisplayName };
+        
+        if (authLoading) { 
+             setFormError("Verifying user status, please wait...");
+             return;
         }
         
         setIsSubmittingForm(true);
@@ -134,19 +163,25 @@ const AddVlogCommentForm = ({ postId, onCommentAdded, isSubmittingForm, setIsSub
         
         try {
             const headers = { 'Content-Type': 'application/json' };
-            if (isAuthenticated && authToken) { headers['Authorization'] = `Bearer ${authToken}`; }
+            const currentToken = localStorage.getItem("accessToken"); 
+            if (currentToken && isAuthenticated) { 
+                headers['Authorization'] = `Bearer ${currentToken}`; 
+            }
 
             const response = await fetch(ADD_COMMENT_API, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
             const result = await response.json();
 
             if (!response.ok || (result.status && result.status !== 201 && result.status !== 200)) { 
-                throw new Error(result.message || `Failed to submit comment. Status: ${response.status}`);
+                let errorMessage = result.message || `Failed to submit comment. Status: ${response.status}`;
+                if (response.status === 401 || response.status === 403) {
+                    errorMessage = "Authentication failed. Your session might be invalid. Please log in again.";
+                }
+                throw new Error(errorMessage);
             }
             
-            const successMessage = isAuthenticated ? "Your comment has been posted!" : "Your comment submitted and awaiting approval!";
-            setFormSuccess(successMessage);
-            setRating(0); setComment(''); 
-            if (!isAuthenticated) setGuestFullName('');
+            const successMessageToShow = result.message || "Comment submitted successfully!";
+            setFormSuccess(successMessageToShow);
+            setRating(0); setComment(''); setDisplayName(''); 
 
             if (onCommentAdded) { 
                 setTimeout(() => { 
@@ -160,13 +195,17 @@ const AddVlogCommentForm = ({ postId, onCommentAdded, isSubmittingForm, setIsSub
         finally { setIsSubmittingForm(false); }
     };
 
-    if (authLoading) return <div className="flex justify-center items-center p-6"><FaSpinner className="animate-spin text-2xl text-red-600" /></div>;
+    const displayAsAuthenticatedForUI = !authLoading && isAuthenticated;
 
-    const avatarIcon = isAuthenticated && loggedInUser?.avatarUrl
+    const avatarIcon = displayAsAuthenticatedForUI && loggedInUser?.avatarUrl
         ? <img loading="lazy" src={loggedInUser.avatarUrl} alt={loggedInUser.GIVEN_NAME || 'User'} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
-        : isAuthenticated
-            ? <FaUserCircle className="text-gray-400 text-4xl flex-shrink-0" title={loggedInUser?.GIVEN_NAME || "User"} />
-            : <FaUserAstronaut className="text-gray-400 text-4xl flex-shrink-0" title="Guest Avatar" />;
+        : <FaUserCircle className="text-gray-400 text-4xl flex-shrink-0" title={displayAsAuthenticatedForUI && loggedInUser ? (loggedInUser.GIVEN_NAME || "User") : "User"} />;
+    
+    const submitButtonDisabled = 
+        authLoading || 
+        isSubmittingForm || 
+        !comment.trim() || 
+        !displayName.trim();
 
     return (
         <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200 flex gap-3 sm:gap-4 items-start transition-all duration-300 ease-in-out">
@@ -174,32 +213,42 @@ const AddVlogCommentForm = ({ postId, onCommentAdded, isSubmittingForm, setIsSub
             <form onSubmit={handleSubmit} className="flex-grow space-y-4">
                 {formError && <div className="text-red-600 bg-red-100 p-3 rounded-md border border-red-300 text-sm font-medium animate-pulse once">{formError}</div>}
                 {formSuccess && <div className="text-green-700 bg-green-100 p-3 rounded-md border border-green-400 text-sm font-medium animate-pulse once">{formSuccess}</div>}
-                {!isAuthenticated && (
-                    <input type="text" className="w-full p-3 border border-gray-300 rounded-md text-sm placeholder-gray-500 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow duration-150"
-                        placeholder="Your full name" value={guestFullName} onChange={(e) => setGuestFullName(e.target.value)} disabled={isSubmittingForm} required maxLength={100} />
-                )}
+                
+                <input 
+                    type="text" 
+                    className="w-full p-3 border border-gray-300 rounded-md text-sm placeholder-gray-500 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow duration-150"
+                    placeholder="Your name"
+                    value={displayName} 
+                    onChange={(e) => setDisplayName(e.target.value)} 
+                    disabled={isSubmittingForm || authLoading} 
+                    required
+                    maxLength={100} 
+                />
+
                 <textarea id="vlogComment" rows="4"
                     className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow duration-150 text-sm placeholder-gray-500 disabled:bg-gray-100"
                     value={comment} onChange={(e) => setComment(e.target.value)}
-                    placeholder={isAuthenticated && loggedInUser ? `Share your thoughts, ${loggedInUser.GIVEN_NAME}...` : "Write a public comment..."}
-                    required disabled={isSubmittingForm} maxLength={2000} />
+                    placeholder={"Write a public comment"}
+                    required 
+                    disabled={isSubmittingForm || authLoading} 
+                    maxLength={2000} />
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
                     <div className="flex items-center space-x-1">
                         <span className="text-sm text-gray-700 mr-2">How do you like this post?</span>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <FaStar key={star}
                                 className={`cursor-pointer text-2xl sm:text-3xl transition-all duration-150 ease-in-out transform hover:scale-110 ${(hoverRating || rating) >= star ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-300'}`}
-                                onClick={() => !isSubmittingForm && setRating(star)}
-                                onMouseEnter={() => !isSubmittingForm && setHoverRating(star)}
-                                onMouseLeave={() => !isSubmittingForm && setHoverRating(0)}
+                                onClick={() => !(isSubmittingForm || authLoading) && setRating(star)}
+                                onMouseEnter={() => !(isSubmittingForm || authLoading) && setHoverRating(star)}
+                                onMouseLeave={() => !(isSubmittingForm || authLoading) && setHoverRating(0)}
                                 title={`${star} star${star > 1 ? 's' : ''}`} />
                         ))}
                     </div>
                     <button type="submit"
-                        disabled={isSubmittingForm || !comment.trim() || (!isAuthenticated && !guestFullName.trim())}
+                        disabled={submitButtonDisabled} 
                         className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-5 sm:px-6 rounded-md transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center text-sm shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50 w-full sm:w-auto">
-                        {isSubmittingForm ? <FaSpinner className="animate-spin mr-2 text-base" /> : <FaPaperPlane className="mr-2 text-base" />}
-                        {isSubmittingForm ? 'Posting...' : 'Post comment'}
+                        {isSubmittingForm || authLoading ? <FaSpinner className="animate-spin mr-2 text-base" /> : <FaPaperPlane className="mr-2 text-base" />}
+                        {isSubmittingForm ? 'Posting...' : (authLoading ? 'Verifying...' : 'Post comment')}
                     </button>
                 </div>
             </form>
@@ -211,7 +260,7 @@ const GalleryComponent = ({ images, title }) => (
     <section aria-label="Post Gallery" className="py-8 md:py-12 px-2 sm:px-4 opacity-0 transition-opacity duration-700 ease-in-out data-[loaded=true]:opacity-100" data-loaded={images && images.length > 0}>
         <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
-                {images.map((imageUrl, index) => (
+                {images && images.map((imageUrl, index) => (
                     <div key={index} className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
                         <img loading="lazy" src={imageUrl.startsWith('/') ? API_URL + imageUrl : imageUrl} alt={`Gallery image ${index + 1} for ${title}`}
                             className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
@@ -235,11 +284,7 @@ const VlogPostPage = () => {
     const [likingCommentId, setLikingCommentId] = useState(null);
     const [scrollY, setScrollY] = useState(0);
     const [pageLoaded, setPageLoaded] = useState(false);
-    const [editingCommentId, setEditingCommentId] = useState(null);
-    const [editingCommentText, setEditingCommentText] = useState("");
-
     const heroImageRef = useRef(null);
-    const { isAuthenticated, user: loggedInUser, token: authToken, isLoading: authLoading } = useAuth();
 
     const handleScroll = useCallback(() => { setScrollY(window.scrollY); }, []);
 
@@ -261,7 +306,7 @@ const VlogPostPage = () => {
             if (result.status === 200 && result.data) {
                 setPost({
                     ...result.data,
-                    featured_image: result.data.featured_image ? (result.data.featured_image.startsWith('/') ? API_URL + result.data.featured_image : result.data.featured_image) : 'https://placehold.co/1200x600/e2e8f0/94a3b8?text=Image+Not+Available',
+                    featured_image: result.data.featured_image ? (result.data.featured_image.startsWith('http') ? result.data.featured_image : API_URL + (result.data.featured_image.startsWith('/') ? '' : '/') + result.data.featured_image) : 'https://placehold.co/1200x600/e2e8f0/94a3b8?text=Image+Not+Available',
                     average_rating: parseFloat(result.data.average_rating || 0),
                     no_of_ratings: parseInt(result.data.no_of_ratings || 0, 10),
                     introduction: result.data.introduction || result.data.title,
@@ -283,7 +328,7 @@ const VlogPostPage = () => {
             const result = await response.json();
             if (result.status === 200 && Array.isArray(result.data)) {
                 setComments(result.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                    .map(c => ({ ...c, userLiked: false, likes: parseInt(c.likes || 0, 10), isEditing: false }))
+                    .map(c => ({ ...c, userLiked: false, likes: parseInt(c.likes || 0, 10) })) 
                 );
             } else { throw new Error(result.message || 'Invalid comments data received.'); }
         } catch (err) { setCommentsError(err.message); }
@@ -295,10 +340,18 @@ const VlogPostPage = () => {
 
     const handleLikeComment = async (commentId) => {
         if (likingCommentId === commentId || isSubmittingComment) return;
+        
+        const token = localStorage.getItem("accessToken"); 
+        if (!token) {
+            setCommentsError("Please log in to like comments. Your session might have expired."); 
+            return;
+        }
+
         const commentIndex = comments.findIndex(c => c.id === commentId);
-        if (commentIndex === -1) { console.error(`Comment with ID ${commentId} not found.`); return; }
+        if (commentIndex === -1) { return; }
         setLikingCommentId(commentId);
-        const originalComments = JSON.parse(JSON.stringify(comments));
+        
+        const originalComments = JSON.parse(JSON.stringify(comments)); 
         const updatedComments = comments.map((comment, index) => {
             if (index === commentIndex) {
                 const alreadyLiked = comment.userLiked;
@@ -309,57 +362,26 @@ const VlogPostPage = () => {
             return comment;
         });
         setComments(updatedComments);
+
         try {
             const response = await fetch(`${API_URL}/vlogComment/like/${commentId}`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json', ...(isAuthenticated && authToken && { 'Authorization': `Bearer ${authToken}` }) }
+                method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
             });
             const result = await response.json();
-            if (result.status !== 200) { throw new Error(result.message || "Failed to update like on server."); }
-        } catch (err) { console.error("[Like Error] Reverting UI:", err); setComments(originalComments); alert(`Error processing like: ${err.message || 'Please try again.'}`); }
+            if (!response.ok || result.status !== 200) { 
+                throw new Error(result.message || "Failed to update like on server."); 
+            }
+        } catch (err) { 
+            setComments(originalComments); 
+            setCommentsError(`Error processing like: ${err.message || 'Please try again.'}`);
+        }
         finally { setLikingCommentId(null); }
     };
 
-    const handleEditComment = (comment) => {
-        setEditingCommentId(comment.id);
-        setEditingCommentText(comment.comment);
-    };
-
-    const handleCancelEdit = () => {
-        setEditingCommentId(null);
-        setEditingCommentText("");
-    };
-
-    const handleSaveEdit = async (commentId) => {
-        if (!editingCommentText.trim()) {
-            alert("Comment cannot be empty.");
-            return;
-        }
-        setIsSubmittingComment(true);
-        try {
-            const response = await fetch(`${API_URL}/vlogComment/updateComment/${commentId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ comment: editingCommentText })
-            });
-            const result = await response.json();
-            if (!response.ok || result.status !== 200) {
-                throw new Error(result.message || "Failed to update comment.");
-            }
-            setEditingCommentId(null);
-            setEditingCommentText("");
-            fetchComments(true); 
-        } catch (err) {
-            console.error("Error updating comment:", err);
-            alert(`Error: ${err.message}`);
-        } finally {
-            setIsSubmittingComment(false);
-        }
-    };
-
-    if (authLoading || loading) return <div className="flex justify-center items-center min-h-screen bg-white"><FaSpinner className="animate-spin text-5xl sm:text-6xl text-red-600" /></div>;
+    if (loading) { 
+        return <div className="flex justify-center items-center min-h-screen bg-white"><FaSpinner className="animate-spin text-5xl sm:text-6xl text-red-600" /></div>;
+    }
+    
     if (error) return (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 my-12 bg-red-50 border-l-4 border-red-500 text-red-700" role="alert">
             <div className="flex">
@@ -384,13 +406,14 @@ const VlogPostPage = () => {
         if (!dateString) return '';
         try {
             return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-        } catch (e) { console.error("Error formatting date:", dateString, e); return "Invalid date"; }
+        } catch (e) { return "Invalid date"; }
     };
 
     const isHeroImagePresent = post.featured_image && post.featured_image !== 'https://placehold.co/1200x600/e2e8f0/94a3b8?text=Image+Not+Available';
     const hasGalleryImages = post.gallery_images && post.gallery_images.length > 0;
-    const parallaxFactor = 0.9;
-    const parallaxOffset = scrollY * parallaxFactor;
+    const parallaxFactor = 0.9; 
+    const parallaxOffset = isHeroImagePresent ? scrollY * parallaxFactor : 0;
+
 
     return (
         <>
@@ -420,12 +443,12 @@ const VlogPostPage = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30"></div>
                         <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                             <div className="max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-                                <h1 className="text-7xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold leading-tight [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)] transition-all duration-300 opacity-0 translate-y-5 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
+                                <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-tight [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)] transition-all duration-300 opacity-0 translate-y-5 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
                                     {post.title}
                                 </h1>
                                 <hr className="my-5 sm:my-6 md:my-8 border-2 border-gray-400/60 max-w-xs sm:max-w-sm md:max-w-md mx-auto transition-all duration-300 delay-100 opacity-0 data-[loaded=true]:opacity-100" data-loaded={pageLoaded}/>
                                 {post.introduction && (
-                                    <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-100 italic leading-relaxed max-w-3xl mx-auto [text-shadow:_1px_1px_3px_rgb(0_0_0_/_40%)] transition-all duration-300 delay-200 opacity-0 translate-y-5 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
+                                    <p className="text-lg sm:text-xl md:text-2xl text-gray-100 italic leading-relaxed max-w-3xl mx-auto [text-shadow:_1px_1px_3px_rgb(0_0_0_/_40%)] transition-all duration-300 delay-200 opacity-0 translate-y-5 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
                                         {post.introduction}
                                     </p>
                                 )}
@@ -462,11 +485,10 @@ const VlogPostPage = () => {
                                 )}
                             </section>
                         )}
-
                         <main className="py-4 md:py-5">
                             {(post.main_content && post.main_content.trim() !== '') ? (
                                 <div className="text-gray-800 selection:bg-red-100 selection:text-red-700">
-                                    <div style={{ whiteSpace: 'pre-wrap' }} className="text-gray-700 text-base sm:text-lg leading-relaxed">
+                                    <div style={{ whiteSpace: 'pre-wrap' }} className="text-gray-700 text-base sm:text-lg leading-relaxed break-words"> 
                                         {post.main_content}
                                     </div>
                                 </div>
@@ -483,7 +505,6 @@ const VlogPostPage = () => {
                             </p>
                         </section>
                     </div>
-                    
                     <OfferSection />
 
                     <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-0">
@@ -493,7 +514,7 @@ const VlogPostPage = () => {
                                 <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 transition-colors" title="Share on Facebook"><FaFacebook size={24} /></a>
                                 <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-sky-500 transition-colors" title="Share on Twitter"><FaTwitter size={24} /></a>
                                 <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareTitle)}&summary=${encodeURIComponent(ogDescription)}&source=Claude%20Airlines`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 transition-colors" title="Share on LinkedIn"><FaLinkedin size={22} /></a>
-                                {isHeroImagePresent && (<a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(shareUrl)}&media=${encodeURIComponent(shareImage)}&description=${encodeURIComponent(shareTitle)}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-red-600 transition-colors" title="Pin on Pinterest"><FaPinterest size={22} /></a>)}
+                                {isHeroImagePresent && shareImage && (<a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(shareUrl)}&media=${encodeURIComponent(shareImage)}&description=${encodeURIComponent(shareTitle)}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-red-600 transition-colors" title="Pin on Pinterest"><FaPinterest size={22} /></a>)}
                                 <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareTitle + " " + shareUrl)}`} target="_blank" rel="noopener noreferrer" data-action="share/whatsapp/share" className="text-gray-500 hover:text-green-500 transition-colors" title="Share on WhatsApp"><FaWhatsapp size={22} /></a>
                                 <a href={`https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareTitle)}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-orange-500 transition-colors" title="Share on Reddit"><FaRedditAlien size={22} /></a>
                                 <a href={`mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent("Check out this vlog post: " + shareUrl)}`} className="text-gray-500 hover:text-gray-700 transition-colors" title="Share via Email"><FaEnvelope size={22} /></a>
@@ -505,47 +526,34 @@ const VlogPostPage = () => {
                                 <AddVlogCommentForm postId={post.id} onCommentAdded={fetchComments} isSubmittingForm={isSubmittingComment} setIsSubmittingForm={setIsSubmittingComment} />
                             </div>
                             {commentsLoading && <div className="text-center text-gray-500 py-4 text-base sm:text-lg"><FaSpinner className="animate-spin text-xl sm:text-2xl text-red-500 inline-block mr-2" /> Loading comments...</div>}
-                            {commentsError && !commentsLoading && (
+                            {commentsError && !commentsLoading && ( 
                                 <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm sm:text-base" role="alert">
-                                    <FaExclamationTriangle className="inline-block mr-2" /> Error loading comments: {commentsError}
+                                    <FaExclamationTriangle className="inline-block mr-2" /> {commentsError}
                                 </div>
                             )}
                             {!commentsLoading && !commentsError && (
-                                comments.filter(c => c.is_approved || (loggedInUser && c.user_id === loggedInUser.id && !c.is_approved) ).length > 0 ? (
+                                comments.length > 0 ? (
                                     <div className="space-y-4 sm:space-y-5">
-                                        {comments.filter(c => c.is_approved || (loggedInUser && c.user_id === loggedInUser.id && !c.is_approved)).map((comment) => (
-                                            <div key={comment.id} className="comment-item flex gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 ease-in-out opacity-0 translate-y-3 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded} style={{transitionDelay: `${100 + comments.findIndex(c => c.id === comment.id) * 50}ms`}}>
+                                        {comments.map((comment, idx) => ( 
+                                            <div key={comment.id} className="comment-item flex gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 ease-in-out opacity-0 translate-y-3 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded} style={{transitionDelay: `${100 + idx * 50}ms`}}>
                                                 { comment.user_avatar_url ?
-                                                    <img loading="lazy" src={comment.user_avatar_url.startsWith('/') ? API_URL + comment.user_avatar_url : comment.user_avatar_url} alt={comment.user_name || comment.guest_name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0 mt-0.5" />
+                                                    <img loading="lazy" src={comment.user_avatar_url.startsWith('http') ? comment.user_avatar_url : API_URL + (comment.user_avatar_url.startsWith('/') ? '' : '/') + comment.user_avatar_url} alt={comment.guest_name || comment.user_name || 'User'} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0 mt-0.5" 
+                                                    onError={(e) => { e.target.onerror = null; e.target.replaceWith(Object.assign(document.createElement('div'), { className: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-500', innerHTML: '<svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>'}))}}/>
                                                     : <FaUserCircle className="text-gray-300 text-4xl sm:text-5xl flex-shrink-0 mt-0.5" />
                                                 }
                                                 <div className="flex-grow">
                                                     <div className="flex items-center justify-between mb-1">
-                                                        <span className="font-semibold text-base sm:text-lg text-gray-800">{comment.user_name || comment.guest_name || 'Anonymous'}</span>
+                                                        <span className="font-semibold text-base sm:text-lg text-gray-800">{comment.guest_name || comment.user_name || 'Anonymous'}</span>
                                                         <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0 ml-2">{formatCommentDate(comment.created_at)} {!comment.is_approved && <span className="text-yellow-600 italic ml-1">(Pending)</span>}</span>
                                                     </div>
-                                                    {comment.rating && editingCommentId !== comment.id && (
+                                                    {comment.rating && (
                                                         <div className="flex items-center mb-1 sm:mb-1.5">
                                                             {[...Array(5)].map((_, i) => ( <FaStar key={i} className={`text-sm ${i < comment.rating ? 'text-yellow-400' : 'text-gray-300'}`} /> ))}
                                                         </div>
                                                     )}
-                                                    {editingCommentId === comment.id ? (
-                                                        <div className="mt-2">
-                                                            <textarea value={editingCommentText} onChange={(e) => setEditingCommentText(e.target.value)}
-                                                                className="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-red-500" rows="3" />
-                                                            <div className="mt-2 space-x-2">
-                                                                <button onClick={() => handleSaveEdit(comment.id)} disabled={isSubmittingComment}
-                                                                    className="px-3 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded-md disabled:opacity-50">
-                                                                    {isSubmittingComment ? <FaSpinner className="animate-spin inline-block" /> : <FaSave className="inline-block" />} Save
-                                                                </button>
-                                                                <button onClick={handleCancelEdit} className="px-3 py-1 text-xs bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
-                                                                    <FaTimes className="inline-block" /> Cancel
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ) : (
-                                                        <p className="text-sm sm:text-base text-gray-700 whitespace-pre-wrap leading-relaxed">{comment.comment}</p>
-                                                    )}
+
+                                                    <p className="text-sm sm:text-base text-gray-700 whitespace-pre-wrap leading-relaxed break-words">{comment.comment}</p> 
+                                                    
                                                     <div className="flex items-center mt-2.5 pt-2.5 space-x-3 sm:space-x-4 border-t border-gray-100">
                                                         <button onClick={() => handleLikeComment(comment.id)} title={comment.userLiked ? "Unlike this comment" : "Like this comment"}
                                                             className={`flex items-center text-xs sm:text-sm py-1 px-2 rounded-md transition-colors duration-150 group disabled:opacity-50 disabled:cursor-wait ${ comment.userLiked ? 'text-red-600 bg-red-100 font-semibold' : 'text-gray-500 hover:text-red-600 hover:bg-red-50' }`}
@@ -554,12 +562,6 @@ const VlogPostPage = () => {
                                                             {comment.userLiked ? 'Liked' : 'Like'}
                                                         </button>
                                                         {(comment.likes || 0) > 0 && ( <span className="text-xs text-gray-500">{comment.likes} {comment.likes === 1 ? "like" : "likes"}</span> )}
-                                                        {isAuthenticated && loggedInUser && comment.user_id === loggedInUser.id && comment.is_approved && editingCommentId !== comment.id && (
-                                                            <button onClick={() => handleEditComment(comment)} title="Edit your comment"
-                                                                className="flex items-center text-xs sm:text-sm py-1 px-2 rounded-md text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150 group">
-                                                                <FaEdit className="mr-1 group-hover:text-blue-500 text-sm" /> Edit
-                                                            </button>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </div>

@@ -56,7 +56,7 @@ class VlogComment extends Controller {
 
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             $_SESSION['flash_error'] = 'Invalid Comment ID for disapproval.';
-            header('Location: ' . base_url('vlogComment')); 
+            header('Location: ' . base_url('vlogComment'));
             exit;
         }
 
@@ -122,7 +122,7 @@ class VlogComment extends Controller {
         }
 
         $userId = null;
-        $guestName = null;
+        $guestName = isset($data['guest_name']) ? trim($data['guest_name']) : null;
         $isApproved = 0; 
 
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['HTTP_X_AUTHORIZATION'] ?? null);
@@ -131,18 +131,26 @@ class VlogComment extends Controller {
                 $authPayload = authMiddleware(false); 
                 if ($authPayload && isset($authPayload->id)) {
                     $userId = $authPayload->id;
-                    $isApproved = 1; 
-                    $guestName = null; 
+                    $isApproved = 1;
+                    // If logged in, guestName from input is used if provided, otherwise it's null (profile name will be shown)
+                    $guestName = (!empty($guestName)) ? $guestName : null;
+                } else {
+                    // Auth failed or no payload id, ensure guestName is present if not logged in
+                    if (empty($guestName)) {
+                        return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
+                    }
                 }
             } catch (Exception $e) {
+                // Exception during auth, ensure guestName is present
+                 if (empty($guestName)) {
+                    return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
+                }
             }
-        }
-
-        if ($userId === null) { 
-            if (empty($data['guest_name']) || trim($data['guest_name']) === '') {
+        } else {
+            // No auth header, treat as guest, guestName is required
+            if (empty($guestName)) {
                 return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
             }
-            $guestName = trim($data['guest_name']);
         }
         
         try {
@@ -155,86 +163,12 @@ class VlogComment extends Controller {
         }
     }
 
-    public function updateComment($commentId = null) {
-        if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
-            return $this->jsonResponse(400, 'Invalid Comment ID.');
-        }
-        if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
-            return $this->jsonResponse(405, 'Method Not Allowed.');
-        }
-
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (json_last_error() !== JSON_ERROR_NONE || !isset($data['comment']) || trim($data['comment']) === '') {
-            return $this->jsonResponse(400, 'Comment text cannot be empty or invalid JSON.');
-        }
-
-        $userId = null;
-        try {
-            $authPayload = authMiddleware(); 
-            if ($authPayload && isset($authPayload->id)) {
-                $userId = $authPayload->id;
-            } else {
-                return $this->jsonResponse(401, 'Authentication required.');
-            }
-        } catch (Exception $e) {
-            return $this->jsonResponse(401, 'Authentication failed: ' . $e->getMessage());
-        }
-
-        try {
-            $commentToUpdate = $this->commentModel->getCommentById($commentId);
-            if (!$commentToUpdate) {
-                return $this->jsonResponse(404, 'Comment not found.');
-            }
-            if ($commentToUpdate['user_id'] != $userId) {
-                return $this->jsonResponse(403, 'You are not authorized to edit this comment.');
-            }
-            if (!$commentToUpdate['is_approved']) {
-                return $this->jsonResponse(403, 'Cannot edit an unapproved comment.');
-            }
-
-            if ($this->commentModel->updateUserComment($commentId, $userId, $data['comment'])) {
-                $this->jsonResponse(200, 'Comment updated successfully.');
-            } else {
-                throw new Exception('Failed to update comment in database.');
-            }
-        } catch (Exception $e) {
-            $this->jsonResponse(500, 'Error updating comment: ' . $e->getMessage());
-        }
-    }
-    
-    public function getCommentForEdit($commentId = null) {
-        if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
-            return $this->jsonResponse(400, 'Invalid Comment ID.');
-        }
-         $userId = null;
-        try {
-            $authPayload = authMiddleware();
-            if ($authPayload && isset($authPayload->id)) {
-                $userId = $authPayload->id;
-            } else {
-                return $this->jsonResponse(401, 'Authentication required.');
-            }
-        } catch (Exception $e) {
-            return $this->jsonResponse(401, 'Authentication failed: ' . $e->getMessage());
-        }
-
-        try {
-            $comment = $this->commentModel->getCommentById($commentId);
-            if (!$comment) {
-                return $this->jsonResponse(404, 'Comment not found.');
-            }
-            if ($comment['user_id'] != $userId || !$comment['is_approved']) {
-                 return $this->jsonResponse(403, 'You are not authorized to fetch this comment for editing or it is not approved.');
-            }
-            $this->jsonResponse(200, 'Comment fetched', ['comment' => $comment['comment']]);
-        } catch (Exception $e) {
-            $this->jsonResponse(500, 'Error fetching comment: ' . $e->getMessage());
-        }
-    }
+    // updateComment method REMOVED
+    // getCommentForEdit method REMOVED
 
     public function adminList() {
         try {
-            $comments = $this->commentModel->getAllCommentsForAdmin(); 
+            $comments = $this->commentModel->getAllCommentsForAdmin();
             $this->jsonResponse(200, 'Admin comments fetched', $comments ?: []);
         } catch (Exception $e) {
             $this->jsonResponse(500, 'Error fetching admin comments', ['error_message' => $e->getMessage()]);
@@ -246,7 +180,7 @@ class VlogComment extends Controller {
             return $this->jsonResponse(400, 'Invalid Comment ID.');
         }
         try {
-            if ($this->commentModel->approveComment($commentId)) { 
+            if ($this->commentModel->approveComment($commentId)) {
                 $this->jsonResponse(200, 'Comment approved successfully.');
             } else {
                 $this->jsonResponse(500, 'Failed to approve comment.');
@@ -261,7 +195,7 @@ class VlogComment extends Controller {
             return $this->jsonResponse(400, 'Invalid Comment ID.');
         }
         try {
-            if ($this->commentModel->deleteComment($commentId)) { 
+            if ($this->commentModel->deleteComment($commentId)) {
                 $this->jsonResponse(200, 'Comment deleted successfully.');
             } else {
                 $this->jsonResponse(500, 'Failed to delete comment.');

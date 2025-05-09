@@ -5,12 +5,12 @@ $apiUrlForJs = getenv('API_URL') ?: base_url();
 if (!function_exists('getVlogPostActionButtons')) {
     function getVlogPostActionButtons($post) {
         $postDataForJson = $post;
-        $postDataForJson['gallery_images'] = $post['gallery_images'] ?? []; 
+        $postDataForJson['gallery_images'] = $post['gallery_images'] ?? [];
 
         $postJson = htmlspecialchars(json_encode($postDataForJson), ENT_QUOTES, 'UTF-8');
         if (json_last_error() !== JSON_ERROR_NONE) {
             error_log("JSON Encode Error in getVlogPostActionButtons: " . json_last_error_msg());
-            $postJson = '{}'; 
+            $postJson = '{}';
         }
 
         $editButton = '<button type="button" class="btn btn-sm btn-outline-primary me-1 px-2 py-1" title="Edit" onclick=\'prepareEditModal(this)\' data-post=\''. $postJson .'\' data-bs-toggle="modal" data-bs-target="#addEditPostModal"><i class="bi bi-pencil-fill"></i></button>';
@@ -26,7 +26,7 @@ if (!function_exists('getVlogPostActionButtons')) {
     <title><?php echo htmlspecialchars($data['pageTitle'] ?? 'Vlog Posts Management'); ?></title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/compiled/css/table-datatable-jquery.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js" integrity="sha512-Eezs+g9Lq4TCCq0wae01s97ufKNP/+oQwSVgkV/EKcMbKAFQEkd4LeOVmqjqGSa/4u+sNPDEJwTF2URJ3LPyMw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         #manageTable th, #manageTable td { vertical-align: middle; }
         #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 5%; }
@@ -48,7 +48,7 @@ if (!function_exists('getVlogPostActionButtons')) {
         .form-group-inline .form-control, .form-group-inline .form-select { flex-grow: 1; min-width: 150px; }
         .form-control::placeholder, .form-select::placeholder { color: #6c757d; opacity: 1; }
         .featured-image-label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-        .img-thumbnail-modal { max-width: 100%; height: auto; max-height: 150px; object-fit: contain; border-radius: 0.375rem; border: 1px solid #dee2e6; display: inline-block; vertical-align: middle; } 
+        .img-thumbnail-modal { max-width: 100%; height: auto; max-height: 150px; object-fit: contain; border-radius: 0.375rem; border: 1px solid #dee2e6; display: inline-block; vertical-align: middle; }
         #galleryItemsContainer .gallery-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; cursor: grab; }
         #galleryItemsContainer .gallery-item:active { cursor: grabbing; background-color: #e9e9e9; }
         .gallery-item .drag-handle { cursor: grab; color: #999; font-size: 1.2rem; padding: 0 5px; position: relative; z-index: 10; }
@@ -56,18 +56,18 @@ if (!function_exists('getVlogPostActionButtons')) {
         .gallery-item img.gallery-preview { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; flex-shrink: 0; border: 1px solid #ccc; background-color: #eee; }
         .gallery-item .gallery-url-input { flex-grow: 1; font-size: 0.85rem; padding: 0.375rem 0.75rem; border: 1px solid #ced4da; border-radius: 0.25rem; }
         .gallery-item .gallery-url-input:focus { border-color: #86b7fe; outline: 0; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25); }
-        .gallery-item .gallery-actions button { padding: 0.3rem 0.6rem; font-size: 0.8rem; line-height: 1; } 
+        .gallery-item .gallery-actions button { padding: 0.3rem 0.6rem; font-size: 0.8rem; line-height: 1; }
         .sortable-ghost { opacity: 0.4; background-color: #cfe2ff; border: 1px dashed #0d6efd; }
         .gallery-item.sortable-ghost { border-radius: 5px; }
         #featuredImageDropZone { border: 2px dashed #ccc; border-radius: 0.375rem; padding: 30px 20px; text-align: center; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease; background-color: #f8f9fa; position: relative; }
         #featuredImageDropZone.dragover { border-color: #0d6efd; background-color: #e7f0ff; }
         #featuredImageDropZone p { margin-bottom: 0.5rem; color: #6c757d; pointer-events: none; }
-        #featuredImagePreviewContainer { margin-top: 15px; text-align: center; min-height: 50px; } 
+        #featuredImagePreviewContainer { margin-top: 15px; text-align: center; min-height: 50px; }
         #featuredImagePreviewContainer img { margin-bottom: 10px; }
-        #btnRemoveImage { display: none; } 
-        #featuredImagePreviewContainer + #btnRemoveImage { display: block; } 
-        #postImageHidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; } 
-        .section-title-label { font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 1rem; color: #495057;} 
+        #btnRemoveImage { display: none; }
+        #featuredImagePreviewContainer + #btnRemoveImage { display: block; }
+        #postImageHidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+        .section-title-label { font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 1rem; color: #495057;}
 
         @media (max-width: 767.98px) {
             .form-group-inline { flex-direction: column; align-items: flex-start; }
@@ -139,7 +139,7 @@ if (!function_exists('getVlogPostActionButtons')) {
                         <div class="col-md-6">
                             <label for="postTitle" class="form-label">Title <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="title" id="postTitle" required placeholder="Enter post title">
-                    </div>
+                        </div>
                         <div class="col-md-3">
                             <label for="postAuthorId" class="form-label">Author ID <span class="text-danger">*</span></label>
                             <input type="number" class="form-control form-control-sm" name="user_id" id="postAuthorId" value="1" required placeholder="Author ID">
@@ -217,7 +217,7 @@ if (!function_exists('getVlogPostActionButtons')) {
 <script src="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 <script>
     let sortableGallery = null;
-    const apiUrl = '<?php echo $apiUrlForJs; ?>'; 
+    const apiUrl = '<?php echo $apiUrlForJs; ?>';
 
     $(document).ready(function () {
         $('#manageTable').DataTable({
@@ -265,23 +265,34 @@ if (!function_exists('getVlogPostActionButtons')) {
         $(removeImageButton).on('click', function() {
             $(featuredPreviewContainer).html('');
             $(featuredFileInput).val('');
-            $(featuredFileInput.files).val = null; 
+            $(featuredFileInput.files).val = null;
             $(removeImageCheck).prop('checked', true);
             $(this).hide();
         });
 
-        const galleryContainerElement = document.getElementById('galleryItemsContainer');
-        if (galleryContainerElement) {
-            sortableGallery = new Sortable(galleryContainerElement, {
-                animation: 150,
-                handle: '.drag-handle', 
-                ghostClass: 'sortable-ghost',
-            });
-        }
+        if (typeof jQuery !== 'undefined' && typeof Sortable !== 'undefined') {
+            const galleryContainerElement = document.getElementById('galleryItemsContainer');
+            if (galleryContainerElement) {
+                try {
+                    sortableGallery = new Sortable(galleryContainerElement, {
+                        animation: 150,
+                        handle: '.drag-handle',
+                        ghostClass: 'sortable-ghost',
+                    });
+                } catch (e) {
+                    // Error during Sortable initialization
+                }
+            }
 
-        $('#galleryItemsContainer').on('click', '.btn-remove-gallery-item', function() {
-            $(this).closest('.gallery-item').remove();
-        });
+            try {
+                $('#galleryItemsContainer').on('click', '.btn-remove-gallery-item', function(event) {
+                    event.preventDefault();
+                    $(this).closest('.gallery-item').remove();
+                });
+            } catch (e) {
+                // Error attaching delete button handler
+            }
+        }
 
     });
 
@@ -365,7 +376,6 @@ if (!function_exists('getVlogPostActionButtons')) {
             postData = JSON.parse(postJsonString);
             postData.gallery_images = Array.isArray(postData.gallery_images) ? postData.gallery_images : [];
         } catch (e) {
-            console.error("Error parsing post data for edit:", e, $(button).attr('data-post'));
             alert("Error: Could not load post data properly. Check console.");
             return;
         }
@@ -397,11 +407,11 @@ if (!function_exists('getVlogPostActionButtons')) {
                 if (typeof imageUrl === 'string' && imageUrl) {
                     addGalleryItem(imageUrl);
                 } else if (typeof imageUrl === 'object' && imageUrl !== null && imageUrl.url) {
-                    addGalleryItem(imageUrl.url); 
+                    addGalleryItem(imageUrl.url);
                 }
             });
         }
-        $('#gallery_images_json').val(JSON.stringify(postData.gallery_images)); 
+        $('#gallery_images_json').val(JSON.stringify(postData.gallery_images));
     }
 
     function prepareDeleteModal(button) {
@@ -430,7 +440,7 @@ if (!function_exists('getVlogPostActionButtons')) {
         $(`#${uniqueId} .gallery-url-input`).on('input change blur keyup', function() {
             const enteredUrl = $(this).val().trim();
             const previewImg = $(`#${uniqueId} .gallery-preview`);
-            if (enteredUrl && (enteredUrl.startsWith('http://') || enteredUrl.startsWith('https://') || enteredUrl.startsWith('/'))) { 
+            if (enteredUrl && (enteredUrl.startsWith('http://') || enteredUrl.startsWith('https://') || enteredUrl.startsWith('/'))) {
                 previewImg.attr('src', enteredUrl.startsWith('/') ? apiUrl + enteredUrl : enteredUrl).css('border','none');
             } else {
                 previewImg.attr('src', placeholderImg).css('border','1px solid #eee');
@@ -444,11 +454,9 @@ if (!function_exists('getVlogPostActionButtons')) {
         items.each(function() {
             const urlInput = $(this).find('.gallery-url-input');
             const url = urlInput.val().trim();
-            if (url) { 
+            if (url) {
                 if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
                     galleryData.push(url);
-                } else {
-                    console.warn("Invalid URL format skipped:", url); 
                 }
             }
         });
