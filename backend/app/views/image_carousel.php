@@ -158,7 +158,7 @@ if (!defined('BASEURL') && !defined('BASE_URL')) {
 
             carouselTable = $('#carouselTable').DataTable({
                 processing: true,
-                serverSide: false, // Set to true if using server-side processing
+                serverSide: false,
                 ajax: {
                     url: `${API_BASE_URL}/index`,
                     type: 'GET',

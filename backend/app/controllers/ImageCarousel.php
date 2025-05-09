@@ -15,9 +15,9 @@ class ImageCarousel extends Controller {
 
     private function handleImageUpload($fileInputName = 'carousel_image') {
         if (isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES[$fileInputName]['tmp_name']; // Temporary file path
-            $fileName = basename($_FILES[$fileInputName]['name']); // Original file name
-            $fileNameCmps = explode(".", $fileName); // Split file name by dot
+            $fileTmpPath = $_FILES[$fileInputName]['tmp_name'];
+            $fileName = basename($_FILES[$fileInputName]['name']);
+            $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
 
             $newFileName = uniqid('carousel_', true) . '.' . $fileExtension;
