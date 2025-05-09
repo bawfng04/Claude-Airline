@@ -114,25 +114,20 @@ VALUES
   'Travel Guidelines'
 );
 
-INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
-VALUES
-('123 Aviation Blvd, Los Angeles, CA 90045', 'Main Office', '+84 90 123 6608', 'Mon-Fri 9am-5pm'),
-(' 456 Park Avenue, New York, NY 10022', 'Regional Office', '987-654-3210', 'Mon-Fri 10am-6pm'),
-('789 Michigan Ave, Chicago, IL 60611', 'Regional Office', '555-555-5555', 'Mon-Fri 8am-4pm');
 
 INSERT INTO ABOUT_US (title, content)
 VALUES
 ('Our Story', "Founded in 1998, our airline began with a small fleet of just 3 aircraft serving domestic routes. Today, we've grown to become one of Southeast Asia's leading carriers, connecting passengers to over 100 destinations worldwide with a modern fleet of 78 aircraft."),
 ('Our Mission', 'To connect people and places with safe, reliable air travel that is accessible to all, while delivering exceptional service that exceeds expectations at every step of the journey.'),
-('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer experience that sets the industry standard.');
-
+('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer 
+experience that sets the industry standard.');
 
 INSERT INTO CORE_VALUE (title, description, icon)
 VALUES
 ('Customer Focus', 'We prioritize our customers in everything we do, ensuring their needs and preferences are at the forefront of our services.', 'FaUsers'),
 ('Safety First', 'Safety is non-negotiable, and we maintain the highest standards in all our operations.', 'FaCheckCircle'),
 ('Excellence', 'We strive for excellence in every aspect of our service, continuously improving to exceed expectations.', 'FaMedal'),
-('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory')
+('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory');
 
 INSERT INTO ACHIEVEMENTS (title, description, year)
 VALUES
@@ -142,7 +137,7 @@ VALUES
 ('Green Airline of the Year', 'Recognized for our commitment to sustainability and reducing carbon emissions', '2021'),
 ('Best Cabin Crew', 'Awarded by Skytrax World Airline Awards for outstanding service and hospitality', '2020'),
 ('Best Low-Cost Airline', 'Recognized for providing affordable travel options without compromising on quality', '2019'),
-('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018')
+('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018');
 
 
 INSERT INTO LEADERSHIP_TEAM (name, position, bio)
@@ -173,12 +168,6 @@ VALUES
 (2, 'All meals are prepared using fresh, high-quality ingredients, with special dietary requirements accommodated with advance notice.'),
 (3, 'Our fleet consists of modern, fuel-efficient aircraft designed for comfort and sustainability. Each aircraft is equipped with the latest technology to ensure a smooth and enjoyable flight.'),
 (3, 'We continuously invest in our fleet to enhance passenger comfort and reduce our environmental impact, with a commitment to sustainability at the core of our operations.');
-
-INSERT INTO HOMEPAGE_TOP_DESTINATIONS (destination_image, destination_name, destination_country, destination_price, destination_description, destination_begin, destination_end, destination_offer, destination_category)
-VALUES
-('image1.jpg', 'Paris', 'France', 499.99, 'Explore the city of lights with our exclusive package.', '2023-12-01', '2023-12-10', '20% off for early bookings!', 'Europe'),
-('image2.jpg', 'Tokyo', 'Japan', 699.99, 'Experience the blend of tradition and modernity in Tokyo.', '2024-01-15', '2024-01-25', 'Free guided tours included!', 'Asia'),
-('image3.jpg', 'New York', 'USA', 899.99, 'Discover the vibrant culture and iconic landmarks of New York City.', '2024-02-05', '2024-02-15', 'Book now and get a free city tour!', 'North America');
 
 --Contact Locations
 INSERT INTO contact_locations (location_name, des_type, address_string, phone_number, working_hours, email, location_embed_code)
@@ -242,3 +231,47 @@ INSERT INTO `vlog_comments` (`id`, `post_id`, `user_id`, `guest_name`, `comment`
 (29, 8, NULL, 'ColdWeatherFan', 'How were the crowds for the Johnston Canyon ice walk?', NULL, 1, 9, '2025-05-05 01:02:01'),
 (30, 8, 3, NULL, 'Great reminder about needing proper winter gear!', 4, 1, 7, '2025-05-06 01:02:01');
 
+-- Insert services
+INSERT INTO HOMEPAGE_SERVICES (service_title, service_description, service_image) VALUES
+('First Class Experience', 'Enjoy premium comfort with spacious seating, gourmet meals, and personalized service during your journey.', '/uploads/services/services_example.jpg'),
+('Business Travel Solutions', 'Dedicated corporate booking services, priority check-in, and flexible scheduling for business travelers.', '/uploads/services/services_example2.jpg'),
+('Vacation Packages', 'All-inclusive vacation packages with flights, accommodations, and local experiences at the best destinations.', '/uploads/services/services_example3.jpg'),
+('Airport Transfers', 'Seamless transportation services from your location to the airport and from arrival airport to your destination.', '/uploads/services/services_example4.jpg'),
+('In-flight Entertainment', 'Enjoy the latest movies, TV shows, music, and games on our state-of-the-art entertainment system.', '/uploads/services/services_example5.jpg'),
+('Claude Miles Program', 'Earn miles with every flight and redeem for free flights, upgrades, and exclusive partner benefits worldwide.', '/uploads/services/services_example6.jpg');
+
+-- Insert carousel images
+INSERT INTO HOMEPAGE_IMAGE_CAROUSEL (carousel_image, carousel_alt, carousel_caption) VALUES
+('/uploads/carousel/carousel_example.jpg', 'Tropical beach resort', 'Escape to paradise with our special summer deals'),
+('/uploads/carousel/carousel_example2.jpg', 'Business class cabin', 'Experience luxury at 30,000 feet with our new business class'),
+('/uploads/carousel/carousel_example3.jpg', 'Family vacation', 'Create unforgettable memories with our family-friendly packages'),
+('/uploads/carousel/carousel_example4.jpg', 'Adventure travel', 'Explore the world with our exclusive adventure travel deals'),
+('/uploads/carousel/carousel_example5.jpg', 'Cultural experience', 'Immerse yourself in local cultures with our curated experiences');
+
+-- Insert travel packages
+INSERT INTO HOMEPAGE_TRAVEL_PACKAGES (package_image, package_name, package_description) VALUES
+('/uploads/packages/packages_example.jpg', 'Weekend Escape', 'Quick 2-3 day packages perfect for recharging. Includes flights, hotel, and breakfast.'),
+('/uploads/packages/packages_example2.jpg', 'Family Adventure', 'Kid-friendly destinations with activities for all ages. Includes flights, family accommodations, and select activities.'),
+('/uploads/packages/packages_example3.jpg', 'Luxury Retreat', 'Premium accommodations at 5-star resorts with exclusive amenities. Includes business class flights and VIP transfers.'),
+('/uploads/packages/packages_example4.jpg', 'Cultural Immersion', 'Deep dive into local cultures with guided tours and authentic experiences. Includes flights, hotels, and curated cultural activities.'),
+('/uploads/packages/packages_example5.jpg', 'Romantic Getaway', 'Special couples packages at scenic destinations. Includes flights, boutique hotels, and romantic dinners.');
+-- Insert user testimonials
+INSERT INTO HOMEPAGE_USER_TESTIMONIALS (user_name, user_testimonial, user_image, user_stars, user_location) VALUES
+('Sarah Johnson', 'The flight was smooth and comfortable. The cabin crew was exceptionally attentive and made our journey memorable.', '/uploads/testimonials/testimonials_example.jpg', 5, 'New York, USA'),
+('Minh Tran', 'Claude Airlines made my business trip stress-free. The online check-in was quick, and the in-flight Wi-Fi kept me productive.', '/uploads/testimonials/testimonials_example2.jpg', 4, 'Ho Chi Minh City, Vietnam'),
+('John Smith', 'I had a fantastic experience flying with Claude Airlines. The food was delicious, and the entertainment options were great!', '/uploads/testimonials/testimonials_example3.jpg', 5, 'Los Angeles, USA'),
+('Emily Nguyen', 'The staff was friendly and helpful. I loved the in-flight entertainment selection!', '/uploads/testimonials/testimonials_example4.jpg', 4, 'Hanoi, Vietnam'),
+('David Brown', 'Claude Airlines offers great value for money. I will definitely fly with them again!', '/uploads/testimonials/testimonials_example5.jpg', 5, 'Chicago, USA');
+
+
+-- Insert top destinations
+INSERT INTO HOMEPAGE_TOP_DESTINATIONS (destination_image, destination_name, destination_country, destination_price, destination_description, destination_begin, destination_end, destination_offer, destination_category) VALUES
+('/uploads/destinations/destinations_example.jpg', 'Paris', 'France', 649.99, 'Experience the romance and charm of the City of Light with its iconic landmarks and exquisite cuisine.', '2025-06-01', '2025-06-30', '10% off for early booking', 'Europe'),
+('/uploads/destinations/destinations_example2.jpg', 'Bali', 'Indonesia', 849.99, 'Discover paradise on earth with pristine beaches, lush rice terraces, and spiritual temples.', '2025-07-01', '2025-08-31', 'Free airport transfer', 'Asia'),
+('/uploads/destinations/destinations_example3.jpg', 'New York', 'USA', 749.99, 'Explore the Big Apple with its towering skyscrapers, diverse neighborhoods, and vibrant culture.', '2025-09-01', '2025-10-31', 'City pass included', 'North America'),
+('/uploads/destinations/destinations_example4.jpg', 'Tokyo', 'Japan', 899.99, 'Experience the blend of tradition and modernity in Japan bustling capital.', '2025-11-01', '2025-12-31', 'Free guided city tour', 'Asia'),
+('/uploads/destinations/destinations_example5.jpg', 'Sydney', 'Australia', 999.99, 'Discover the stunning beaches, iconic landmarks, and vibrant culture of Sydney.', '2025-01-01', '2025-02-28', 'Discount on group bookings', 'Oceania');
+
+-- Insert contact messages
+INSERT INTO CONTACT_MESSAGES (name, email, phone, subject, message, status) VALUES
+('John Smith', 'john.smith@example.com', '+1234567890', 'Booking Inquiry', 'I would like to know if there are any special discounts for group bookings of 10 people to Tokyo in August.', 'unread');
