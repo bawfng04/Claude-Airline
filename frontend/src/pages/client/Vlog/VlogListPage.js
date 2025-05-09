@@ -1,19 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { API_URL } from '../../../api/apis';
 import { Helmet } from 'react-helmet';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import { EffectCoverflow, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
 import {
-    FaSearch, FaSpinner, FaExclamationTriangle, FaRegClock, FaUserEdit, FaStar, FaEye,
-    FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp
+    FaSearch, FaSpinner, FaExclamationTriangle,
+    FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp,
+    FaSun, FaCloudSun, FaCloud, FaSmog, FaCloudRain, FaSnowflake, FaMapMarkerAlt, FaClock, FaThermometerHalf, FaBolt
 } from 'react-icons/fa';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+const customIcon = new L.divIcon({
+    html: `<div class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+            </div>`,
+    className: 'bg-transparent border-0',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
+    popupAnchor: [0, -8]
+});
 
 const debounce = (func, delay) => {
     let timeoutId;
@@ -27,19 +49,15 @@ const debounce = (func, delay) => {
 
 const PostCardSkeleton = () => (
     <div className="bg-white rounded-[15px] shadow-[0_10px_20px_rgba(0,0,0,0.05)] overflow-hidden animate-pulse">
-        <div className="w-full aspect-video bg-gray-300"></div>
-        <div className="p-5 md:p-6">
+        <div className="w-full aspect-[3/1] bg-gray-300"></div>
+        <div className="p-4 md:p-5">
             <div className="h-5 bg-gray-300 rounded w-3/4 mb-3"></div>
-            <div className="h-3 bg-gray-300 rounded w-1/2 mb-4"></div>
-            <div className="flex items-center justify-between text-xs">
-                <div className="h-3 bg-gray-300 rounded w-1/3"></div>
-                <div className="h-3 bg-gray-300 rounded w-1/4"></div>
-            </div>
+            <div className="h-3 bg-gray-300 rounded w-1/2"></div>
         </div>
     </div>
 );
 
-const HERO_VIDEO_ID = '04Kf_0kppPM';
+const HERO_VIDEO_ID = 'CDx2fxb5ZF4';
 
 const travelShockFacts = [
     {
@@ -90,7 +108,7 @@ const travelShockFacts = [
 ];
 
 const StyledSectionHeader = ({ title, subtitle }) => (
-    <div className="text-center max-w-[800px] mx-auto my-0 mb-16 md:mb-20 animate-[fadeInUp_0.8s_ease-out_forwards]">
+    <div className="text-center max-w-[800px] mx-auto my-0 mb-16 md:mb-20 opacity-0 translate-y-5 transition-all duration-700 ease-out data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded="true">
         <h2 className="text-[2.8rem] text-red-700 mb-8 relative inline-block after:content-[''] after:absolute after:-bottom-[12px] after:left-1/2 after:-translate-x-1/2 after:w-[90px] after:h-[4px] after:transition-width after:duration-300 after:ease-in-out after:bg-red-700 md:text-[2.2rem] group hover:after:w-[130px]">
             {title}
         </h2>
@@ -113,18 +131,99 @@ const FactItem = ({ question, answer, id, activeHoverId, setActiveHoverId }) => 
             <div className="flex justify-between items-center w-full py-6 text-left group cursor-default">
                 <span className={`text-[1.25rem] font-medium transition-colors duration-200 ${isHovered ? 'text-red-700' : 'text-[#343a40] group-hover:text-red-600'}`}>{question}</span>
                 {isHovered ?
-                    <FaChevronUp className={`w-5 h-5 text-red-700 transition-transform duration-1000 ease-in-out`} /> :
-                    <FaChevronDown className={`w-5 h-5 text-gray-400 group-hover:text-red-600 transition-transform duration-1000 ease-in-out`} />
+                    <FaChevronUp className={`w-5 h-5 text-red-700 transition-transform duration-300 ease-in-out`} /> :
+                    <FaChevronDown className={`w-5 h-5 text-gray-400 group-hover:text-red-600 transition-transform duration-300 ease-in-out`} />
                 }
             </div>
-            <div className={`overflow-hidden transition-all duration-1000 ease-in-out ${isHovered ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className={`pt-0 pb-6 text-[#555] leading-[1.8] text-[1.1rem] transform transition-transform duration-1000 ease-in-out ${isHovered ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'}`}>
+            <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isHovered ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className={`pt-0 pb-6 text-[#555] leading-[1.8] text-[1.1rem] transform transition-transform duration-500 ease-in-out ${isHovered ? 'translate-y-0 opacity-100 delay-100' : '-translate-y-2 opacity-0'}`}>
                     {answer}
                 </div>
             </div>
         </div>
     );
 };
+
+const InteractiveWorldMap = ({ hubs }) => {
+    const [currentTimes, setCurrentTimes] = useState({});
+
+    useEffect(() => {
+        const updateTimes = () => {
+            const newTimes = {};
+            const now = new Date();
+            hubs.forEach(hub => {
+                try {
+                    newTimes[hub.id] = now.toLocaleTimeString('en-US', {
+                        timeZone: hub.timezone,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
+                } catch (e) {
+                    console.error(`Invalid timezone string: ${hub.timezone}`);
+                    newTimes[hub.id] = 'Invalid Timezone';
+                }
+            });
+            setCurrentTimes(newTimes);
+        };
+
+        updateTimes();
+        const intervalId = setInterval(updateTimes, 60000);
+
+        return () => clearInterval(intervalId);
+    }, [hubs]);
+
+    const mapCenter = [20, 10];
+    const mapZoom = 2;
+
+    const WeatherIcon = ({ icon: IconName }) => {
+        if (!IconName) return null;
+        const iconColor = IconName === FaSun ? 'text-yellow-500' : IconName === FaCloudRain ? 'text-blue-600' : IconName === FaSnowflake ? 'text-cyan-400' : IconName === FaBolt ? 'text-yellow-400' : 'text-gray-500';
+        return <IconName className={`inline-block mr-2 mb-0.5 text-xl ${iconColor}`} />;
+    };
+
+
+    return (
+        <MapContainer
+            center={mapCenter}
+            zoom={mapZoom}
+            minZoom={2}
+            maxZoom={10}
+            scrollWheelZoom={true}
+            style={{ height: '550px', width: '100%', borderRadius: '15px', zIndex: 0 }}
+            className="shadow-lg border border-gray-200"
+            worldCopyJump={true}
+        >
+            <TileLayer
+                attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a href="https://carto.com/attributions">CARTO</a>'
+                url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+            />
+            {hubs.map(hub => (
+                <Marker key={hub.id} position={[hub.lat, hub.lng]} icon={customIcon}>
+                    <Popup>
+                        <div className="p-2.5 font-sans w-44 bg-white rounded-lg shadow-xl">
+                            <h4 className="font-bold text-gray-800 text-base mb-1 flex items-center border-b border-gray-100 pb-1.5">
+                                {hub.name}
+                            </h4>
+                            <p className="text-xs text-gray-500 mb-2 -mt-0.5">{hub.country}</p>
+                            <div className="pt-1 space-y-1">
+                                <p className="flex items-center text-sm text-gray-700">
+                                    <FaClock className="inline-block mr-2 text-gray-400"/>
+                                    {currentTimes[hub.id] || <FaSpinner className="animate-spin ml-1"/>}
+                                </p>
+                                <p className="flex items-center text-sm text-gray-700">
+                                    <WeatherIcon icon={hub.weatherIcon} />
+                                    {hub.tempC !== null ? `${hub.tempC}°C` : 'N/A'}
+                                </p>
+                            </div>
+                        </div>
+                    </Popup>
+                </Marker>
+            ))}
+        </MapContainer>
+    );
+};
+
 
 const VlogListPage = () => {
     const [posts, setPosts] = useState([]);
@@ -134,11 +233,23 @@ const VlogListPage = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [headerPlaceholderHeight, setHeaderPlaceholderHeight] = useState(70);
     const [activeHoverFactId, setActiveHoverFactId] = useState(null);
+    const [scrollY, setScrollY] = useState(0);
+    const [pageLoaded, setPageLoaded] = useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
 
-    const POSTS_PER_PAGE = 9;
+    const POSTS_PER_PAGE = 5;
+
+    const handleScroll = useCallback(() => {
+        setScrollY(window.scrollY);
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+
 
     useEffect(() => {
         const headerElement = document.querySelector('.your-main-fixed-header-class');
@@ -150,62 +261,56 @@ const VlogListPage = () => {
     const fetchPosts = useCallback(async (page = 1, search = '') => {
         setLoading(true);
         setError(null);
+        setPageLoaded(false);
         try {
             let apiUrl = `${API_URL}/vlogPost/listPublished?limit=${POSTS_PER_PAGE}&page=${page}`;
             if (search) apiUrl += `&search=${encodeURIComponent(search)}`;
-            
+
             const response = await fetch(apiUrl);
             const contentType = response.headers.get("content-type");
 
             if (!response.ok) {
-                // Server returned an HTTP error status (4xx or 5xx)
                 let errorMessageFromServer = `Server responded with status ${response.status}.`;
                 try {
                     if (contentType && contentType.includes("application/json")) {
                         const errorResult = await response.json();
                         errorMessageFromServer = errorResult.message || JSON.stringify(errorResult);
                     } else {
-                        // Not JSON, try to get text
                         const textError = await response.text();
                         errorMessageFromServer = `Server error ${response.status}: ${textError.substring(0, 200)}${textError.length > 200 ? '...' : ''}`;
                     }
                 } catch (e) {
-                     // Fallback if parsing error body fails
                     const textErrorFallback = await response.text().catch(() => "Could not retrieve error body.");
                     errorMessageFromServer = `Server error ${response.status}. Response body could not be parsed. Preview: ${textErrorFallback.substring(0, 200)}${textErrorFallback.length > 200 ? '...' : ''}`;
                 }
                 throw new Error(errorMessageFromServer);
             }
 
-            // Response is OK (2xx status)
             if (contentType && contentType.includes("application/json")) {
-                const result = await response.json(); // This can throw SyntaxError for malformed JSON
+                const result = await response.json();
                 if (result.status === 200 && result.data) {
                     setPosts(result.data.posts || []);
                     setTotalPages(result.data.totalPages !== undefined ? result.data.totalPages : (result.data.total > 0 ? Math.ceil(result.data.total / POSTS_PER_PAGE) : 0));
                     setCurrentPage(result.data.page !== undefined ? result.data.page : page);
                 } else {
-                    // Successful HTTP status, but application-level error in JSON response
                     throw new Error(result.message || 'Failed to fetch posts due to invalid data format in an otherwise successful server response.');
                 }
             } else {
-                // Response is OK (2xx) but not JSON. This is unexpected for this API.
                 const textResponse = await response.text();
                 throw new Error(`Expected a JSON response from a successful request, but received '${contentType || 'unknown/missing content type'}'. Content preview: ${textResponse.substring(0,100)}${textResponse.length > 100 ? '...' : ''}`);
             }
 
         } catch (err) {
             let displayError = err.message;
-            // Specifically customize message for JSON parsing errors (like "Unexpected token L")
             if (err instanceof SyntaxError && err.message.toLowerCase().includes("unexpected token")) {
                 displayError = `The server's response was not in the expected JSON format, which is necessary for displaying data. This might be due to a server-side HTML error page or plain text being sent instead of JSON. (Details: ${err.message})`;
             }
-            // For other errors, err.message (which might be one of our custom messages from the try block) is used.
             setError(displayError);
             setPosts([]);
             setTotalPages(0);
         } finally {
             setLoading(false);
+            setTimeout(() => setPageLoaded(true), 100);
         }
     }, [POSTS_PER_PAGE]);
 
@@ -246,74 +351,51 @@ const VlogListPage = () => {
             }
         }
     };
+
     const thematicCategories = [
-        {
-            name: "Floral Cycles",
-            image: 'https://images.unsplash.com/photo-1604323990536-e5452c0507c1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=hanoi-old-quarter',
-            description: "Colorful blooms on bicycles brightening city streets."
-        },
-        {
-            name: "Soaring Skyscraper",
-            image: 'https://images.unsplash.com/photo-1602646994030-464f98de5e5c?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=vietnam-street-eats',
-            description: "Panoramic views from a modern architectural marvel."
-        },
-        {
-            name: "River Delta Life",
-            image: 'https://images.unsplash.com/photo-1580534510745-5c753903769c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=ha-long-cruises',
-            description: "Vibrant waterways, floating markets, and lush landscapes."
-        },
-        {
-            name: "Sun-Kissed Beaches",
-            image: 'https://images.unsplash.com/photo-1578458329607-534298aebc4d?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=hoi-an-nights',
-            description: "Relax on sandy shores and enjoy clear coastal waters."
-        },
-        {
-            name: "Literary Pavilion",
-            image: 'https://images.unsplash.com/photo-1547158291-06774526756c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=sapa-landscapes',
-            description: "An iconic pavilion, a historic symbol of wisdom and learning."
-        },
-        {
-            name: "Street Vendor Vibes",
-            image: 'https://images.unsplash.com/photo-1616438096679-620332ede3a2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=vietnam-coffee',
-            description: "Lively culture and diverse offerings from street sellers."
-        },
-        {
-            name: "Iconic Hand Bridge",
-            image: 'https://images.unsplash.com/photo-1588411393236-d2524cca1196?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=traditional-crafts',
-            description: "Stunning pedestrian bridge seemingly held by giant stone hands."
-        },
-        {
-            name: "Verdant Terraces",
-            image: 'https://images.unsplash.com/photo-1606801954050-be6b29588460?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=da-nang-dragon',
-            description: "Breathtaking beauty of cascading green agricultural fields."
-        },
-        {
-            name: "Karst Waterways",
-            image: 'https://images.unsplash.com/photo-1531737212413-667205e1cda7?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=urban-vietnam',
-            description: "Peaceful boat trips through stunning limestone formations."
-        },
-        {
-            name: "Apartment Cafes",
-            image: 'https://images.unsplash.com/photo-1602646993776-5dd8e166e6fd?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=timeless-ao-dai',
-            description: "Hidden coffee gems in old buildings on vibrant pedestrian streets."
-        },
-        {
-            name: "Highland Culture",
-            image: 'https://images.unsplash.com/photo-1603486037214-4fec4016a9bf?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            link: '/vlog?theme=pho-delight',
-            description: "Rich traditions and vibrant attire of a mountain ethnic group."
-        },
+        { name: "Floral Cycles", image: 'https://images.unsplash.com/photo-1604323990536-e5452c0507c1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=hanoi-old-quarter', description: "Colorful blooms on bicycles brightening city streets." },
+        { name: "Soaring Skyscraper", image: 'https://images.unsplash.com/photo-1602646994030-464f98de5e5c?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=vietnam-street-eats', description: "Panoramic views from a modern architectural marvel." },
+        { name: "River Delta Life", image: 'https://images.unsplash.com/photo-1580534510745-5c753903769c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=ha-long-cruises', description: "Vibrant waterways, floating markets, and lush landscapes." },
+        { name: "Sun-Kissed Beaches", image: 'https://images.unsplash.com/photo-1578458329607-534298aebc4d?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=hoi-an-nights', description: "Relax on sandy shores and enjoy clear coastal waters." },
+        { name: "Literary Pavilion", image: 'https://images.unsplash.com/photo-1547158291-06774526756c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=sapa-landscapes', description: "An iconic pavilion, a historic symbol of wisdom and learning." },
+        { name: "Street Vendor Vibes", image: 'https://images.unsplash.com/photo-1616438096679-620332ede3a2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=vietnam-coffee', description: "Lively culture and diverse offerings from street sellers." },
+        { name: "Iconic Hand Bridge", image: 'https://images.unsplash.com/photo-1588411393236-d2524cca1196?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=traditional-crafts', description: "Stunning pedestrian bridge seemingly held by giant stone hands." },
+        { name: "Verdant Terraces", image: 'https://images.unsplash.com/photo-1606801954050-be6b29588460?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=da-nang-dragon', description: "Breathtaking beauty of cascading green agricultural fields." },
+        { name: "Karst Waterways", image: 'https://images.unsplash.com/photo-1531737212413-667205e1cda7?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=urban-vietnam', description: "Peaceful boat trips through stunning limestone formations." },
+        { name: "Apartment Cafes", image: 'https://images.unsplash.com/photo-1602646993776-5dd8e166e6fd?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=timeless-ao-dai', description: "Hidden coffee gems in old buildings on vibrant pedestrian streets." },
+        { name: "Highland Culture", image: 'https://images.unsplash.com/photo-1603486037214-4fec4016a9bf?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/vlog?theme=pho-delight', description: "Rich traditions and vibrant attire of a mountain ethnic group." },
     ];
+
+    const majorHubs = [
+        { id: 1, name: 'London', country: 'UK', lat: 51.5074, lng: -0.1278, timezone: 'Europe/London', weatherIcon: FaCloudSun, tempC: 15 },
+        { id: 2, name: 'Tokyo', country: 'Japan', lat: 35.6895, lng: 139.6917, timezone: 'Asia/Tokyo', weatherIcon: FaSun, tempC: 28 },
+        { id: 3, name: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060, timezone: 'America/New_York', weatherIcon: FaCloud, tempC: 22 },
+        { id: 4, name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, timezone: 'Europe/Paris', weatherIcon: FaCloudRain, tempC: 18 },
+        { id: 5, name: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, timezone: 'Australia/Sydney', weatherIcon: FaSun, tempC: 25 },
+        { id: 6, name: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, timezone: 'Asia/Singapore', weatherIcon: FaCloudSun, tempC: 30 },
+        { id: 7, name: 'Dubai', country: 'UAE', lat: 25.276987, lng: 55.296249, timezone: 'Asia/Dubai', weatherIcon: FaSun, tempC: 35 },
+        { id: 8, name: 'Los Angeles', country: 'USA', lat: 34.0522, lng: -118.2437, timezone: 'America/Los_Angeles', weatherIcon: FaSun, tempC: 26 },
+        { id: 9, name: 'Frankfurt', country: 'Germany', lat: 50.1109, lng: 8.6821, timezone: 'Europe/Berlin', weatherIcon: FaCloud, tempC: 19 },
+        { id: 10, name: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018, timezone: 'Asia/Bangkok', weatherIcon: FaBolt, tempC: 32 },
+        { id: 11, name: 'Sao Paulo', country: 'Brazil', lat: -23.5505, lng: -46.6333, timezone: 'America/Sao_Paulo', weatherIcon: FaCloudRain, tempC: 20 },
+        { id: 12, name: 'Johannesburg', country: 'South Africa', lat: -26.2041, lng: 28.0473, timezone: 'Africa/Johannesburg', weatherIcon: FaSun, tempC: 17 },
+        { id: 13, name: 'Chicago', country: 'USA', lat: 41.8781, lng: -87.6298, timezone: 'America/Chicago', weatherIcon: FaCloudSun, tempC: 21 },
+        { id: 14, name: 'Ho Chi Minh City', country: 'Vietnam', lat: 10.8231, lng: 106.6297, timezone: 'Asia/Ho_Chi_Minh', weatherIcon: FaCloudSun, tempC: 31 },
+        { id: 15, name: 'Moscow', country: 'Russia', lat: 55.7558, lng: 37.6173, timezone: 'Europe/Moscow', weatherIcon: FaSnowflake, tempC: 5 },
+        { id: 16, name: 'Hong Kong', country: 'China', lat: 22.3193, lng: 114.1694, timezone: 'Asia/Hong_Kong', weatherIcon: FaCloud, tempC: 29 },
+        { id: 17, name: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, timezone: 'Europe/Istanbul', weatherIcon: FaSun, tempC: 24 },
+        { id: 18, name: 'Amsterdam', country: 'Netherlands', lat: 52.3676, lng: 4.9041, timezone: 'Europe/Amsterdam', weatherIcon: FaCloudRain, tempC: 16 },
+        { id: 19, name: 'Toronto', country: 'Canada', lat: 43.6532, lng: -79.3832, timezone: 'America/Toronto', weatherIcon: FaCloudSun, tempC: 20 },
+        { id: 20, name: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332, timezone: 'America/Mexico_City', weatherIcon: FaSun, tempC: 23 },
+        { id: 21, name: 'Buenos Aires', country: 'Argentina', lat: -34.6037, lng: -58.3816, timezone: 'America/Argentina/Buenos_Aires', weatherIcon: FaSun, tempC: 19 },
+        { id: 22, name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, timezone: 'Africa/Cairo', weatherIcon: FaSun, tempC: 34 },
+        { id: 23, name: 'Nairobi', country: 'Kenya', lat: -1.2921, lng: 36.8219, timezone: 'Africa/Nairobi', weatherIcon: FaCloudSun, tempC: 22 },
+        { id: 24, name: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777, timezone: 'Asia/Kolkata', weatherIcon: FaCloudRain, tempC: 29 },
+        { id: 25, name: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780, timezone: 'Asia/Seoul', weatherIcon: FaCloud, tempC: 26 }
+    ];
+
+    const parallaxFactor = 1; // Adjusted factor for video parallax
+    const videoParallaxOffset = scrollY * parallaxFactor;
 
     return (
         <>
@@ -362,9 +444,15 @@ const VlogListPage = () => {
                     }
                     .swiper-button-next { right: 10px; }
                     .swiper-button-prev { left: 10px; }
-                    
+
                     .transition-max-height { transition-property: max-height; }
                     .transition-all { transition-property: all; }
+                    .leaflet-popup-content-wrapper { border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.15); border: none; background-color: #ffffff; }
+                    .leaflet-popup-content { margin: 0 !important; padding: 0 !important; line-height: 1.6; min-width: 176px;}
+                    .leaflet-popup-content p { margin-bottom: 4px !important; display: flex; align-items: center; }
+                    .leaflet-popup-content h4 { margin-bottom: 6px !important; padding-bottom: 6px !important; border-bottom: 1px solid #eee;}
+                    .leaflet-popup-tip { background: white; }
+                    .leaflet-marker-icon .relative.flex { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
                 `}</style>
 
                 <div style={{ height: `${headerPlaceholderHeight}px` }}></div>
@@ -374,10 +462,11 @@ const VlogListPage = () => {
                     className="relative flex flex-col items-center justify-center text-white overflow-hidden"
                     style={{ height: `calc(100vh - ${headerPlaceholderHeight}px)` }}
                 >
-                    <div className="absolute inset-0 w-full h-full z-0">
+                    <div className="absolute inset-0 w-full h-full z-0" style={{ transform: `translateY(${videoParallaxOffset}px)` }}>
                         <iframe
                             className="absolute top-1/2 left-1/2 w-full h-full min-w-[177.77vh] min-h-[56.25vw] transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                            src={`https://www.youtube.com/embed/$$${HERO_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${HERO_VIDEO_ID}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&fs=0&rel=0&disablekb=1&vq=hd1080`}
+                            style={{ top: '50%', left: '50%'}}
+                            src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${HERO_VIDEO_ID}&controls=0&showinfo=0&modestbranding=1&iv_load_policy=3&fs=0&rel=0&disablekb=1&vq=hd1080`}
                             title="Hero Video Background"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -386,24 +475,29 @@ const VlogListPage = () => {
                     </div>
                     <div className="absolute inset-0 bg-black/50 z-10"></div>
 
-                    <div className="relative z-20 text-center p-4 sm:p-6 flex flex-col items-center justify-center w-full h-full max-w-5xl mx-auto animate-[fadeInUp_1s_ease-out_forwards]">
-                        <h1 className="text-[4.5rem] mb-8 font-bold [text-shadow:2px_2px_5px_rgba(0,0,0,0.6)] lg:text-[5rem] sm:text-[3rem] leading-tight">
-                            <span className="block">Lens on the Horizon</span>
-                            <span className="block">Visual Odysseys</span>
-                        </h1>
-                        <p className="text-[1.3rem] mb-10 [text-shadow:1px_1px_3px_rgba(0,0,0,0.6)] lg:text-[1.6rem] sm:text-[1.1rem] max-w-3xl">
-                            Immerse yourself in compelling narratives, stunning visuals, and unforgettable explorations from every corner of the map.
-                        </p>
-                        <div className="w-full max-w-md sm:max-w-lg mx-auto">
-                            <div className="relative group">
-                                <input
-                                    type="text"
-                                    placeholder="Search destinations, themes, or keywords..."
-                                    value={searchTerm}
-                                    onChange={handleSearchChange}
-                                    className="w-full py-3.5 px-6 pl-14 text-md md:text-lg text-white rounded-full shadow-2xl focus:outline-none focus:ring-4 focus:ring-sky-400/70 transition-all duration-300 bg-white/25 placeholder-gray-200/90 backdrop-blur-lg hover:bg-white/30 focus:bg-white/35 border border-white/40 focus:border-white/60"
-                                />
-                                <FaSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-200/90 group-hover:text-sky-100 transition-colors duration-300 text-lg pointer-events-none" />
+                    <div
+                        className="relative z-20 text-center p-4 sm:p-6 flex flex-col items-center justify-center w-full h-full max-w-5xl mx-auto"
+
+                        >
+                        <div className="opacity-0 translate-y-5 transition-all duration-1000 ease-out data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0" data-loaded={pageLoaded}>
+                            <h1 className="text-[4.5rem] mb-8 font-bold [text-shadow:2px_2px_5px_rgba(0,0,0,0.6)] lg:text-[5rem] sm:text-[3rem] leading-tight">
+                                <span className="block">Lens on the Horizon</span>
+                                <span className="block">Visual Odysseys</span>
+                            </h1>
+                            <p className="text-[1.3rem] mb-10 [text-shadow:1px_1px_3px_rgba(0,0,0,0.6)] lg:text-[1.6rem] sm:text-[1.1rem] max-w-3xl">
+                                Immerse yourself in compelling narratives, stunning visuals, and unforgettable explorations from every corner of the map.
+                            </p>
+                            <div className="w-full max-w-md sm:max-w-lg mx-auto">
+                                <div className="relative group">
+                                    <input
+                                        type="text"
+                                        placeholder="Search destinations, themes, or keywords..."
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
+                                        className="w-full py-3.5 px-6 pl-14 text-md md:text-lg text-white rounded-full shadow-2xl focus:outline-none focus:ring-4 focus:ring-sky-400/70 transition-all duration-300 bg-white/25 placeholder-gray-200/90 backdrop-blur-lg hover:bg-white/30 focus:bg-white/35 border border-white/40 focus:border-white/60"
+                                    />
+                                    <FaSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-200/90 group-hover:text-sky-100 transition-colors duration-300 text-lg pointer-events-none" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -439,14 +533,17 @@ const VlogListPage = () => {
                         )}
                         {!loading && !error && posts.length > 0 && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                                {posts.map(post => (
+                                {posts.map((post, index) => (
                                     <Link
                                         to={`/vlog/${post.slug}`}
                                         key={post.id}
-                                        className="block rounded-[15px] shadow-[0_10px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all duration-300 ease-in-out group focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-70 overflow-hidden hover:-translate-y-[5px] relative"
+                                        className="post-card block rounded-[15px] shadow-[0_10px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] transition-all duration-300 ease-in-out group focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-70 overflow-hidden hover:-translate-y-[5px] relative opacity-0 translate-y-5 data-[loaded=true]:opacity-100 data-[loaded=true]:translate-y-0"
+                                        data-loaded={pageLoaded}
+                                        style={{ transitionDelay: `${100 + index * 75}ms` }}
                                     >
                                         <div className="relative aspect-[3/1] overflow-hidden">
                                             <img
+                                                loading="lazy"
                                                 src={post.featured_image ? (post.featured_image.startsWith('/') ? API_URL + post.featured_image : post.featured_image) : 'https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg?auto=compress&cs=tinysrgb&w=600'}
                                                 alt={post.title}
                                                 className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105 bg-gray-200"
@@ -470,7 +567,7 @@ const VlogListPage = () => {
                                     disabled={currentPage === 1}
                                     className="px-6 py-3 bg-white border border-gray-300 hover:bg-gray-100 text-[#343a40] hover:text-red-700 text-sm font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    Previous
+                                    <FaChevronLeft className="inline -ml-1 mr-1" /> Previous
                                 </button>
                                 <span className="text-[1rem] text-[#343a40] font-medium px-2">
                                     Page {currentPage} of {totalPages}
@@ -480,13 +577,13 @@ const VlogListPage = () => {
                                     disabled={currentPage === totalPages}
                                     className="px-6 py-3 bg-white border border-gray-300 hover:bg-gray-100 text-[#343a40] hover:text-red-700 text-sm font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    Next
+                                    Next <FaChevronRight className="inline -mr-1 ml-1"/>
                                 </button>
                             </nav>
                         )}
                     </section>
 
-                    <section className="px-8 py-24 md:px-6 md:py-16">
+                    <section className="px-8 py-24 md:px-6 md:py-16 opacity-0 transition-opacity duration-700 delay-300 ease-in-out data-[loaded=true]:opacity-100" data-loaded={pageLoaded}>
                         <StyledSectionHeader
                             title="Ever Wondered?"
                             subtitle="Dive into these intriguing travel snippets that might just surprise you about the world we explore!"
@@ -504,8 +601,14 @@ const VlogListPage = () => {
                             ))}
                         </div>
                     </section>
+                    <section className="px-8 py-24 md:px-6 md:py-16 opacity-0 transition-opacity duration-700 delay-700 ease-in-out data-[loaded=true]:opacity-100" data-loaded={pageLoaded}>
+                        <StyledSectionHeader title="Global Hubs Live" subtitle="Check current conditions at some of our key destinations around the world." />
+                        <div className="bg-white p-6 md:p-8 rounded-[15px] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                            <InteractiveWorldMap hubs={majorHubs} />
+                        </div>
+                    </section>
 
-                    <section className="py-24 md:py-16">
+                    <section className="py-24 md:py-16 opacity-0 transition-opacity duration-700 delay-500 ease-in-out data-[loaded=true]:opacity-100" data-loaded={pageLoaded}>
                         <StyledSectionHeader title="Thematic Adventures" subtitle="Embark on curated visual journeys through our diverse collection of vlog themes." />
                         <Swiper
                             effect={'coverflow'}
@@ -535,6 +638,7 @@ const VlogListPage = () => {
                                         className="block w-full h-full relative shadow-[0_8px_16px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.12)] transition-shadow duration-300 ease-in-out"
                                     >
                                         <img
+                                            loading="lazy"
                                             src={theme.image}
                                             alt={theme.name}
                                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"

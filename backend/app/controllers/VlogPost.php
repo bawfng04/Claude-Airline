@@ -1,7 +1,5 @@
 <?php
 
-define('BASE_URL', 'http://localhost'); 
-
 class VlogPost extends Controller {
 
     private $postModel;
@@ -35,7 +33,7 @@ class VlogPost extends Controller {
     public function save() {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
-            header('Location: ' . BASE_URL . '/vlogPost'); 
+            header('Location: ' . base_url('vlogPost')); 
             exit; 
         }
 
@@ -57,11 +55,11 @@ class VlogPost extends Controller {
 
         if (empty($data['title']) || empty($data['status'])) {
             $_SESSION['flash_error'] = 'Title and Status are required.';
-            header('Location: ' . BASE_URL . '/vlogPost'); exit;
+            header('Location: ' . base_url('vlogPost')); exit;
         }
         if (!$postId && empty($userId)) { 
             $_SESSION['flash_error'] = 'Author ID is required for new posts.';
-            header('Location: ' . BASE_URL . '/vlogPost'); exit;
+            header('Location: ' . base_url('vlogPost')); exit;
         }
 
         $needsSlugUpdate = false;
@@ -162,14 +160,14 @@ class VlogPost extends Controller {
                 @unlink($this->publicDir . $newImagePathRelative);
             }
         }
-        header('Location: ' . BASE_URL . '/vlogPost'); 
+        header('Location: ' . base_url('vlogPost')); 
         exit;
     }
 
     public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . BASE_URL . '/vlogPost'); exit; }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . base_url('vlogPost')); exit; }
         $postId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        if (!$postId) { $_SESSION['flash_error'] = 'Invalid Post ID.'; header('Location: ' . BASE_URL . '/vlogPost'); exit; }
+        if (!$postId) { $_SESSION['flash_error'] = 'Invalid Post ID.'; header('Location: ' . base_url('vlogPost')); exit; }
 
         try {
             $post = $this->postModel->getPostById($postId);
@@ -190,7 +188,7 @@ class VlogPost extends Controller {
             error_log('Exception during post deletion: ' . $e->getMessage());
             $_SESSION['flash_error'] = 'Error deleting post: ' . $e->getMessage();
         }
-        header('Location: ' . BASE_URL . '/vlogPost');
+        header('Location: ' . base_url('vlogPost'));
         exit;
     }
 
@@ -204,7 +202,14 @@ class VlogPost extends Controller {
             $totalPosts = $this->postModel->getTotalPublishedPostsCount($searchTerm);
             $data = [ 'posts' => $posts ?: [], 'total' => $totalPosts, 'page' => $page, 'limit' => $limit, 'totalPages' => $totalPosts > 0 ? ceil($totalPosts / $limit) : 0 ];
             $this->jsonResponse(200, 'Success', $data);
-        } catch (Exception $e) { $this->jsonResponse(500, 'Error fetching posts', $e->getMessage()); }
+        } catch (Exception $e) {
+            error_log('API Error in VlogPost/listPublished: ' . $e->getMessage() . ' --- Trace: ' . $e->getTraceAsString());
+            $errorData = ['type' => 'FetchError', 'details' => $e->getMessage()];
+            if ($e instanceof PDOException) {
+                $errorData['db_code'] = $e->getCode();
+            }
+            $this->jsonResponse(500, 'An error occurred while fetching posts. Please try again later.', $errorData);
+        }
     }
 
     public function show($slug = null) {

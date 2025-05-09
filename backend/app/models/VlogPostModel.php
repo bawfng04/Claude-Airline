@@ -4,7 +4,7 @@ class VlogPostModel extends Database {
 
     private $table = 'vlog_posts';
     private $commentsTable = 'vlog_comments';
-    private $usersTable = 'USERS'; 
+    private $usersTable = 'USERS';
 
     public function getPublishedPosts($limit, $offset, $searchTerm = null) {
         $sql = "SELECT vp.*, CONCAT(u.GIVEN_NAME, ' ', u.FAMILY_NAME) as author_name
@@ -12,38 +12,60 @@ class VlogPostModel extends Database {
                 LEFT JOIN {$this->usersTable} u ON vp.user_id = u.ID
                 WHERE vp.status = 'published'";
 
-        if ($searchTerm) {
-            $sql .= " AND (vp.title LIKE :searchTerm OR vp.introduction LIKE :searchTerm)";
+        if (!empty($searchTerm)) {
+            // MODIFIED FOR TESTING: Only search in title
+            $sql .= " AND (LOWER(vp.title) LIKE :lowerSearchTerm)";
         }
         $sql .= " ORDER BY vp.created_at DESC LIMIT :limit OFFSET :offset";
 
         $this->query($sql);
-        if ($searchTerm) { $this->bind(':searchTerm', '%' . $searchTerm . '%'); }
+
+        if (!empty($searchTerm)) {
+            $this->bind(':lowerSearchTerm', '%' . strtolower($searchTerm) . '%');
+        }
         $this->bind(':limit', $limit, PDO::PARAM_INT);
         $this->bind(':offset', $offset, PDO::PARAM_INT);
+
+        error_log("Executing SQL for getPublishedPosts: " . $sql);
+        if (!empty($searchTerm)) {
+            error_log("With search term: " . $searchTerm . " (bound as: " . '%' . strtolower($searchTerm) . '%' . ")");
+        }
+        error_log("Limit: " . $limit . ", Offset: " . $offset);
+
+
         $results = $this->resultSet();
 
         if ($results) {
-            foreach ($results as &$post) { 
+            foreach ($results as &$post) {
                 if (!empty($post['gallery_images'])) {
                     $decoded_images = json_decode($post['gallery_images'], true);
                     $post['gallery_images'] = (json_last_error() === JSON_ERROR_NONE && is_array($decoded_images)) ? $decoded_images : [];
                 } else {
-                    $post['gallery_images'] = []; 
+                    $post['gallery_images'] = [];
                 }
             }
-            unset($post); 
+            unset($post);
         }
         return $results;
     }
 
     public function getTotalPublishedPostsCount($searchTerm = null) {
-        $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE status = 'published'";
-        if ($searchTerm) {
-             $sql .= " AND (title LIKE :searchTerm OR introduction LIKE :searchTerm)";
+        $sql = "SELECT COUNT(*) as total FROM {$this->table} vp WHERE vp.status = 'published'"; // Alias vp used here
+
+        if (!empty($searchTerm)) {
+            // MODIFIED FOR TESTING: Only search in title
+            $sql .= " AND (LOWER(vp.title) LIKE :lowerSearchTerm)";
         }
         $this->query($sql);
-        if ($searchTerm) { $this->bind(':searchTerm', '%' . $searchTerm . '%'); }
+        if (!empty($searchTerm)) {
+            $this->bind(':lowerSearchTerm', '%' . strtolower($searchTerm) . '%');
+        }
+
+        error_log("Executing SQL for getTotalPublishedPostsCount: " . $sql);
+        if (!empty($searchTerm)) {
+            error_log("With search term for count: " . $searchTerm . " (bound as: " . '%' . strtolower($searchTerm) . '%' . ")");
+        }
+
         $row = $this->single();
         return $row['total'] ?? 0;
     }
@@ -62,9 +84,8 @@ class VlogPostModel extends Database {
                 $decoded_images = json_decode($post['gallery_images'], true);
                 $post['gallery_images'] = (json_last_error() === JSON_ERROR_NONE && is_array($decoded_images)) ? $decoded_images : [];
             } else {
-                $post['gallery_images'] = []; 
+                $post['gallery_images'] = [];
             }
-            // Fetch rating info directly within the model if preferred
             $ratingInfo = $this->getAverageRating($post['id']);
             $post['average_rating'] = $ratingInfo['average'] ?? 0;
             $post['no_of_ratings'] = $ratingInfo['count'] ?? 0;
@@ -119,21 +140,20 @@ class VlogPostModel extends Database {
         $galleryJson = null;
         if (isset($data['gallery_images']) && is_array($data['gallery_images'])) {
             $galleryJson = json_encode($data['gallery_images']);
-            if ($galleryJson === false) { $galleryJson = '[]'; } 
+            if ($galleryJson === false) { $galleryJson = '[]'; }
         } else {
-            $galleryJson = '[]'; 
+            $galleryJson = '[]';
         }
 
-        // Corrected 'content' to 'main_content' in SQL and binding
         $sql = "INSERT INTO {$this->table} (title, slug, introduction, main_content, featured_image, gallery_images, user_id, status)
                 VALUES (:title, :slug, :introduction, :main_content, :featured_image, :gallery_images, :user_id, :status)";
         $this->query($sql);
         $this->bind(':title', $data['title']);
         $this->bind(':slug', $data['slug']);
         $this->bind(':introduction', $data['introduction']);
-        $this->bind(':main_content', $data['main_content']); 
+        $this->bind(':main_content', $data['main_content']);
         $this->bind(':featured_image', $data['featured_image']);
-        $this->bind(':gallery_images', $galleryJson); 
+        $this->bind(':gallery_images', $galleryJson);
         $this->bind(':user_id', $data['user_id'], PDO::PARAM_INT);
         $this->bind(':status', $data['status']);
         return $this->execute();
@@ -144,14 +164,16 @@ class VlogPostModel extends Database {
         if (isset($data['title'])) $setClauses[] = 'title = :title';
         if (isset($data['slug'])) $setClauses[] = 'slug = :slug';
         if (isset($data['introduction'])) $setClauses[] = 'introduction = :introduction';
-        if (isset($data['main_content'])) $setClauses[] = 'main_content = :main_content'; // Corrected field name
+        if (isset($data['main_content'])) $setClauses[] = 'main_content = :main_content';
         if (array_key_exists('featured_image', $data)) $setClauses[] = 'featured_image = :featured_image';
         if (isset($data['status'])) $setClauses[] = 'status = :status';
-        if (array_key_exists('gallery_images', $data)) { 
+        if (array_key_exists('gallery_images', $data)) {
              $setClauses[] = 'gallery_images = :gallery_images';
         }
+        if (isset($data['user_id'])) $setClauses[] = 'user_id = :user_id';
 
-        if (empty($setClauses)) return true; 
+
+        if (empty($setClauses)) return true;
 
         $sql = "UPDATE {$this->table} SET " . implode(', ', $setClauses) . " WHERE id = :id";
         $this->query($sql);
@@ -160,19 +182,21 @@ class VlogPostModel extends Database {
         if (isset($data['title'])) $this->bind(':title', $data['title']);
         if (isset($data['slug'])) $this->bind(':slug', $data['slug']);
         if (isset($data['introduction'])) $this->bind(':introduction', $data['introduction']);
-        if (isset($data['main_content'])) $this->bind(':main_content', $data['main_content']); // Corrected binding
+        if (isset($data['main_content'])) $this->bind(':main_content', $data['main_content']);
         if (array_key_exists('featured_image', $data)) $this->bind(':featured_image', $data['featured_image']);
         if (isset($data['status'])) $this->bind(':status', $data['status']);
+        if (isset($data['user_id'])) $this->bind(':user_id', $data['user_id'], PDO::PARAM_INT);
+
 
         if (array_key_exists('gallery_images', $data)) {
             $galleryJson = null;
              if ($data['gallery_images'] !== null && is_array($data['gallery_images'])) {
                 $galleryJson = json_encode($data['gallery_images']);
-                if ($galleryJson === false) { $galleryJson = '[]'; } 
+                if ($galleryJson === false) { $galleryJson = '[]'; }
             } elseif ($data['gallery_images'] === null) {
-                 $galleryJson = null; 
+                 $galleryJson = null;
             } else {
-                 $galleryJson = '[]'; 
+                 $galleryJson = '[]';
             }
              $this->bind(':gallery_images', $galleryJson, ($galleryJson === null) ? PDO::PARAM_NULL : PDO::PARAM_STR);
         }
@@ -222,7 +246,23 @@ class VlogPostModel extends Database {
         }
     }
 
+    public function updatePostRatings($postId) {
+        $ratingInfo = $this->getAverageRating($postId);
+        $averageRating = $ratingInfo['average'];
+        $numberOfRatings = $ratingInfo['count'];
+
+        $sql = "UPDATE {$this->table}
+                SET average_rating = :average_rating, no_of_ratings = :no_of_ratings
+                WHERE id = :post_id";
+        $this->query($sql);
+        $this->bind(':average_rating', $averageRating);
+        $this->bind(':no_of_ratings', $numberOfRatings, PDO::PARAM_INT);
+        $this->bind(':post_id', $postId, PDO::PARAM_INT);
+
+        return $this->execute();
+    }
+
     public function getLastError() {
-        return $this->error; 
+        return $this->error;
     }
 }

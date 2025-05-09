@@ -1,7 +1,6 @@
 <?php
+$apiUrlForJs = getenv('API_URL') ?: base_url();
 
-$baseUrl = defined('BASE_URL') ? BASE_URL : '';
-$apiUrl = defined('API_URL') ? API_URL : $baseUrl;
 
 if (!function_exists('getVlogPostActionButtons')) {
     function getVlogPostActionButtons($post) {
@@ -25,8 +24,8 @@ if (!function_exists('getVlogPostActionButtons')) {
 <head>
     <?php include 'components/meta_header.php'; ?>
     <title><?php echo htmlspecialchars($data['pageTitle'] ?? 'Vlog Posts Management'); ?></title>
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/assets/compiled/css/table-datatable-jquery.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/compiled/css/table-datatable-jquery.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js" integrity="sha512-Eezs+g9Lq4TCCq0wae01s97ufKNP/+oQwSVgkV/EKcMbKAFQEkd4LeOVmqjqGSa/4u+sNPDEJwTF2URJ3LPyMw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         #manageTable th, #manageTable td { vertical-align: middle; }
@@ -52,17 +51,8 @@ if (!function_exists('getVlogPostActionButtons')) {
         .img-thumbnail-modal { max-width: 100%; height: auto; max-height: 150px; object-fit: contain; border-radius: 0.375rem; border: 1px solid #dee2e6; display: inline-block; vertical-align: middle; } 
         #galleryItemsContainer .gallery-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; cursor: grab; }
         #galleryItemsContainer .gallery-item:active { cursor: grabbing; background-color: #e9e9e9; }
-        /* === Style adjustment for drag handle === */
-        .gallery-item .drag-handle { 
-            cursor: grab; 
-            color: #999; 
-            font-size: 1.2rem; 
-            padding: 0 5px; 
-            position: relative; /* Ensure positioning context */
-            z-index: 10;       /* Bring handle forward */
-        }
+        .gallery-item .drag-handle { cursor: grab; color: #999; font-size: 1.2rem; padding: 0 5px; position: relative; z-index: 10; }
         .gallery-item .drag-handle:active { cursor: grabbing; }
-        /* === End style adjustment === */
         .gallery-item img.gallery-preview { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; flex-shrink: 0; border: 1px solid #ccc; background-color: #eee; }
         .gallery-item .gallery-url-input { flex-grow: 1; font-size: 0.85rem; padding: 0.375rem 0.75rem; border: 1px solid #ced4da; border-radius: 0.25rem; }
         .gallery-item .gallery-url-input:focus { border-color: #86b7fe; outline: 0; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25); }
@@ -114,7 +104,7 @@ if (!function_exists('getVlogPostActionButtons')) {
                                                 <?php foreach ($data['vlogPosts'] as $post): ?>
                                                     <tr>
                                                         <td class="text-center"><?php echo htmlspecialchars($post['id']); ?></td>
-                                                        <td><a href="<?php echo $baseUrl . '/vlog/' . htmlspecialchars($post['slug']); ?>" target="_blank" title="View Post: <?php echo htmlspecialchars($post['title']); ?>"><?php echo htmlspecialchars($post['title']); ?></a></td>
+                                                        <td><a href="<?php echo base_url('vlog/' . ($post['slug'] ?? '')); ?>" target="_blank" title="View Post: <?php echo htmlspecialchars($post['title']); ?>"><?php echo htmlspecialchars($post['title']); ?></a></td>
                                                         <td><div class="intro-snippet" title="<?php echo htmlspecialchars($post['introduction'] ?? ''); ?>"><?php echo htmlspecialchars(substr($post['introduction'] ?? '', 0, 120)) . (strlen($post['introduction'] ?? '') > 120 ? '...' : ''); ?></div></td>
                                                         <td class="text-center"><?php echo htmlspecialchars($post['author_name'] ?? 'N/A'); ?></td>
                                                         <td class="text-center"><?php if ($post['status'] === 'published'): ?> <span class="badge bg-success">Published</span> <?php else: ?> <span class="badge bg-light-secondary">Draft</span> <?php endif; ?></td>
@@ -140,7 +130,7 @@ if (!function_exists('getVlogPostActionButtons')) {
                 <h5 class="modal-title" id="addEditPostModalLabel">Add/Edit Vlog Post</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="addEditPostForm" method="POST" action="<?php echo $baseUrl; ?>/vlogPost/save" enctype="multipart/form-data" onsubmit="return prepareGalleryDataForSubmission();">
+            <form id="addEditPostForm" method="POST" action="<?php echo base_url('vlogPost/save'); ?>" enctype="multipart/form-data" onsubmit="return prepareGalleryDataForSubmission();">
                 <div class="modal-body">
                     <input type="hidden" name="id" id="postId">
                     <input type="hidden" name="gallery_images_json" id="gallery_images_json">
@@ -212,7 +202,7 @@ if (!function_exists('getVlogPostActionButtons')) {
 <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="deletePostForm" method="POST" action="<?php echo $baseUrl; ?>/vlogPost/delete">
+            <form id="deletePostForm" method="POST" action="<?php echo base_url('vlogPost/delete'); ?>">
                 <div class="modal-header"><h5 class="modal-title" id="deletePostModalLabel">Delete Vlog Post</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
                 <div class="modal-body"><p>Are you sure you want to delete the post "<strong id="deletePostTitle"></strong>"? This will also delete associated comments.</p><input type="hidden" name="id" id="deletePostId"></div>
                 <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-danger">Delete</button></div>
@@ -222,11 +212,12 @@ if (!function_exists('getVlogPostActionButtons')) {
 </div>
 
 <?php include 'components/script.php'; ?>
-<script src="<?php echo $baseUrl; ?>/assets/extensions/jquery/jquery.min.js"></script>
-<script src="<?php echo $baseUrl; ?>/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo $baseUrl; ?>/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/extensions/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 <script>
     let sortableGallery = null;
+    const apiUrl = '<?php echo $apiUrlForJs; ?>'; 
 
     $(document).ready(function () {
         $('#manageTable').DataTable({
@@ -392,7 +383,7 @@ if (!function_exists('getVlogPostActionButtons')) {
         $('#removeImageCheck').prop('checked', false);
         $('#featuredImagePreviewContainer').html('');
         if (postData.featured_image) {
-            const imageUrl = postData.featured_image.startsWith('/') ? '<?php echo $apiUrl ?? $baseUrl; ?>' + postData.featured_image : postData.featured_image;
+            const imageUrl = postData.featured_image.startsWith('/') ? apiUrl + postData.featured_image : postData.featured_image;
             $('#featuredImagePreviewContainer').html(`<img src="${imageUrl}" alt="Current Featured Image" class="img-thumbnail-modal">`);
             $('#btnRemoveImage').css('display', 'inline-block');
         } else {
@@ -406,7 +397,6 @@ if (!function_exists('getVlogPostActionButtons')) {
                 if (typeof imageUrl === 'string' && imageUrl) {
                     addGalleryItem(imageUrl);
                 } else if (typeof imageUrl === 'object' && imageUrl !== null && imageUrl.url) {
-                    // Handle potential old format if needed (array of objects)
                     addGalleryItem(imageUrl.url); 
                 }
             });
@@ -421,16 +411,16 @@ if (!function_exists('getVlogPostActionButtons')) {
 
     function addGalleryItem(url = '') {
         const container = $('#galleryItemsContainer');
-        const placeholderImg = '<?php echo $baseUrl; ?>/assets/static/images/placeholder.jpg';
+        const placeholderImg = '<?php echo base_url(); ?>assets/static/images/placeholder.jpg';
         const urlValue = (typeof url === 'string') ? url : '';
-        const previewSrc = urlValue || placeholderImg;
+        const previewSrc = urlValue ? (urlValue.startsWith('/') ? apiUrl + urlValue : urlValue) : placeholderImg;
         const uniqueId = 'gallery_item_' + Date.now() + Math.random().toString(36).substring(2, 7);
 
         const newItemHtml = `
             <div class="gallery-item d-flex align-items-center mb-2 p-2 border rounded bg-light" id="${uniqueId}">
                 <span class="drag-handle me-2 text-muted" title="Drag to reorder" style="cursor: grab;"><i class="bi bi-grip-vertical"></i></span>
                 <img src="${previewSrc}" alt="Preview" class="gallery-preview flex-shrink-0 me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px; border: ${urlValue ? 'none' : '1px solid #eee'};" onerror="this.src='${placeholderImg}'; this.style.border='1px solid #eee';">
-                <input type="url" class="form-control form-control-sm gallery-url-input flex-grow-1" placeholder="Image URL (https://...)" value="${urlValue}" required>
+                <input type="url" class="form-control form-control-sm gallery-url-input flex-grow-1" placeholder="Image URL (https://... or /uploads/...)" value="${urlValue}" required>
                 <button type="button" class="btn btn-danger btn-sm btn-remove-gallery-item ms-2 flex-shrink-0" title="Remove Image">
                     <i class="bi bi-x"></i>
                 </button>
@@ -440,8 +430,8 @@ if (!function_exists('getVlogPostActionButtons')) {
         $(`#${uniqueId} .gallery-url-input`).on('input change blur keyup', function() {
             const enteredUrl = $(this).val().trim();
             const previewImg = $(`#${uniqueId} .gallery-preview`);
-            if (enteredUrl && (enteredUrl.startsWith('http://') || enteredUrl.startsWith('https://') || enteredUrl.startsWith('/'))) { // Allow relative starting with /
-                previewImg.attr('src', enteredUrl).css('border','none');
+            if (enteredUrl && (enteredUrl.startsWith('http://') || enteredUrl.startsWith('https://') || enteredUrl.startsWith('/'))) { 
+                previewImg.attr('src', enteredUrl.startsWith('/') ? apiUrl + enteredUrl : enteredUrl).css('border','none');
             } else {
                 previewImg.attr('src', placeholderImg).css('border','1px solid #eee');
             }
@@ -458,7 +448,7 @@ if (!function_exists('getVlogPostActionButtons')) {
                 if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
                     galleryData.push(url);
                 } else {
-                    console.warn("Invalid URL format skipped:", url); // Log invalid format
+                    console.warn("Invalid URL format skipped:", url); 
                 }
             }
         });

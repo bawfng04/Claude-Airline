@@ -16,7 +16,7 @@ class VlogCommentModel extends Database {
     }
 
     public function getApprovedCommentsByPostId($postId) {
-        $sql = "SELECT vc.*, CONCAT(u.GIVEN_NAME, ' ', u.FAMILY_NAME) as user_name
+        $sql = "SELECT vc.*, CONCAT(u.GIVEN_NAME, ' ', u.FAMILY_NAME) as user_name, u.image as user_avatar_url
                 FROM {$this->table} vc
                 LEFT JOIN {$this->usersTable} u ON vc.user_id = u.ID
                 WHERE vc.post_id = :post_id AND vc.is_approved = 1
@@ -26,39 +26,56 @@ class VlogCommentModel extends Database {
         return $this->resultSet();
     }
 
-    public function addComment($postId, $userId, $comment, $rating = null, $guestName = null ) {
+    public function addComment($postId, $userId, $comment, $rating = null, $guestName = null, $isApproved = 0) {
         $sanitizedComment = htmlspecialchars(strip_tags($comment), ENT_QUOTES, 'UTF-8');
-        $sanitizedGuestName = $userId === null ? htmlspecialchars(strip_tags($guestName ?? ''), ENT_QUOTES, 'UTF-8') : null;
-
-        if ($userId !== null) {
-            $sanitizedGuestName = null;
-        }
+        $sanitizedGuestName = ($userId === null && $guestName !== null) ? htmlspecialchars(strip_tags($guestName), ENT_QUOTES, 'UTF-8') : null;
 
         $sql = "INSERT INTO {$this->table} (post_id, user_id, guest_name, comment, rating, is_approved)
-                VALUES (:post_id, :user_id, :guest_name, :comment, :rating, 0)"; 
+                VALUES (:post_id, :user_id, :guest_name, :comment, :rating, :is_approved)"; 
         $this->query($sql);
-        $this->bind(':post_id', $postId);
+        $this->bind(':post_id', $postId, PDO::PARAM_INT);
         $this->bind(':user_id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $this->bind(':guest_name', $sanitizedGuestName, $sanitizedGuestName === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $this->bind(':comment', $sanitizedComment);
         $this->bind(':rating', $rating, ($rating === null || $rating === 0) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $this->bind(':is_approved', $isApproved, PDO::PARAM_INT);
+        
         if ($this->execute()) {
+            if ($isApproved == 1 && ($rating !== null && $rating > 0)) {
+                $this->getPostModel()->updatePostRatings($postId);
+            }
             return true;
         }
         return false;
     }
 
+    public function updateUserComment($commentId, $userId, $commentText) {
+        $sanitizedComment = htmlspecialchars(strip_tags($commentText), ENT_QUOTES, 'UTF-8');
+        $sql = "UPDATE {$this->table} SET comment = :comment
+                WHERE id = :comment_id AND user_id = :user_id AND is_approved = 1";
+        $this->query($sql);
+        $this->bind(':comment', $sanitizedComment);
+        $this->bind(':comment_id', $commentId, PDO::PARAM_INT);
+        $this->bind(':user_id', $userId, PDO::PARAM_INT);
+        
+        if ($this->execute()) {
+            return $this->rowCount() > 0;
+        }
+        return false;
+    }
 
     public function getAllCommentsForAdmin($limit = 1000, $offset = 0) {
         $sql = "SELECT
                         vc.*,
                         CONCAT(u.GIVEN_NAME, ' ', u.FAMILY_NAME) as user_name, 
+                        u.image as user_avatar_url,
                         vp.title as post_title,
                         vp.slug as post_slug
                 FROM {$this->table} vc
                 LEFT JOIN {$this->usersTable} u ON vc.user_id = u.ID 
                 JOIN {$this->postsTable} vp ON vc.post_id = vp.id
-                ORDER BY vc.created_at DESC LIMIT :limit OFFSET :offset";
+                ORDER BY vc.is_approved ASC, vc.created_at DESC 
+                LIMIT :limit OFFSET :offset";
         $this->query($sql);
         $this->bind(':limit', $limit, PDO::PARAM_INT);
         $this->bind(':offset', $offset, PDO::PARAM_INT);
