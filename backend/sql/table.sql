@@ -4,39 +4,6 @@ CREATE DATABASE IF NOT EXISTS claude_airlines;
 -- Sử dụng cơ sở dữ liệu vừa tạo
 USE claude_airlines;
 
--- Tạo bảng faq
-CREATE TABLE faq (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
-    question TEXT NOT NULL,            -- Câu hỏi
-    answer TEXT NOT NULL,              -- Câu trả lời
-    category VARCHAR(255) NOT NULL,    -- Danh mục
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
-);
-
--- CONTACT_LOCATIONS
-CREATE TABLE CONTACT_LOCATIONS (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
-    location_name VARCHAR(255) NOT NULL, -- Tên địa điểm
-    des_type VARCHAR(50) NOT NULL, -- Loại địa chỉ (ví dụ: văn phòng, chi nhánh)
-    address_string VARCHAR(255) NOT NULL, -- Địa chỉ
-    phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
-    working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
-    email VARCHAR(255) NOT NULL, -- Địa chỉ email
-    location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
-);
-
-CREATE TABLE CONTACT_MESSAGES (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phone VARCHAR(50) NULL,
-    subject VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    status ENUM('unread', 'read', 'replied') DEFAULT 'unread',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
 
 -- HOMEPAGE_TOP_DESTINATIONS + HOMEPAGE_NEXT_TRIP
 CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
@@ -51,7 +18,6 @@ CREATE TABLE HOMEPAGE_TOP_DESTINATIONS (
     destination_offer VARCHAR(255) NOT NULL, -- Ưu đãi địa điểm
     destination_category VARCHAR(255) NOT NULL -- Danh mục địa điểm
 );
-
 
 -- HOMEPAGE_TRAVEL_PACKAGES
 CREATE TABLE HOMEPAGE_TRAVEL_PACKAGES (
@@ -79,6 +45,51 @@ CREATE TABLE HOMEPAGE_SERVICES (
     service_image VARCHAR(255) NOT NULL -- Hình ảnh dịch vụ
 );
 
+-- CONTACT_LOCATIONS
+CREATE TABLE CONTACT_LOCATIONS (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    location_name VARCHAR(255) NOT NULL, -- Tên địa điểm
+    des_type VARCHAR(50) NOT NULL, -- Loại địa chỉ (ví dụ: văn phòng, chi nhánh)
+    address_string VARCHAR(255) NOT NULL, -- Địa chỉ
+    phone_number VARCHAR(20) NOT NULL, -- Số điện thoại
+    working_hours VARCHAR(50) NOT NULL, -- Giờ làm việc
+    email VARCHAR(255) NOT NULL, -- Địa chỉ email
+    location_embed_code TEXT NOT NULL -- Sđịa điểm (Google Maps)
+);
+
+CREATE TABLE CONTACT_MESSAGES (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('unread', 'read', 'replied') DEFAULT 'unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+-- Tạo bảng faq
+CREATE TABLE faq (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID tự tăng, khóa chính
+    question TEXT NOT NULL,            -- Câu hỏi
+    answer TEXT NOT NULL,              -- Câu trả lời
+    category VARCHAR(255) NOT NULL,    -- Danh mục
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
+);
+
+CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    carousel_image VARCHAR(255) NOT NULL,
+    carousel_alt TEXT NOT NULL,
+    carousel_caption TEXT NOT NULL
+)
+
+
+
 -- Table: about_us
 CREATE TABLE ABOUT_US (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,8 +98,6 @@ CREATE TABLE ABOUT_US (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
-
 
 -- Table: core_values
 CREATE TABLE CORE_VALUE (
