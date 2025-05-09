@@ -1,6 +1,6 @@
 <?php
-
-define('BASE_URL', 'http://localhost');
+require_once __DIR__ . '/../helpers/JwtHelper.php';
+require_once __DIR__ . '/../middlewares/authMiddleware.php';
 
 class VlogComment extends Controller {
 
@@ -13,46 +13,30 @@ class VlogComment extends Controller {
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
     }
 
-    /**
-     * Renamed from manage(): Loads the admin management view for vlog comments.
-     * Default action for this controller.
-     * Accessed via URL: /vlogComment or /vlogComment/index
-     */
     public function index() {
-        // if (!$this->isAdmin()) { header('Location: ' . BASE_URL . '/admin/login'); exit; }
-
         try {
             $comments = $this->commentModel->getAllCommentsForAdmin();
             $data = [
                 'pageTitle' => 'Vlog Comments Management',
                 'vlogComments' => $comments ?: []
             ];
-            $this->view('vlog_comments_manage', $data); // Load the PHP view
+            $this->view('vlog_comments_manage', $data);
         } catch (Exception $e) {
             die('Error loading vlog comments: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Handles approving a comment.
-     * Accessed via URL: /vlogComment/approve/{commentId} (if using GET link)
-     * OR /vlogComment/approve (if using POST form)
-     */
     public function approve($commentId = null) {
-        // if (!$this->isAdmin()) { header('Location: ' . BASE_URL . '/admin/login'); exit; }
-
-        // Get ID from POST if form used, otherwise from URL segment if GET link used
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $commentId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         }
 
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             $_SESSION['flash_error'] = 'Invalid Comment ID for approval.';
-            header('Location: ' . BASE_URL . '/vlogComment'); exit;
+            header('Location: ' . base_url('vlogComment')); exit;
         }
 
         try {
-            // Optional: check if comment exists and is pending first
             if ($this->commentModel->approveComment($commentId)) {
                 $_SESSION['flash_success'] = 'Comment approved successfully.';
             } else {
@@ -61,30 +45,22 @@ class VlogComment extends Controller {
         } catch (Exception $e) {
             $_SESSION['flash_error'] = 'Error approving comment: ' . $e->getMessage();
         }
-        header('Location: ' . BASE_URL . '/vlogComment'); // Redirect back to index
+        header('Location: ' . base_url('vlogComment'));
         exit;
     }
     
-    /**
-     * Handles disapproving an approved comment.
-     * Sets the comment status back to pending (is_approved = 0).
-     * Accessed via URL: /vlogComment/disapprove (if using POST form)
-     */
     public function disapprove($commentId = null) {
-        // Optional: Add admin check if (!$this->isAdmin()) { header('Location: ' . BASE_URL . '/admin/login'); exit; }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $commentId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         }
 
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             $_SESSION['flash_error'] = 'Invalid Comment ID for disapproval.';
-            header('Location: ' . BASE_URL . '/vlogComment'); 
+            header('Location: ' . base_url('vlogComment'));
             exit;
         }
 
         try {
-            // You will need to create this method in your VlogCommentModel
             if ($this->commentModel->disapproveComment($commentId)) {
                 $_SESSION['flash_success'] = 'Comment disapproved and set to pending.';
             } else {
@@ -93,21 +69,14 @@ class VlogComment extends Controller {
         } catch (Exception $e) {
             $_SESSION['flash_error'] = 'Error disapproving comment: ' . $e->getMessage();
         }
-        header('Location: ' . BASE_URL . '/vlogComment'); // Redirect back to index
+        header('Location: ' . base_url('vlogComment'));
         exit;
     }
 
-    /**
-     * Handles deleting a comment from the admin modal form.
-     * Accessed via URL: /vlogComment/delete (Form POST target)
-     */
     public function delete() {
-        // if (!$this->isAdmin()) { header('Location: ' . BASE_URL . '/admin/login'); exit; }
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . BASE_URL . '/vlogComment'); exit; }
-
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . base_url('vlogComment')); exit; }
         $commentId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-
-        if (!$commentId) { $_SESSION['flash_error'] = 'Invalid Comment ID for deletion.'; header('Location: ' . BASE_URL . '/vlogComment'); exit; }
+        if (!$commentId) { $_SESSION['flash_error'] = 'Invalid Comment ID for deletion.'; header('Location: ' . base_url('vlogComment')); exit; }
 
         try {
             if ($this->commentModel->deleteComment($commentId)) {
@@ -118,29 +87,18 @@ class VlogComment extends Controller {
         } catch (Exception $e) {
             $_SESSION['flash_error'] = 'Error deleting comment: ' . $e->getMessage();
         }
-        header('Location: ' . BASE_URL . '/vlogComment'); // Redirect back to index
+        header('Location: ' . base_url('vlogComment'));
         exit;
     }
 
-
-
-    // --- API Methods (Keep if needed for React Client View) ---
-    /**
-     * API: List approved comments for a specific post ID.
-     * GET /vlogComment/listApproved/{postId}
-     */
     public function listApproved($postId = null) {
         if (!filter_var($postId, FILTER_VALIDATE_INT) || $postId <= 0) { return $this->jsonResponse(400, 'Invalid Post ID.'); }
         try {
             $comments = $this->commentModel->getApprovedCommentsByPostId($postId);
-            $this->jsonResponse(200, 'Success', $comments ?: []); // Return empty array if no comments
-        } catch (Exception $e) { $this->jsonResponse(500, 'Error fetching comments', $e->getMessage()); }
+            $this->jsonResponse(200, 'Success', $comments ?: []);
+        } catch (Exception $e) { $this->jsonResponse(500, 'Error fetching comments', ['error' => $e->getMessage()]); }
     }
 
-    /**
-     * User/Guest: Create a new comment. Handles logged-in and anonymous users.
-     * Called via URL: /vlogComment/createComment/{postId} (expects POST with JSON body)
-     */
     public function createComment($postId = null) {
         if (!filter_var($postId, FILTER_VALIDATE_INT) || $postId <= 0) {
             return $this->jsonResponse(400, 'Invalid Post ID.');
@@ -151,9 +109,8 @@ class VlogComment extends Controller {
 
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // --- Basic Validation ---
-        if (empty($data['comment']) || trim($data['comment']) === '') {
-            return $this->jsonResponse(400, 'Comment text cannot be empty.');
+        if (json_last_error() !== JSON_ERROR_NONE || empty($data['comment']) || trim($data['comment']) === '') {
+            return $this->jsonResponse(400, 'Comment text cannot be empty or invalid JSON.');
         }
         $rating = null;
         if (isset($data['rating'])) {
@@ -161,79 +118,69 @@ class VlogComment extends Controller {
             if ($ratingValue !== null && $ratingValue !== 0) {
                 $rating = filter_var($ratingValue, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 5]]);
                 if ($rating === false) { return $this->jsonResponse(400, 'Invalid rating value (must be 1-5 or null/0).'); }
-            } // Allow 0 or null to pass through if needed, handled by model binding
-            elseif ($ratingValue === 0) { $rating = 0; } // Explicitly allow 0 if desired
+            } elseif ($ratingValue === 0) { $rating = 0; }
         }
 
-        // --- Determine User Type ---
         $userId = null;
-        $guestName = null;
-        $guestEmail = null;
+        $guestName = isset($data['guest_name']) ? trim($data['guest_name']) : null;
+        $isApproved = 0; 
 
-        if (isset($_SESSION['user_id'])) {
-            // --- Logged-in User ---
-            $userId = $_SESSION['user_id'];
-        } else {
-            // --- Anonymous User ---
-            if (empty($data['guest_name']) || trim($data['guest_name']) === '') {
-                return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
-            }
-            $guestName = trim($data['guest_name']);
-            // Guest Email is optional, validate if provided
-            if (!empty($data['guest_email'])) {
-                $guestEmail = filter_var(trim($data['guest_email']), FILTER_VALIDATE_EMAIL);
-                if ($guestEmail === false) {
-                    return $this->jsonResponse(400, 'Invalid guest email format provided.');
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['HTTP_X_AUTHORIZATION'] ?? null);
+        if ($authHeader) {
+            try {
+                $authPayload = authMiddleware(false); 
+                if ($authPayload && isset($authPayload->id)) {
+                    $userId = $authPayload->id;
+                    $isApproved = 1;
+                    // If logged in, guestName from input is used if provided, otherwise it's null (profile name will be shown)
+                    $guestName = (!empty($guestName)) ? $guestName : null;
+                } else {
+                    // Auth failed or no payload id, ensure guestName is present if not logged in
+                    if (empty($guestName)) {
+                        return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
+                    }
+                }
+            } catch (Exception $e) {
+                // Exception during auth, ensure guestName is present
+                 if (empty($guestName)) {
+                    return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
                 }
             }
+        } else {
+            // No auth header, treat as guest, guestName is required
+            if (empty($guestName)) {
+                return $this->jsonResponse(400, 'Guest name is required for anonymous comments.');
+            }
         }
-
-        // --- Add Comment ---
+        
         try {
-            // Optional: Check if post exists?
-            // $post = $this->postModel->getPostById($postId); if (!$post) { ... }
-
-            if ($this->commentModel->addComment($postId, $userId, $data['comment'], $rating, $guestName)) {
-                $this->jsonResponse(201, 'Comment submitted for approval.');
+            if ($this->commentModel->addComment($postId, $userId, $data['comment'], $rating, $guestName, $isApproved)) {
+                 $message = $isApproved ? 'Comment posted successfully.' : 'Comment submitted for approval.';
+                $this->jsonResponse(201, $message);
             } else { throw new Exception('Failed to save comment.'); }
         } catch (Exception $e) {
-            $this->jsonResponse(500, 'Error submitting comment', $e->getMessage());
+            $this->jsonResponse(500, 'Error submitting comment: ' . $e->getMessage());
         }
     }
 
-    // /**
-    //  * Helper for admin check (example)
-    //  */
-    // private function isAdmin() {
-    //     // Replace with your actual admin check logic
-    //     return (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin');
-    // }
-    /**
-     * API: Admin lists all comments
-     * GET /vlogComment/adminList
-     */
+    // updateComment method REMOVED
+    // getCommentForEdit method REMOVED
+
     public function adminList() {
-        // TODO: Admin auth check
-        // if (!$this->isAdmin()) { return $this->jsonResponse(403, 'Unauthorized'); }
         try {
-            $comments = $this->commentModel->getAllCommentsForAdmin(); // This now includes 'likes'
+            $comments = $this->commentModel->getAllCommentsForAdmin();
             $this->jsonResponse(200, 'Admin comments fetched', $comments ?: []);
         } catch (Exception $e) {
             $this->jsonResponse(500, 'Error fetching admin comments', ['error_message' => $e->getMessage()]);
         }
     }
 
-    /**
-     * API: Admin approves a comment
-     * POST /vlogComment/adminApprove/{commentId}
-     */
     public function adminApprove($commentId = null) {
-        // TODO: Admin auth check
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             return $this->jsonResponse(400, 'Invalid Comment ID.');
         }
         try {
-            if ($this->commentModel->approveComment($commentId)) { // This now updates post ratings
+            if ($this->commentModel->approveComment($commentId)) {
                 $this->jsonResponse(200, 'Comment approved successfully.');
             } else {
                 $this->jsonResponse(500, 'Failed to approve comment.');
@@ -243,17 +190,12 @@ class VlogComment extends Controller {
         }
     }
 
-    /**
-     * API: Admin deletes a comment
-     * POST /vlogComment/adminDelete/{commentId} (or DELETE method if router supports)
-     */
     public function adminDelete($commentId = null) {
-        // TODO: Admin auth check
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             return $this->jsonResponse(400, 'Invalid Comment ID.');
         }
         try {
-            if ($this->commentModel->deleteComment($commentId)) { // This now updates post ratings
+            if ($this->commentModel->deleteComment($commentId)) {
                 $this->jsonResponse(200, 'Comment deleted successfully.');
             } else {
                 $this->jsonResponse(500, 'Failed to delete comment.');
@@ -263,14 +205,7 @@ class VlogComment extends Controller {
         }
     }
 
-    /**
-     * API: User likes a comment
-     * POST /vlogComment/like/{commentId}
-     */
     public function like($commentId = null) {
-        // TODO: Implement user authentication. Only logged-in users should be able to like.
-        // if (!isUserLoggedIn()) { return $this->jsonResponse(403, 'Login required to like comments.'); }
-
         if (!filter_var($commentId, FILTER_VALIDATE_INT) || $commentId <= 0) {
             return $this->jsonResponse(400, 'Invalid Comment ID.');
         }
@@ -280,5 +215,4 @@ class VlogComment extends Controller {
             $this->jsonResponse(500, 'Failed to like comment or already liked/error.');
         }
     }
-
 }

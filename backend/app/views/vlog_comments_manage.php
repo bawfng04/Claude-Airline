@@ -1,18 +1,16 @@
 <?php
-$baseUrl = defined('BASE_URL') ? BASE_URL : '';
 if (!function_exists('getVlogCommentActionButtons')) {
     function getVlogCommentActionButtons($comment) {
-        global $baseUrl;
         $conditionalButton = '';
 
         if (!$comment['is_approved']) {
-            $approveActionUrl = $baseUrl . '/vlogComment/approve';
+            $approveActionUrl = base_url('vlogComment/approve');
             $conditionalButton = '<form method="POST" action="'. $approveActionUrl .'" style="display: inline-block; margin: 0 1px;" onsubmit="return confirm(\'Approve this comment?\');">
                                     <input type="hidden" name="id" value="'.$comment['id'].'">
                                     <button type="submit" class="btn btn-sm btn-success px-2 py-1" title="Approve"><i class="bi bi-check-lg"></i></button>
                                 </form>';
         } else {
-            $disapproveActionUrl = $baseUrl . '/vlogComment/disapprove';
+            $disapproveActionUrl = base_url('vlogComment/disapprove');
             $conditionalButton = '<form method="POST" action="'. $disapproveActionUrl .'" style="display: inline-block; margin: 0 1px;" onsubmit="return confirm(\'Disapprove this comment? This will set it back to pending.\');">
                                     <input type="hidden" name="id" value="'.$comment['id'].'">
                                     <button type="submit" class="btn btn-sm btn-warning px-2 py-1" title="Disapprove"><i class="bi bi-x-lg"></i></button>
@@ -30,17 +28,17 @@ if (!function_exists('getVlogCommentActionButtons')) {
 <head>
     <?php include 'components/meta_header.php'; ?>
     <title><?php echo htmlspecialchars($data['pageTitle'] ?? 'Vlog Comments Management'); ?></title>
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/assets/compiled/css/table-datatable-jquery.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/compiled/css/table-datatable-jquery.css">
     <style>
         #manageTable th, #manageTable td { vertical-align: middle; }
-        #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 16%; }
-        #manageTable th:nth-child(2), #manageTable td:nth-child(2) { width: 34%; max-width: 350px; }
-        #manageTable th:nth-child(3), #manageTable td:nth-child(3) { width: 23%; max-width: 180px; }
-        #manageTable th:nth-child(4), #manageTable td:nth-child(4) { width: 6%; }
-        #manageTable th:nth-child(5), #manageTable td:nth-child(5) { width: 6%; }
-        #manageTable th:nth-child(6), #manageTable td:nth-child(6) { width: 6%; }
-        #manageTable th:nth-child(7), #manageTable td:nth-child(7) { width: 8%; }
+        #manageTable th:nth-child(1), #manageTable td:nth-child(1) { width: 16%; } 
+        #manageTable th:nth-child(2), #manageTable td:nth-child(2) { width: 34%; max-width: 350px; } 
+        #manageTable th:nth-child(3), #manageTable td:nth-child(3) { width: 23%; max-width: 180px; } 
+        #manageTable th:nth-child(4), #manageTable td:nth-child(4) { width: 6%; } 
+        #manageTable th:nth-child(5), #manageTable td:nth-child(5) { width: 6%; } 
+        #manageTable th:nth-child(6), #manageTable td:nth-child(6) { width: 6%; } 
+        #manageTable th:nth-child(7), #manageTable td:nth-child(7) { width: 8%; } 
 
         #manageTable td { white-space: normal !important; word-break: break-word; }
         .comment-snippet { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.85rem; color: #6c757d; line-height: 1.4; }
@@ -48,6 +46,14 @@ if (!function_exists('getVlogCommentActionButtons')) {
         .dataTables_wrapper .dataTables_filter { float: right; text-align: right; }
         .dataTables_wrapper .dt-length-filter-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .dataTables_wrapper .dt-length-filter-container .dataTables_filter { margin-left: auto; }
+        .dataTables_wrapper .dataTables_filter input[type="search"] {
+            min-width: 280px; /* Increased width */
+            height: calc(1.5em + .75rem + 2px); /* Standard Bootstrap input height */
+            padding: .375rem .75rem; /* Standard Bootstrap padding */
+            font-size: 1rem; /* Standard Bootstrap font size */
+            line-height: 1.5;
+            border-radius: .25rem; /* Standard Bootstrap border-radius */
+        }
         #manageTable th.text-center, #manageTable td.text-center { text-align: center; }
         #manageTable td:nth-child(1) i { margin-right: 0.3rem; }
     </style>
@@ -96,7 +102,7 @@ if (!function_exists('getVlogCommentActionButtons')) {
                                                             <?php endif; ?>
                                                         </td>
                                                         <td> <div class="comment-snippet" title="<?php echo htmlspecialchars($comment['comment']); ?>"><?php echo htmlspecialchars(substr($comment['comment'], 0, 100)) . (strlen($comment['comment']) > 100 ? '...' : ''); ?></div> </td>
-                                                        <td><a href="<?php echo $baseUrl . '/vlog/' . htmlspecialchars($comment['post_slug'] ?? '#'); ?>" target="_blank" title="<?php echo htmlspecialchars($comment['post_title'] ?? 'View Post'); ?>"><?php echo htmlspecialchars(substr($comment['post_title'] ?? 'N/A', 0, 30)) . (strlen($comment['post_title'] ?? '') > 30 ? '...' : ''); ?></a></td>
+                                                        <td><a href="<?php echo base_url('vlog/' . ($comment['post_slug'] ?? '')); ?>" target="_blank" title="<?php echo htmlspecialchars($comment['post_title'] ?? 'View Post'); ?>"><?php echo htmlspecialchars(substr($comment['post_title'] ?? 'N/A', 0, 30)) . (strlen($comment['post_title'] ?? '') > 30 ? '...' : ''); ?></a></td>
                                                         <td class="text-center"><?php echo $comment['rating'] ? '<i class="bi bi-star-fill text-warning"></i> ' . $comment['rating'] : '-'; ?></td>
                                                         <td class="text-center"><?php echo htmlspecialchars($comment['likes'] ?? 0); ?></td> 
                                                         <td class="text-center"> <?php if ($comment['is_approved']): ?> <span class="badge bg-success">Approved</span> <?php else: ?> <span class="badge bg-warning">Pending</span> <?php endif; ?> </td>
@@ -118,7 +124,7 @@ if (!function_exists('getVlogCommentActionButtons')) {
     <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="POST" action="<?php echo $baseUrl; ?>/vlogComment/delete" onsubmit="return confirm('Are you absolutely sure you want to delete this comment? This action cannot be undone.');">
+                <form method="POST" action="<?php echo base_url('vlogComment/delete'); ?>" onsubmit="return confirm('Are you absolutely sure you want to delete this comment? This action cannot be undone.');">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteCommentModalLabel">Confirm Delete</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -140,15 +146,16 @@ if (!function_exists('getVlogCommentActionButtons')) {
     </div>
 
     <?php include 'components/script.php'; ?>
-    <script src="<?php echo $baseUrl; ?>/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="<?php echo $baseUrl; ?>/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="<?php echo $baseUrl; ?>/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/extensions/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#manageTable').DataTable({
-                "order": [[ 5, "asc" ], [0, "desc"]],
+                "order": [[5, "dsc"], [0, "asc"]], 
                 "columnDefs": [
-                    { "orderable": false, "targets": [1, 2, 6] }
+                    { "orderable": false, "targets": [1, 6] }, 
+                    { "orderable": true, "targets": [0, 2, 3, 4, 5] } 
                 ],
                 "language": {
                     "search": "_INPUT_",

@@ -39,12 +39,18 @@ class Controller {
     }
 
     protected function jsonResponse($status, $message, $data = null) {
-        header('Content-Type: application/json');
-        http_response_code($status);
+        if (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        if (!headers_sent()) {
+            header('Content-Type: application/json; charset=UTF-8');
+            http_response_code($status);
+        }
         echo json_encode([
             'status' => $status,
             'message' => $message,
             'data' => $data
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
+        exit; // Add this line
     }
 }

@@ -66,9 +66,11 @@ class Database {
             return $this->stmt->execute();
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
-            // Log lỗi ở đây
-            echo "Lỗi thực thi SQL: " . $this->error; // Chỉ để debug, không nên echo lỗi ra production
-            return false;
+            // Log the error for your records
+            error_log("SQL Execution Error: " . $e->getMessage() . " --- SQL: " . (isset($this->stmt->queryString) ? $this->stmt->queryString : 'Query not available'));
+    
+            // Re-throw the exception
+            throw $e;
         }
     }
 
