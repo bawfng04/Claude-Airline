@@ -114,11 +114,6 @@ VALUES
   'Travel Guidelines'
 );
 
-INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
-VALUES
-('123 Aviation Blvd, Los Angeles, CA 90045', 'Main Office', '+84 90 123 6608', 'Mon-Fri 9am-5pm'),
-(' 456 Park Avenue, New York, NY 10022', 'Regional Office', '987-654-3210', 'Mon-Fri 10am-6pm'),
-('789 Michigan Ave, Chicago, IL 60611', 'Regional Office', '555-555-5555', 'Mon-Fri 8am-4pm');
 
 INSERT INTO ABOUT_US (title, content)
 VALUES
@@ -132,7 +127,7 @@ VALUES
 ('Customer Focus', 'We prioritize our customers in everything we do, ensuring their needs and preferences are at the forefront of our services.', 'FaUsers'),
 ('Safety First', 'Safety is non-negotiable, and we maintain the highest standards in all our operations.', 'FaCheckCircle'),
 ('Excellence', 'We strive for excellence in every aspect of our service, continuously improving to exceed expectations.', 'FaMedal'),
-('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory')
+('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory');
 
 INSERT INTO ACHIEVEMENTS (title, description, year)
 VALUES
@@ -142,7 +137,7 @@ VALUES
 ('Green Airline of the Year', 'Recognized for our commitment to sustainability and reducing carbon emissions', '2021'),
 ('Best Cabin Crew', 'Awarded by Skytrax World Airline Awards for outstanding service and hospitality', '2020'),
 ('Best Low-Cost Airline', 'Recognized for providing affordable travel options without compromising on quality', '2019'),
-('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018')
+('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018');
 
 
 INSERT INTO LEADERSHIP_TEAM (name, position, bio)
@@ -190,6 +185,7 @@ VALUES
     ('Tokyo Office', 'Branch Office', 'Tokyo, Korea', '+841030102332444', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.4330971849653!2d139.8085117152003!3d35.71014153618419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ed6f44659b9%3A0x30e534e2114c0e71!2sTokyo%20Skytree!5e0!3m2!1sen!2sjp!4v1650123456789!5m2!1sen!2sjp'),
     ('Sydney Office', 'Branch Office', 'Sydney, USA', '+84103010234', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3313.3736662710805!2d151.21303131571477!3d-33.856928180659004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae665e892fdd%3A0x3133f8d75a1ac251!2sSydney%20Opera%20House!5e0!3m2!1sen!2sau!4v1650123456789!5m2!1sen!2sau'),
     ('Dubai Office', 'Main Office', 'Dubai, Korea', '+8410301023324', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1785970160156!2d55.27251251500987!3d25.197209838364504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682829c723b9%3A0x7bf247a82876c200!2sBurj%20Khalifa!5e0!3m2!1sen!2sae!4v1650123456789!5m2!1sen!2sae');
+
 
 
 INSERT IGNORE INTO `USERS` (`ID`, `FAMILY_NAME`, `GIVEN_NAME`, `EMAIL`, `PASSWORD`, `BIRTHDAY`, `NATIONALITY`, `ROLE`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT`) VALUES
