@@ -4,7 +4,7 @@ VALUES
 -- Booking
 (
   'How do I book a flight?',
-  'To book a flight, navigate to our homepage and use the booking form. Enter your departure and arrival destinations, select your travel dates, and click ''Search Flights''. You will then be presented with available options where you can select your preferred flight and complete the booking process by entering passenger details and payment information.',
+  'To book a flight, navigate to our homepage and use the booking form. Enter your departure and arrival destinations, select your travel dates, and click ''Search Flights''. You''ll then be presented with available options where you can select your preferred flight and complete the booking process by entering passenger details and payment information.',
   'Booking'
 ),
 (
@@ -52,7 +52,7 @@ VALUES
 -- Membership
 (
   'How do I join your frequent flyer program?',
-  'Joining our frequent flyer program is easy and free. Simply click on the ''Join Now'' button on our website and complete the registration form. Once registered, you will receive a membership number that you can use when booking flights to earn miles. These miles can be redeemed for free flights, upgrades, and various other rewards with our partner airlines and businesses.',
+  'Joining our frequent flyer program is easy and free. Simply click on the ''Join Now'' button on our website and complete the registration form. Once registered, you''ll receive a membership number that you can use when booking flights to earn miles. These miles can be redeemed for free flights, upgrades, and various other rewards with our partner airlines and businesses.',
   'Membership'
 ),
 (
@@ -114,25 +114,20 @@ VALUES
   'Travel Guidelines'
 );
 
-INSERT INTO CONTACT_LOCATIONS (address_string, des_type, phone_number, working_hours)
-VALUES
-('123 Aviation Blvd, Los Angeles, CA 90045', 'Main Office', '+84 90 123 6608', 'Mon-Fri 9am-5pm'),
-(' 456 Park Avenue, New York, NY 10022', 'Regional Office', '987-654-3210', 'Mon-Fri 10am-6pm'),
-('789 Michigan Ave, Chicago, IL 60611', 'Regional Office', '555-555-5555', 'Mon-Fri 8am-4pm');
 
 INSERT INTO ABOUT_US (title, content)
 VALUES
 ('Our Story', "Founded in 1998, our airline began with a small fleet of just 3 aircraft serving domestic routes. Today, we've grown to become one of Southeast Asia's leading carriers, connecting passengers to over 100 destinations worldwide with a modern fleet of 78 aircraft."),
 ('Our Mission', 'To connect people and places with safe, reliable air travel that is accessible to all, while delivering exceptional service that exceeds expectations at every step of the journey.'),
-('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer experience that sets the industry standard.');
-
+('Our Vision', 'To be recognized globally as the airline of choice, known for innovation, sustainability, and a customer 
+experience that sets the industry standard.');
 
 INSERT INTO CORE_VALUE (title, description, icon)
 VALUES
 ('Customer Focus', 'We prioritize our customers in everything we do, ensuring their needs and preferences are at the forefront of our services.', 'FaUsers'),
 ('Safety First', 'Safety is non-negotiable, and we maintain the highest standards in all our operations.', 'FaCheckCircle'),
 ('Excellence', 'We strive for excellence in every aspect of our service, continuously improving to exceed expectations.', 'FaMedal'),
-('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory')
+('Reliability', 'We keep our promises to passengers, with punctuality and dependability in all our operations.', 'FaHistory');
 
 INSERT INTO ACHIEVEMENTS (title, description, year)
 VALUES
@@ -142,7 +137,7 @@ VALUES
 ('Green Airline of the Year', 'Recognized for our commitment to sustainability and reducing carbon emissions', '2021'),
 ('Best Cabin Crew', 'Awarded by Skytrax World Airline Awards for outstanding service and hospitality', '2020'),
 ('Best Low-Cost Airline', 'Recognized for providing affordable travel options without compromising on quality', '2019'),
-('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018')
+('Most Innovative Airline', 'Awarded for our use of technology to enhance the passenger experience', '2018');
 
 
 INSERT INTO LEADERSHIP_TEAM (name, position, bio)
@@ -173,24 +168,6 @@ VALUES
 (2, 'All meals are prepared using fresh, high-quality ingredients, with special dietary requirements accommodated with advance notice.'),
 (3, 'Our fleet consists of modern, fuel-efficient aircraft designed for comfort and sustainability. Each aircraft is equipped with the latest technology to ensure a smooth and enjoyable flight.'),
 (3, 'We continuously invest in our fleet to enhance passenger comfort and reduce our environmental impact, with a commitment to sustainability at the core of our operations.');
-
-INSERT INTO HOMEPAGE_TOP_DESTINATIONS (destination_image, destination_name, destination_country, destination_price, destination_description, destination_begin, destination_end, destination_offer, destination_category)
-VALUES
-('image1.jpg', 'Paris', 'France', 499.99, 'Explore the city of lights with our exclusive package.', '2023-12-01', '2023-12-10', '20% off for early bookings!', 'Europe'),
-('image2.jpg', 'Tokyo', 'Japan', 699.99, 'Experience the blend of tradition and modernity in Tokyo.', '2024-01-15', '2024-01-25', 'Free guided tours included!', 'Asia'),
-('image3.jpg', 'New York', 'USA', 899.99, 'Discover the vibrant culture and iconic landmarks of New York City.', '2024-02-05', '2024-02-15', 'Book now and get a free city tour!', 'North America');
-
---Contact Locations
-INSERT INTO contact_locations (location_name, des_type, address_string, phone_number, working_hours, email, location_embed_code)
-VALUES
-    ('Los Angeles Office', 'Branch Office', 'Los Angeles', '+8410301023', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13219.891667483433!2d-118.39967993022464!3d33.94611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2b6ab5dc0d481%3A0x6075ef0a08ec2a7d!2sLos%20Angeles%20International%20Airport%20(LAX)!5e0!3m2!1sen!2sus!4v1650123456789!5m2!1sen!2sus'),
-    ('New York 2', 'Main Office', 'New York 2', '+8410301023', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976397304903!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1619822446442!5m2!1sen!2s'),
-    ('Chicago Office', 'Branch Office', 'Chicago', '+8410301023', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.6533383913886!2d-87.62544368455809!3d41.88227087922149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2ca3e2d94695%3A0x4829f3cc9ca2d0de!2sMillennium%20Park!5e0!3m2!1sen!2sus!4v1650123456789!5m2!1sen!2sus'),
-    ('Tokyo Office', 'Branch Office', 'Tokyo, Korea', '+841030102332', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.4330971849653!2d139.8085117152003!3d35.71014153618419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ed6f44659b9%3A0x30e534e2114c0e71!2sTokyo%20Skytree!5e0!3m2!1sen!2sjp!4v1650123456789!5m2!1sen!2sjp'),
-    ('Tokyo Office', 'Branch Office', 'Tokyo, Korea', '+841030102332444', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.4330971849653!2d139.8085117152003!3d35.71014153618419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ed6f44659b9%3A0x30e534e2114c0e71!2sTokyo%20Skytree!5e0!3m2!1sen!2sjp!4v1650123456789!5m2!1sen!2sjp'),
-    ('Sydney Office', 'Branch Office', 'Sydney, USA', '+84103010234', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3313.3736662710805!2d151.21303131571477!3d-33.856928180659004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae665e892fdd%3A0x3133f8d75a1ac251!2sSydney%20Opera%20House!5e0!3m2!1sen!2sau!4v1650123456789!5m2!1sen!2sau'),
-    ('Dubai Office', 'Main Office', 'Dubai, Korea', '+8410301023324', 'Mon-Fri 9am-3pm', 'nguyendinhbang53az@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1785970160156!2d55.27251251500987!3d25.197209838364504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682829c723b9%3A0x7bf247a82876c200!2sBurj%20Khalifa!5e0!3m2!1sen!2sae!4v1650123456789!5m2!1sen!2sae');
-
 
 INSERT IGNORE INTO `USERS` (`ID`, `FAMILY_NAME`, `GIVEN_NAME`, `EMAIL`, `PASSWORD`, `BIRTHDAY`, `NATIONALITY`, `ROLE`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT`) VALUES
 (1, 'Admin', 'User', 'admin@claudeair.test', '$2y$10$placeholderhashfortestingonly1', '1990-01-01', 'Testland', 'ADMIN', 1, NOW(), NOW()),
@@ -241,3 +218,62 @@ INSERT INTO `vlog_comments` (`id`, `post_id`, `user_id`, `guest_name`, `comment`
 (28, 8, 2, NULL, 'Winter in the Rockies! So picturesque. Lake Louise skating looks iconic.', 5, 1, 16, '2025-05-04 01:02:01'),
 (29, 8, NULL, 'ColdWeatherFan', 'How were the crowds for the Johnston Canyon ice walk?', NULL, 1, 9, '2025-05-05 01:02:01'),
 (30, 8, 3, NULL, 'Great reminder about needing proper winter gear!', 4, 1, 7, '2025-05-06 01:02:01');
+
+
+-- Insert services
+INSERT INTO HOMEPAGE_SERVICES (service_title, service_description, service_image) VALUES
+('First Class Experience', 'Enjoy premium comfort with spacious seating, gourmet meals, and personalized service during your journey.', '/uploads/services/services_example.jpg'),
+('Business Travel Solutions', 'Dedicated corporate booking services, priority check-in, and flexible scheduling for business travelers.', '/uploads/services/services_example2.jpg'),
+('Vacation Packages', 'All-inclusive vacation packages with flights, accommodations, and local experiences at the best destinations.', '/uploads/services/services_example3.jpg'),
+('Airport Transfers', 'Seamless transportation services from your location to the airport and from arrival airport to your destination.', '/uploads/services/services_example4.jpg'),
+('In-flight Entertainment', 'Enjoy the latest movies, TV shows, music, and games on our state-of-the-art entertainment system.', '/uploads/services/services_example5.jpg'),
+('Claude Miles Program', 'Earn miles with every flight and redeem for free flights, upgrades, and exclusive partner benefits worldwide.', '/uploads/services/services_example6.jpg');
+
+-- Insert carousel images
+INSERT INTO HOMEPAGE_IMAGE_CAROUSEL (carousel_image, carousel_alt, carousel_caption) VALUES
+('/uploads/carousel/carousel_example.jpg', 'Tropical beach resort', 'Escape to paradise with our special summer deals'),
+('/uploads/carousel/carousel_example2.jpg', 'Business class cabin', 'Experience luxury at 30,000 feet with our new business class'),
+('/uploads/carousel/carousel_example3.jpg', 'Family vacation', 'Create unforgettable memories with our family-friendly packages'),
+('/uploads/carousel/carousel_example4.jpg', 'Adventure travel', 'Explore the world with our exclusive adventure travel deals'),
+('/uploads/carousel/carousel_example5.jpg', 'Cultural experience', 'Immerse yourself in local cultures with our curated experiences');
+
+-- Insert travel packages
+INSERT INTO HOMEPAGE_TRAVEL_PACKAGES (package_image, package_name, package_description) VALUES
+('/uploads/packages/packages_example.jpg', 'Weekend Escape', 'Quick 2-3 day packages perfect for recharging. Includes flights, hotel, and breakfast.'),
+('/uploads/packages/packages_example2.jpg', 'Family Adventure', 'Kid-friendly destinations with activities for all ages. Includes flights, family accommodations, and select activities.'),
+('/uploads/packages/packages_example3.jpg', 'Luxury Retreat', 'Premium accommodations at 5-star resorts with exclusive amenities. Includes business class flights and VIP transfers.'),
+('/uploads/packages/packages_example4.jpg', 'Cultural Immersion', 'Deep dive into local cultures with guided tours and authentic experiences. Includes flights, hotels, and curated cultural activities.'),
+('/uploads/packages/packages_example5.jpg', 'Romantic Getaway', 'Special couples packages at scenic destinations. Includes flights, boutique hotels, and romantic dinners.');
+
+-- Insert user testimonials
+INSERT INTO HOMEPAGE_USER_TESTIMONIALS (user_name, user_testimonial, user_image, user_stars, user_location) VALUES
+('Sarah Johnson', 'The flight was smooth and comfortable. The cabin crew was exceptionally attentive and made our journey memorable.', '/uploads/testimonials/testimonials_example.jpg', 5, 'New York, USA'),
+('Minh Tran', 'Claude Airlines made my business trip stress-free. The online check-in was quick, and the in-flight Wi-Fi kept me productive.', '/uploads/testimonials/testimonials_example2.jpg', 4, 'Ho Chi Minh City, Vietnam'),
+('John Smith', 'I had a fantastic experience flying with Claude Airlines. The food was delicious, and the entertainment options were great!', '/uploads/testimonials/testimonials_example3.jpg', 5, 'Los Angeles, USA'),
+('Emily Nguyen', 'The staff was friendly and helpful. I loved the in-flight entertainment selection!', '/uploads/testimonials/testimonials_example4.jpg', 4, 'Hanoi, Vietnam'),
+('David Brown', 'Claude Airlines offers great value for money. I will definitely fly with them again!', '/uploads/testimonials/testimonials_example5.jpg', 5, 'Chicago, USA');
+
+
+-- Insert top destinations
+INSERT INTO HOMEPAGE_TOP_DESTINATIONS (destination_image, destination_name, destination_country, destination_price, destination_description, destination_begin, destination_end, destination_offer, destination_category) VALUES
+('/uploads/destinations/destinations_example.jpg', 'Paris', 'France', 649.99, 'Experience the romance and charm of the City of Light with its iconic landmarks and exquisite cuisine.', '2025-06-01', '2025-06-30', '10% off for early booking', 'Europe'),
+('/uploads/destinations/destinations_example2.jpg', 'Bali', 'Indonesia', 849.99, 'Discover paradise on earth with pristine beaches, lush rice terraces, and spiritual temples.', '2025-07-01', '2025-08-31', 'Free airport transfer', 'Asia'),
+('/uploads/destinations/destinations_example3.jpg', 'New York', 'USA', 749.99, 'Explore the Big Apple with its towering skyscrapers, diverse neighborhoods, and vibrant culture.', '2025-09-01', '2025-10-31', 'City pass included', 'North America'),
+('/uploads/destinations/destinations_example4.jpg', 'Tokyo', 'Japan', 899.99, 'Experience the blend of tradition and modernity in Japan bustling capital.', '2025-11-01', '2025-12-31', 'Free guided city tour', 'Asia'),
+('/uploads/destinations/destinations_example5.jpg', 'Sydney', 'Australia', 999.99, 'Discover the stunning beaches, iconic landmarks, and vibrant culture of Sydney.', '2025-01-01', '2025-02-28', 'Discount on group bookings', 'Oceania');
+
+-- Insert contact messages
+INSERT INTO CONTACT_MESSAGES (name, email, phone, subject, message, status) VALUES
+('John Smith', 'john.smith@example.com', '+1234567890', 'Booking Inquiry', 'I would like to know if there are any special discounts for group bookings of 10 people to Tokyo in August.', 'unread'),
+('Maria Garcia', 'maria.g@example.com', '+3456789012', 'Baggage Question', 'What is the baggage allowance for your economy class on international flights?', 'read'),
+('Ahmed Hassan', 'ahmed.h@example.com', '+2345678901', 'Flight Rescheduling', 'I need to reschedule my flight CA-3456 from June 15th to June 20th. Is this possible?', 'replied'),
+('Lily Wang', 'lily.w@example.com', '+8765432109', 'Lost Item', 'I believe I left my laptop on flight CA-7890 yesterday. How can I retrieve it?', 'unread'),
+('David Brown', 'david.b@example.com', '+9876543210', 'Website Feedback', 'Your new website is very user-friendly. I especially like the quick booking feature.', 'read');
+
+-- Insert contact locations
+INSERT INTO CONTACT_LOCATIONS (location_name, des_type, address_string, phone_number, working_hours, email, location_embed_code) VALUES
+('Claude Airlines Headquarters', 'Main Office', '123 Aviation Blvd, Los Angeles, CA 90045, USA', '+1-800-CLAUDE-AIR', 'Mon-Fri: 8AM-6PM', 'info@claudeairlines.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976397304903!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1619822446442!5m2!1sen!2s'),
+('Claude Airlines - New York', 'Branch Office', '456 Travel Plaza, New York, NY 10001, USA', '+1-212-CLAUDE-NY', 'Mon-Fri: 9AM-5PM', 'newyork@claudeairlines.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13219.891667483433!2d-118.39967993022464!3d33.94611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2b6ab5dc0d481%3A0x6075ef0a08ec2a7d!2sLos%20Angeles%20International%20Airport%20(LAX)!5e0!3m2!1sen!2sus!4v1650123456789!5m2!1sen!2sus'),
+('Claude Airlines - Ho Chi Minh City', 'Regional Office', '789 Nguyen Hue Blvd, District 1, Ho Chi Minh City, Vietnam', '+84-28-CLAUDE-VN', 'Mon-Sat: 8AM-7PM', 'vietnam@claudeairlines.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.6533383913886!2d-87.62544368455809!3d41.88227087922149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2ca3e2d94695%3A0x4829f3cc9ca2d0de!2sMillennium%20Park!5e0!3m2!1sen!2sus!4v1650123456789!5m2!1sen!2sus'),
+('Claude Airlines - London', 'European Hub', '10 Aviation House, Heathrow Airport, London, UK', '+44-20-CLAUDE-UK', 'Mon-Sun: 7AM-9PM', 'london@claudeairlines.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3313.3736662710805!2d151.21303131571477!3d-33.856928180659004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae665e892fdd%3A0x3133f8d75a1ac251!2sSydney%20Opera%20House!5e0!3m2!1sen!2sau!4v1650123456789!5m2!1sen!2sau'),
+('Claude Airlines - Tokyo', 'Asia-Pacific Office', '567 Sky Tower, Narita Airport, Tokyo, Japan', '+81-3-CLAUDE-JP', 'Mon-Fri: 8:30AM-6:30PM', 'tokyo@claudeairlines.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.4330971849653!2d139.8085117152003!3d35.71014153618419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ed6f44659b9%3A0x30e534e2114c0e71!2sTokyo%20Skytree!5e0!3m2!1sen!2sjp!4v1650123456789!5m2!1sen!2sjp');
