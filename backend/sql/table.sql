@@ -174,6 +174,13 @@ CREATE TABLE USERS (
     UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời gian cập nhật
 );
 
+CREATE TABLE HOMEPAGE_IMAGE_CAROUSEL(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    carousel_image VARCHAR(255) NOT NULL,
+    carousel_alt TEXT NOT NULL,
+    carousel_caption TEXT NOT NULL
+);
+
 -- `vlog_posts`
 CREATE TABLE `vlog_posts` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -211,5 +218,3 @@ CREATE TABLE `vlog_comments` (
     CONSTRAINT `vlog_comments_post_fk` FOREIGN KEY (`post_id`) REFERENCES `vlog_posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `vlog_comments_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stores comments for vlog posts';
-
-
